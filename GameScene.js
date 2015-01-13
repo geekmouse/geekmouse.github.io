@@ -112,7 +112,11 @@ var GameScene = {
 		    var height = $(window).height();
 		    var l_zoomH=height/960;
 		    var l_zoomW=width/640;
-		      $("body").css("zoom",l_zoomH<l_zoomW?l_zoomH:l_zoomW);
+		    var l_zoomThis=l_zoomH<l_zoomW?l_zoomH:l_zoomW;
+		      $("body").css({
+		      	"zoom":l_zoomThis
+		      	,"-moz-transform":"scale("+l_zoomThis+")"
+		  });
 			cc.log("windowSize:("+width+","+height+")"); 
 		}
 	},
@@ -135,6 +139,7 @@ var GameScene = {
 					,"top":l_pnt.y
 					,"background-color":l_strColor
 					,"z-index":g_config.zorder.GameBG
+					//,"clip":"rect(0px 10px 40px 0px)"
 				});
 
 				$("#grid_layer").append("<div class='grid' id='bg_"+i+""+j+"_click'></div>");
@@ -209,16 +214,16 @@ var GameScene = {
 	showStepTut:function(){
 		this.loseControl();
 		var l_gameScene=this;
-		$("#game_scene").append("<div id='st_ask_bg' class='st_ask_bg'></div>");
-		$("#st_ask_bg").append("<div id='st_ask_words' class='st_ask_words'>Are you sure you want to QUIT for the tutorial? You’ll lose your current progress </div>");
-		$("#st_ask_bg").append("<div id='st_bt_show' class='st_bt'>YES</div>");
+		$("#game_scene").append("<div id='st_ask_bg' class='view_bk st_ask_bg'></div>");
+		$("#st_ask_bg").append("<div id='st_ask_words' class='view_text st_ask_words'>Are you sure you want to QUIT for the tutorial? You’ll lose your current progress </div>");
+		$("#st_ask_bg").append("<div id='st_bt_show' class='view_bt st_bt'>YES</div>");
 		$("#st_bt_show").css({"left":g_config.stBtShowLeft}).click(function(event) {
 			l_gameScene.initRandomMap(true);
 			l_gameScene.onControl();
 			$("#st_ask_bg").remove();
 		});
 
-		$("#st_ask_bg").append("<div id='st_bt_cancel' class='st_bt'>NO</div>");
+		$("#st_ask_bg").append("<div id='st_bt_cancel' class='view_bt st_bt'>NO</div>");
 		$("#st_bt_cancel").css({"left":g_config.stBtCancelLeft}).click(function(event) {
 			l_gameScene.onControl();
 			$("#st_ask_bg").remove();
@@ -470,7 +475,7 @@ var GameScene = {
 	//不能点击动画
 	showForbid:function(p_gridPoint){
 		var l_position = g_gameMgr.getPositionByGrid(p_gridPoint);
-		$("#game_scene").append("<img id='forbid' class='st_arrow' src='res/forbid.png'/>");
+		$("#game_scene").append("<img id='forbid' class='click_tip' src='res/forbid.png'/>");
 		$("#forbid").css({
 				"left" : l_position.x,
 				"top" : l_position.y,
@@ -490,7 +495,7 @@ var GameScene = {
 		var l_pntTip=cc.p(p_tutStep.x,p_tutStep.y);
 		var l_position = g_gameMgr.getPositionByGrid(l_pntTip);
 		$("#st_arrow").remove();
-		$("#game_scene").append("<img id='st_arrow' class='st_arrow' src='/res/mxArrow.png'/>");
+		$("#game_scene").append("<img id='st_arrow' class='click_tip' src='/res/mxArrow.png'/>");
 		$("#st_arrow").css({
 			"left" : l_position.x,
 			"top" : l_position.y-40,
@@ -511,7 +516,7 @@ var GameScene = {
 			
 		var l_text=p_tutStep.t;
 		$("#st_text").remove();
-		$("#game_scene").append("<div id='st_text' class='st_text'>"+l_text+"</div>");
+		$("#game_scene").append("<div id='st_text' class='view_bk view_text st_text'><span style='color:red;'><p>Tutorial</p></span><p>"+l_text+"</p></div>");
 		
 	},
 
@@ -600,7 +605,7 @@ var GameScene = {
 
 		var l_btY=810;
 		var l_btXInt=100;
-		var l_startX=5;
+		var l_startX=250;
 		//FB按钮
 		$("#game_ui").append("<img id='bt_fb' src='res/mxIconFB.png'></img>");
 		$("#bt_fb").addClass("bt_sns").css({left: l_startX,top: l_btY}).click(function(event){
@@ -632,6 +637,9 @@ var GameScene = {
 				window.open("mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback");
 			}
 		});
+
+		$("#game_ui").append("<div id= 'contact'>CONTACT US</div>");
+
 	}
 	
 	//更新回合

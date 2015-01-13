@@ -2,7 +2,8 @@
 
 .body{
     background-color:#54ADDC;
-    
+    overflow: hidden;
+    -moz-transform-origin: left top;
 /*    width: 640px;
     height: 960px;*/
 /*    min-height:100%;
@@ -22,6 +23,50 @@
 .game_ui{
     color:white;
 }
+
+.view_bk{
+    margin: 0 auto;
+    background-color:#EEEEFF;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    box-shadow: 0 11px 20px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 11px 20px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0 11px 20px rgba(0,0,0,0.25);
+    position:relative;
+}
+
+.view_bt{
+    cursor:pointer;
+    position:absolute;
+    font-family: sans-serif;
+    line-height:80px;
+    width: 180px;
+    height: 80px;
+    font-size:30px;
+    border-radius:15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    background-color:#54ADDC;
+    color:white;
+}
+
+.view_text{
+    padding:5px 25px;
+    text-align:left;
+    line-height:18px;
+    font-family: Calibri, sans-serif;
+    font-size:18px;
+    color:#077DBB;
+}
+
+.view_title{
+    margin: 0 auto;
+    font-size:60px;
+    color: red;
+    position:relative;
+}
+
 
 .title{
     line-height: 50px;
@@ -62,9 +107,12 @@
     -webkit-border-radius: 15px;
 }
 
-
-
-
+.click_tip{
+    width: 90;
+    height: 90;
+    position:absolute;
+    z-index: 31;
+}
 
 .button_option{
     cursor:pointer;
@@ -91,57 +139,16 @@
     font-size:45px;
 }
 
-.pause_bt{
-    cursor:pointer;
-    position:absolute;
-    font-family: sans-serif;
-    line-height:80px;
-    width: 180px;
-    height: 80px;
-    font-size:30px;
-    border-radius:15px;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    background-color:#54ADDC;
-    color:white;
-    z-index:50;
-}
 
 .pause_back{ 
     margin: 0 auto;
     top: -60px;
     height:750px; 
     width:500px; 
-    background-color:#EEEEFF;
-    padding: 5px 10px 6px;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius:15px;
-    -moz-box-shadow: 0 11px 20px rgba(0,0,0,0.25);
-    -webkit-box-shadow: 0 11px 20px rgba(0,0,0,0.25);
-    box-shadow: 0 11px 20px rgba(0,0,0,0.25);
-    position: relative;
 } 
 
-.pause_stat{
-    margin: 0 auto;
-    top: 660px;
-    height: 100px; 
-    width:480px; 
-    position: relative;
-    font-size:15px;
-    line-height:6px;
-    text-align:left;
-    font-family: Arial,sans-serif;
-    color:#077DBB;
-}
-
 .tut_title{
-    margin: 0 auto;
-    font-size:60px;
     top:-800px;
-    color: red;
-    position:relative;
     z-index:1000;
 }
 
@@ -150,59 +157,29 @@
     width:450px; 
     top: 250px;
     left:95px;
-    font-family: sans-serif;
-    background-color:#EEEEFF;
-    color:#077DBB;
-    border-radius: 15px;
-    box-shadow: 0 11px 20px rgba(0,0,0,0.25);
     position:absolute;
     z-index:50;
 }
 
 .st_ask_words{
-    margin: 0 auto;
-    text-align: left;
     padding:47px 45px;
-    line-height: 25px;
-    font-size: 18px;
-    font-family: Calibri, sans-serif;
 }
 
 .st_bt{
-    cursor:pointer;
     line-height:50px;
     width: 130px;
     height: 50px;
     top: 160px;
     font-size:35px;
-    border-radius: 15px;
-    background-color:#54ADDC;
-    color:white;
-    position: absolute;
 }
 
-.st_arrow{
-    width: 90;
-    height: 90;
-    position:absolute;
-    z-index: 31;
-}
+
 
 .st_text{
     height: 140px; 
     width:400px;
     top:480px;
     left:100px;
-    padding:5px 25px;
-    text-align:left;
-    line-height:14px;
-    margin: 0 auto;
-    font-family: sans-serif;
-    font-size:18px;
-    background-color:#EEEEFF;
-    color:#077DBB;
-    box-shadow: 0 11px 20px rgba(0,0,0,0.25);
-    position:relative;
     z-index:50;
 }
 
@@ -210,27 +187,21 @@
     height: 450px; 
     width:340px; 
     top: 80px;
-    margin: 0 auto;
-    font-family: sans-serif;
-    background-color:#EEEEFF;
-    color:#077DBB;
-    border-radius: 15px;
-    box-shadow: 0 11px 20px rgba(0,0,0,0.25);
-    position:relative;
     z-index:50;
 }
 
 .vt_cys{
     margin: 0 auto;
-    font-size:30px;
+    font-size:23px;
     top:50px;
+    padding: 22px;
     color: #077DBB;
     position:relative;
 }
 
 .vt_100{
     margin: 0 auto;
-    font-size:80px;
+    font-size:90px;
     top:40px;
     color: red;
     position:relative;
@@ -238,17 +209,8 @@
 }
 
 .vt_bt{
-    cursor:pointer;
-    line-height:80px;
-    width: 160px;
-    height: 80px;
     top: 320px;
     left:90px;
-    font-size:25px;
-    border-radius: 15px;
-    background-color:#54ADDC;
-    color:white;
-    position: absolute;
 }
 
 .vt_ixm{
@@ -277,28 +239,17 @@
 .paypal_back{
     height: 480px; 
     width:380px; 
-    top: 105px;
-    margin: 0 auto;
-    font-family: sans-serif;
-    background-color:#EEEEFF;
-    color:#077DBB;
-    border-radius: 15px;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    -moz-box-shadow: 0 11px 20px rgba(0,0,0,0.25);
-    -webkit-box-shadow: 0 11px 20px rgba(0,0,0,0.25);
-    box-shadow: 0 11px 20px rgba(0,0,0,0.25);
-    position:relative;
+    top: 75px;
     z-index:50;
 }
 
 .paypal_words{
-    margin: 0 auto;
-    text-align: left;
-    padding:17px 35px;
-    line-height: 15px;
+/*    margin: 0 auto;
+    text-align: left;*/
+    padding:12px 25px;
+/*    line-height: 20px;
     font-size: 18px;
-    font-family: Calibri, sans-serif;
+    font-family: Calibri, sans-serif;*/
 /*    color: #077DBB;*/
 }
 
@@ -311,24 +262,15 @@
 }
 
 .paypal_bt{
-/*    margin: 0 auto;*/
-    cursor:pointer;
     line-height:50px;
     width: 130px;
     height: 50px;
     top: 290px;
     left:120px;
     font-size:25px;
-    border-radius: 15px;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    background-color:#54ADDC;
-    color:white;
-    position: absolute;
 }
 
 .paypal_bt_cancel{
-/*    margin: 0 auto;*/
     cursor:pointer;
     position:absolute;
     width: 130px;
@@ -338,7 +280,6 @@
     font-size:25px;
     background-color:#EEEEFF;
     color:#54ADDC;
-/*    z-index:50;*/
 }
 
 body, canvas, div {
