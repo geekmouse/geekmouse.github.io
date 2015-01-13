@@ -20,10 +20,10 @@ var g_config = {
 	,gridTop:150
 
 	//暂停目录按钮坐标
-	,pauseBtLeft0:65
-	,pauseBtLeft1:270
-	,pauseBtTop0:460
-	,pauseBtTop1:560
+	,pauseBtLeft0:45
+	,pauseBtLeft1:260
+	,pauseBtTop0:200
+	,pauseBtTop1:300
 
 	//pos for step-tutorials
 	,stBtShowLeft:70
@@ -66,10 +66,7 @@ var g_config = {
 	,callBackPara:{
 		empty:0							//无参数,继续游戏
 		,restartGame:1		//开始游戏
-	},
-
-	
-	
+	},	
 };
 
 var g_tools = {

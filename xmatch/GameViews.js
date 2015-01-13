@@ -10,10 +10,10 @@
 		//中心方块
 		$("#game_scene").append("<div id='pause_back' class='view_bk pause_back'></div>");
 		//统计
-		$("#pause_back").css({"z-index" : g_config.zorder.GamePause}).append("<p id='game_pause_state' class='view_text'></p>");
+		$("#pause_back").css({"z-index" : g_config.zorder.GamePause}).append("<p id='game_pause_state' class='view_text pause_text'></p>");
 		var l_visToday=g_gameMgr.convertToReadable(g_gameMgr.globalVisitorToday);
 		var l_visHistory=g_gameMgr.convertToReadable(g_gameMgr.globalVisitorAll);
-		$("#game_pause_state").append("<p>This is the <span style='color:red;'>#"+l_visToday+"</span> global attempt today,</p><p>and the <span style='color:red;'>#"+l_visHistory+"</span> global attempt in history.</p><hr>");
+		$("#game_pause_state").append("<p>Global attempts: Today <span style='color:red;'>#"+l_visToday+"</span>, History: <span style='color:red;'>#"+l_visHistory+"</span></p><hr>");
 
 		//Continue button
 		$("#pause_back").append("<div id='bt_ps_cont' class='view_bt'>CONTINUE</div>");
@@ -37,7 +37,7 @@
 		});
 
 		//Share button
-		$("#pause_back").append("<div id='bt_ps_share' class='view_bt'>TWEET IT</div>");
+		$("#pause_back").append("<div id='bt_ps_share' class='view_bt'>TWEET!!</div>");
 		$("#bt_ps_share").css({"left":g_config.pauseBtLeft1,"top":g_config.pauseBtTop1}).click(function(event) {
 			cc.log("pause clickButton share");
 			var l_maxScore=g_gameMgr.maxScore;
@@ -49,11 +49,35 @@
 
 		switch(iState){
 			case g_config.statePause.spManual:{
-				
+				$("#pause_back").append("<div id='pause_text' class='view_text pause_text'></div>");
+				//var l_rnOptions=g_tools.random(0,3);
+				var l_rnOptions=1;
+				switch(l_rnOptions){
+					case 0:{//Twitter
+						$("#pause_text").text("Follow us on Twitter and don't miss our updates!!");
+						$("#pause_back").append("<div id='follow_button'></div>");
+						$("#follow_button").load("3rdParty.txt #twitter_follow_button");
+						break;
+					}
+					case 1:{//FacebookShare
+						$("#pause_text").text("Share us with friends!!");
+						$("#pause_back").append("<div id='like_button' class='view_title'></div>");
+						$("#like_button").load("3rdParty.txt #fb_like_button");
+						// $("#like_button").load("3rdParty.txt #fb_like_button").css({
+						// 	"z-index" : g_config.zorder.GamePause+1000
+						// });
+						break;
+					}
+					case 2:{
+						
+						break;
+					}
+				}
 				break;
 			}
 			case g_config.statePause.spEnd:{
 				$("#pause_back").append("<div id='title_ps' class='view_title tut_title' >GAME OVER</div>");
+				$("#bt_ps_cont").text("WHY?");
 				break;
 			}
 			case g_config.statePause.spEndNew:{
@@ -83,10 +107,10 @@ function ViewPaypal(){
 	this.initPaypal=function(){
 		var l_viewPaypal = this;
 		$("#game_scene").append("<div id='paypal_back' class='paypal_back view_bk'></div>");
-		$("#paypal_back").css({"z-index" : g_config.zorder.GamePause}).append("<div id='paypal_words' class='view_text paypal_words'><p>We're working on:</p><p><span>1. iOS/Android version</br>2. Another 9 X-Match play modes</br> ('Mutant Mode' is ready for iOS now)</p></span><p>  </p><p>Be one of us to accelerate it happen!!</div>");
+		$("#paypal_back").css({"z-index" : g_config.zorder.GamePause}).append("<div id='paypal_words' class='view_text paypal_words'><p>We're working on:</p><p><span># Develop iOS/Android versions</br># Design 9 extra X-Match play modes (in which 'Mutant Mode' is ready for iOS now)</p></span><p>Donate us and you'll be one of us to make it happen!!</div>");
 
 		$("#paypal_back").append("<div id='paypal_ps' class='paypal_list'></div>");
-		$("#paypal_ps").load("paypal.txt");
+		$("#paypal_ps").load("3rdParty.txt #paypal_form");
 
 		$("#paypal_back").append("<div id='bt_paypal' class='view_bt paypal_bt'>DONATE</div>");
 		$("#bt_paypal").click(function(event){
