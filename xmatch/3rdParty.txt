@@ -13,14 +13,6 @@
 <input type="hidden" name="currency_code" value="USD">
 </form>
 
-<a target="_blank" id='twitter_follow_button' href="https://twitter.com/geek_mouse" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @geek_mouse</a>
+<a id='twitter_follow_button' href="https://twitter.com/geek_mouse" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @geek_mouse</a>
 
-<div
-  id="fb_like_button"
-  class="fb-like"
-  data-send="true"
-  data-width="450"
-  data-show-faces="true">
-</div>
-
-<div class="fb-like" data-href="http://geekmouse.github.io/xmatch/" data-width="200" data-layout="button_count" data-action="recommend" data-show-faces="true" data-share="true"></div>
+<iframe id="fb_like_button" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fgeekmouse.github.io%2Fxmatch%2F&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=21&amp;appId=1509282589321072" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:42px;" allowTransparency="true"></iframe>

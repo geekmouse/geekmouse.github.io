@@ -20,9 +20,9 @@ var g_config = {
 	,gridTop:150
 
 	//暂停目录按钮坐标
-	,pauseBtLeft0:45
-	,pauseBtLeft1:260
-	,pauseBtTop0:200
+	,pauseBtLeft0:90
+	,pauseBtLeft1:280
+	,pauseBtTop0:220
 	,pauseBtTop1:300
 
 	//pos for step-tutorials
@@ -206,18 +206,44 @@ var g_gameMgr = {
 		this.clearGame();
 		console.log("GameMgr init end");
 
-		bIsMobile=navigator.userAgent.toLowerCase().match(/Mobile/i)!==null ? true : false;
+		var u=navigator.userAgent;
+		//bIsMobile=navigator.userAgent.toLowerCase().match(/Mobile/i)!==null ? true : false;
+		// cc.log(u);
+		this.bIsMobile=u.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)!=null;
+		if(!this.bIsMobile){
+			$.getScript('social.js', function() {});
+			$('body').append("<div id='fb-root'></div>");
+		}
+		
 
 		var l_this=this.st_bricks[0];
 		cc.log("test brick:"+l_this.x);
 	},
+
+	// init_fb:function(){
+ //      $('body').append("<div id='fb-root'></div>");
+
+ //      (function(d, s, id) {
+ //        var js, fjs = d.getElementsByTagName(s)[0];
+ //        if (d.getElementById(id)) return;
+ //        js = d.createElement(s); js.id = id;
+ //        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1509282589321072&version=v1.0";
+ //        fjs.parentNode.insertBefore(js, fjs);
+ //      }(document, 'script', 'facebook-jssdk'));
+	// },
+
+	// init_tw:function(){
+	// 	!function(d,s,id){
+	//       var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}
+	//       (document, 'script', 'twitter-wjs');
+	// 	}
+	// },
 	
 	readString:function(key){
 		if(_lang.substr(0,2)=="zh"){
 			return g_string;
 		}
 	},
-
 
 	// 初始二维数组
 	initMapData:function(){

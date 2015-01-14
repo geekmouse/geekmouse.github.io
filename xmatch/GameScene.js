@@ -17,13 +17,15 @@ var GameScene = {
 	gameTutorial:null,
 	isTouchEnabled:true,
 	tutStep:-1,
+	numForbids:0,
 
 	init:function(){
 		this.initData();
+		g_gameMgr.init();
 		this.initObjects();
 		this.initBg();
 		//游戏相关
-		g_gameMgr.init();
+		
 		g_gameMgr.gameScene = this;
 
 		//有存档
@@ -128,6 +130,16 @@ var GameScene = {
 		$(window).resize(function(){l_gameScene.syncSize(false);});
 		//背景
 		$("#game_scene").append("<div id='grid_layer'></div>");
+		$("#grid_layer").append("<div id='grid_mask_offset'></div>");
+		var l_origPnt=g_gameMgr.getPositionByGrid(cc.p(0,0));
+		$("#grid_mask_offset").css({
+			"left":l_origPnt.x
+			,"top":l_origPnt.y
+			,"background-color":"#BDDEF0"
+			,"width":630
+			,"height":630
+			,"position":"absolute"
+		});
 
 		for (var i = 0; i < g_config.gridCount_y; i++) {
 			for(var j = 0; j < g_config.gridCount_x; j++){
@@ -253,6 +265,8 @@ var GameScene = {
 					$("#bg_"+i+""+j+"_mask").css({
 						"left":l_pnt.x
 						,"top":l_pnt.y
+						,"width":91
+						,"height":91
 						,"background-color":"#003085"
 						,"opacity":"0"
 						,"filter":"alpha(opacity=0)"
@@ -423,7 +437,7 @@ var GameScene = {
 			}
 			
 		}
-
+		
 		//存档
 		g_gameMgr.saveData();
 	},
@@ -475,19 +489,21 @@ var GameScene = {
 	//不能点击动画
 	showForbid:function(p_gridPoint){
 		var l_position = g_gameMgr.getPositionByGrid(p_gridPoint);
-		$("#game_scene").append("<img id='forbid' class='click_tip' src='res/forbid.png'/>");
-		$("#forbid").css({
+		var l_thisId="forbid"+this.numForbids;
+		$("#game_scene").append("<img id="+l_thisId+" class='click_tip' src='res/forbid.png'/>");
+		$("#"+l_thisId).css({
 				"left" : l_position.x,
 				"top" : l_position.y,
+				"opacity":0.2,
 			});
-		$("#forbid").animate({
-			left:l_position.x,
-			top:l_position.y,
+		$("#"+l_thisId).animate({
+			"opacity":1,
 			},
 			200, function() {
 				$(this).remove();
 			}
 		);
+		this.numForbids=(this.numForbids+1)%10;
 	},
 
 
@@ -495,12 +511,12 @@ var GameScene = {
 		var l_pntTip=cc.p(p_tutStep.x,p_tutStep.y);
 		var l_position = g_gameMgr.getPositionByGrid(l_pntTip);
 		$("#st_arrow").remove();
-		$("#game_scene").append("<img id='st_arrow' class='click_tip' src='/res/mxArrow.png'/>");
+		$("#game_scene").append("<img id='st_arrow' class='click_tip' src='res/mxArrow.png'/>");
 		$("#st_arrow").css({
 			"left" : l_position.x,
 			"top" : l_position.y-40,
 			"z-index":g_config.zorder.GameTip
-		}).unbind();
+		});
 		this._tutTipLoop();
 		//Put in Mask
 		this._toggleMask(true);
@@ -601,11 +617,13 @@ var GameScene = {
 		});
 
 		
+		if(!g_gameMgr.bIsMobile){
+			$("#game_ui").append("<div id= 'contact' class='contact'><hr>X-Match<br>Designed & presented by: <br>2015 GeekMouse Game Studio<br><a target='_blank' href='http://geekmouse.net/press/'>Press Kit</a></div>");
+		}
 
-
-		var l_btY=810;
+		var l_btY=800;
 		var l_btXInt=100;
-		var l_startX=250;
+		var l_startX=230;
 		//FB按钮
 		$("#game_ui").append("<img id='bt_fb' src='res/mxIconFB.png'></img>");
 		$("#bt_fb").addClass("bt_sns").css({left: l_startX,top: l_btY}).click(function(event){
@@ -631,15 +649,18 @@ var GameScene = {
 		});
 
 		//Mail按钮
-		$("#game_ui").append("<img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img>");
-		$("#bt_mail").css({left: l_btXInt*3+l_startX,top: l_btY,}).click(function(event){
-			if (l_gameUI.isTouchEnabled) {
-				window.open("mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback");
-			}
+		$("#game_ui").append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
+		$("#bt_mail").css({
+			left: l_btXInt*3+l_startX,
+			top: l_btY,
 		});
+		// }).click(function(event){
+		// 	if (l_gameUI.isTouchEnabled) {
+		// 		window.open("mailto://geek.mouse.game@gmail.com?subject=X-MATCH Feedback");
+		// 	}
+		// });
 
-		$("#game_ui").append("<div id= 'contact'>CONTACT US</div>");
-
+		
 	}
 	
 	//更新回合

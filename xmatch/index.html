@@ -4,6 +4,9 @@
       <title>X-MATCH</title>
       <link rel="icon" type="image/GIF" href="res/favicon.ico"/>
       <link href="main.css" rel="stylesheet" type="text/css">
+      <link rel="apple-touch-icon" href="touch-icon-iphone.png" />
+      <link rel="apple-touch-icon" sizes="72x72" href="touch-icon-ipad.png" /> 
+      <link rel="apple-touch-icon" sizes="114x114" href="touch-icon-iphone-retina.png" />
 
       <meta charset="utf-8">
       <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -31,36 +34,7 @@
   </head>
 
   <body class="body">
-    <!-- Twitter -->
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-    <!-- Facebook Like -->
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '1509282589321072',
-          xfbml      : false,
-          version    : 'v1.0'
-        });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-    </script>
-
-    <div id='fb-root'></div>
-    <script>(function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1509282589321072&version=v2.0";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));</script>
     <script src="./GameScene.js"></script>
 
     <div id="game_scene" class="game_scene" ></div> 
