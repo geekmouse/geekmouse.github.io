@@ -15,4 +15,6 @@
 
 <a id='twitter_follow_button' href="https://twitter.com/geek_mouse" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @geek_mouse</a>
 
+<a href="https://twitter.com/intent/tweet?button_hashtag=xmatch&text=is%20a%20funny%20game.%20I%20really%20need%20you%20lent%20me%20a%20dollar%20to%20donate%20this%20guy." class="twitter-hashtag-button" data-size="large" data-related="geek_mouse,kickerbm0821" data-url="http://geekmouse.github.io/xmatch/">Tweet #xmatch</a>
+
 <iframe id="fb_like_button" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fgeekmouse.github.io%2Fxmatch%2F&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=21&amp;appId=1509282589321072" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:42px;" allowTransparency="true"></iframe>

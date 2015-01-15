@@ -43,10 +43,12 @@ var g_config = {
 		,GameBottom:20
 		,GameObject:25
 		,GameMask:28
-		,GameTip:30
-		,GameTouch:35
-		,GameUI:40
-		,GamePause:50
+		,GameTutBg:30
+		,GameTutObject:32
+		,GameTip:40
+		,GameTouch:45
+		,GameUI:50
+		,GamePause:60
 		,GameTut:1000
 	}
 	,saveData:{
@@ -66,7 +68,8 @@ var g_config = {
 	,callBackPara:{
 		empty:0							//无参数,继续游戏
 		,restartGame:1		//开始游戏
-	},	
+	}
+	,colorStrongText:"#0192e0"
 };
 
 var g_tools = {
@@ -113,9 +116,6 @@ var cc = {
 }
 
 var g_gameMgr = {
-	//游戏场景
-	gameScene:null,
-
 	// 描画数组
 	arrayGrid:null,
 	// 统计数组
@@ -219,25 +219,6 @@ var g_gameMgr = {
 		var l_this=this.st_bricks[0];
 		cc.log("test brick:"+l_this.x);
 	},
-
-	// init_fb:function(){
- //      $('body').append("<div id='fb-root'></div>");
-
- //      (function(d, s, id) {
- //        var js, fjs = d.getElementsByTagName(s)[0];
- //        if (d.getElementById(id)) return;
- //        js = d.createElement(s); js.id = id;
- //        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1509282589321072&version=v1.0";
- //        fjs.parentNode.insertBefore(js, fjs);
- //      }(document, 'script', 'facebook-jssdk'));
-	// },
-
-	// init_tw:function(){
-	// 	!function(d,s,id){
-	//       var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}
-	//       (document, 'script', 'twitter-wjs');
-	// 	}
-	// },
 	
 	readString:function(key){
 		if(_lang.substr(0,2)=="zh"){
@@ -538,7 +519,7 @@ var g_gameMgr = {
 		
 		// 超过最大值的话，更新最大值
 		if(this.currentScore > this.maxScore){
-			bNewRecord=true;
+			this.bNewRecord=true;
 			this.maxScore = this.currentScore;
 		}
 	},
@@ -671,8 +652,6 @@ var g_gameMgr = {
 /** Game Brick*/
 //这一处的第几个Brick, 解决移除时，同时移除两个的问题
 function GameGrid (){
-	this.leftOriginal = 0;
-	this.topOriginal = 0;
 	this.brickIndex = 0;
 	this.gameBrick = null;
 
@@ -701,21 +680,69 @@ function GameGrid (){
 	}
 };
 
-function GameBrick (p_iNumber, p_strID, p_bWithDelay){
-	//默认参数
-	if(typeof(p_bWithDelay) == undefined){
-		p_bWithDelay = true;
+function GameBrick (p_iNumber, p_strID, p_bWithTut){
+	if(p_bWithTut == undefined){
+		p_bWithTut = false;
 	}
+
+	this.leftOriginal = 0;
+	this.topOriginal = 0;
+	this.withTut = p_bWithTut;
+
+	
 	
 	this.number = p_iNumber;
 	this.brick_id = p_strID;
 	
 	
+	this.show = function(){
+		$("#brick_layer").append("<div class='brick_back' id='"+this.brick_id+"'></div>");
+		$("#"+this.brick_id).css({
+			"left":this.leftOriginal
+			,"top":this.topOriginal
+			,"z-index":g_config.zorder.GameObject
+		});
 
+
+		var l_strColor = g_gameMgr.brickColors[this.number];
+		$("#"+this.brick_id).css("background-color", l_strColor);
+
+		if(this.number == g_config.numX){
+			$("#"+this.brick_id).append("<img class='brick_x' src='res/x.png'></img>");
+		}
+		else{
+			//Number
+			$("#"+this.brick_id).text(this.number);
+		}
+
+		if(this.withTut){
+			$("#brick_layer_tut").append("<div class='brick_back' id='"+this.brick_id+"_tut'></div>");
+			$("#"+this.brick_id+"_tut").css({
+				"left":this.leftOriginal
+				,"top":this.topOriginal
+				,"display":"none"
+				,"z-index":g_config.zorder.GameTutObject
+			});
+
+
+			var l_strColor = g_gameMgr.brickColors[this.number];
+			$("#"+this.brick_id+"_tut").css("background-color", l_strColor);
+
+			if(this.number == g_config.numX){
+				$("#"+this.brick_id+"_tut").append("<img class='brick_x' src='res/x.png'></img>");
+			}
+			else{
+				//Number
+				$("#"+this.brick_id+"_tut").text(this.number);
+			}
+		}
+
+		this.showAppearAction();
+	}
 
 	
 	//出现动画
-	this.showAppearAction = function(p_bWithDelay){
+	this.showAppearAction = function(){
 		var l_brick = this;
 		$("#"+this.brick_id).css({
 			"opacity": 0.0,
@@ -734,6 +761,25 @@ function GameBrick (p_iNumber, p_strID, p_bWithDelay){
 			200
 			);
 		//$("#"+this.brick_id).fadeIn(200);
+
+		if(this.withTut){
+			$("#"+this.brick_id+"_tut").css({
+				"opacity": 0.0,
+				"width" : 80,
+				"height" : 80,
+			});
+
+			$("#"+this.brick_id+"_tut").delay(150);
+			$("#"+this.brick_id+"_tut").animate({
+				width: 80,
+				height: 80,
+				//left : l_brick.leftOriginal,
+				//top : l_brick.topOriginal,
+				opacity:1,
+				},
+				200
+				);
+		}
 	}
 	
 	this.showDisAppearAction = function(p_targetPosition){
@@ -745,14 +791,36 @@ function GameBrick (p_iNumber, p_strID, p_bWithDelay){
 			200, function(){
 			l_brick.removeMyself();
 		});
+
+		if(this.withTut){
+			$("#"+this.brick_id+"_tut").animate({
+				left: p_targetPosition.x, 
+				top: p_targetPosition.y, 
+				opacity:0.1},
+				200, function(){
+				l_brick.removeMyself();
+			});
+		}
 	}
 	
 	this.removeMyself = function(p_object){
 		$("#"+this.brick_id).remove();
+		if(this.withTut){
+			$("#"+this.brick_id+"_tut").remove();
+		}
 	}
 
-	
-	//this.showAppearAction(p_bWithDelay);
+	this.showTut = function(){
+		$("#"+this.brick_id+"_tut").css({
+				"display":"inline"
+			});
+	}
+	this.hideTut = function(){
+		$("#"+this.brick_id+"_tut").css({
+				"display":"none"
+			});
+	}
+
 
 	return this;	
 };

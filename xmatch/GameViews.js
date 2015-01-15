@@ -1,7 +1,5 @@
 //Game Views
  function ViewPause(iState){
- 	//游戏场景引用
- 	this.gameScene = null;
  	this.state=iState;
 
 	this.initOptions = function(){
@@ -13,27 +11,27 @@
 		$("#pause_back").css({"z-index" : g_config.zorder.GamePause}).append("<p id='game_pause_state' class='view_text'></p>");
 		var l_visToday=g_gameMgr.convertToReadable(g_gameMgr.globalVisitorToday);
 		var l_visHistory=g_gameMgr.convertToReadable(g_gameMgr.globalVisitorAll);
-		$("#game_pause_state").css({"text-align":"center"}).append("<p>Global attempts: Today <span style='color:red;'>#"+l_visToday+"</span>, History: <span style='color:red;'>#"+l_visHistory+"</span></p><hr>");
+		$("#game_pause_state").css({"text-align":"center"}).append("<p>Global attempts: Today <span style='color:"+g_config.colorStrongText+";'>#"+l_visToday+"</span>, History: <span style='color:"+g_config.colorStrongText+";'>#"+l_visHistory+"</span></p><hr>");
 
 		//Continue button
 		$("#pause_back").append("<div id='bt_ps_cont' class='view_bt'>CONTINUE</div>");
 		$("#bt_ps_cont").css({"left":g_config.pauseBtLeft0,"top": g_config.pauseBtTop0}).click(function(event) {
-			l_gamePause.gameScene.hideGamePause();
+			GameScene.hideGamePause();
 		});
 
 		//Restart button
 		$("#pause_back").append("<div id='bt_ps_rest' class='view_bt'>RESTART</div>");
 		$("#bt_ps_rest").css({"left":g_config.pauseBtLeft1,"top":g_config.pauseBtTop0}).click(function(event) {
-			l_gamePause.gameScene.initRandomMap(false);
-			l_gamePause.gameScene.hideGamePause();	
-			l_gamePause.gameScene.showViewTarget();
+			GameScene.initRandomMap(false);
+			GameScene.hideGamePause();	
+			GameScene.showViewTarget();
 		});
+		$("#pause_back").append("<div id='pause_text' class='view_ti2'></div>");
 
 		switch(iState){
 			case g_config.statePause.spManual:{
-				$("#pause_back").append("<div id='pause_text' class='view_ti2'></div>");
 				var l_showOpt=0;
-				if(g_gameMgr.maxScore<30){
+				if(g_gameMgr.maxScore<50){
 					var l_rnOptions=g_tools.random(0,10);
 					if(l_rnOptions<=5) l_showOpt=2;
 					else if(l_rnOptions<=7) l_showOpt=1;
@@ -46,12 +44,25 @@
 				break;
 			}
 			case g_config.statePause.spEnd:{
-				$("#pause_back").append("<div id='title_ps' class='view_title tut_title' >GAME OVER</div>");
-				$("#bt_ps_cont").text("WHY?");
+				
+				var l_rnOptions=g_tools.random(0,4);
+				if(l_rnOptions==3){
+					$("#pause_back").append("<div id='twitter_button'></div>");
+					$("#twitter_button").load("3rdParty.txt #twitter_button");
+				}
+				else{
+					this.showOpt(l_rnOptions);
+				}
+				$("#pause_text").text("GAME OVER!!");
+				$("#bt_ps_cont").text("RECHECK");
 				break;
 			}
 			case g_config.statePause.spEndNew:{
-				$("#pause_back").append("<div id='title_ps' class='view_title tut_title' >NEW RECORD</div>");
+
+				$("#pause_text").text("Congras!! You made new record:" + g_gameMgr.maxScore);
+				$("#pause_back").append("<div id='twitter_button'></div>");
+				$("#twitter_button").load("3rdParty.txt #twitter_button");
+				$("#bt_ps_cont").text("RECHECK");
 				break;
 			}
 		}
@@ -60,7 +71,7 @@
 	this.showOpt=function(opt){
 		switch(opt){
 			case 0:{//Twitter
-				$("#pause_text").text("Follow us on Twitter and don't miss our updates!!");
+				$("#pause_text").text("Follow us on Twitter and don't miss any X-Match updates!!");
 				$("#pause_back").append("<div id='follow_button'></div>");
 				$("#follow_button").load("3rdParty.txt #twitter_follow_button");
 				break;
@@ -74,7 +85,7 @@
 			}
 			case 2:{
 				$("#pause_text").text("Mission Impossible?");
-				$("#pause_back").append("<div class='view_text'>I got 120+ on Jan.13 2015 and recorded the whole process as a <a href='https://www.youtube.com/watch?v=xykJDWJ_yFQ'>VIDEO</a>. Maybe you can find some tips there. Cheer up!</div>");
+				$("#pause_back").append("<div class='view_text'>I recorded a <a href='https://www.youtube.com/watch?v=xykJDWJ_yFQ'>VIDEO</a> with the whole process of making score 120+. Maybe you can find some tips there. Cheer up!</div>");
 				break;
 			}
 		}
@@ -82,24 +93,27 @@
 
 	//出现动画
 	this.appear = function(){
-		//$("#game_pause").slideToggle(400);
+		$("#pause_back").css({
+			"opacity":0.2,
+		});
+		$("#pause_back").animate(
+			{"opacity":1},
+			200);
 	}
 
 	//消失动画
 	this.disappear = function(){
 		$("#pause_back").remove();
-		//$("#game_pause").slideToggle(400);
 	}
 
 	this.initOptions();
 }
 
 function ViewPaypal(){
-	this.gameScene = null;
 	this.initPaypal=function(){
 		var l_viewPaypal = this;
 		$("#game_scene").append("<div id='paypal_back' class='paypal_back view_bk'></div>");
-		$("#paypal_back").css({"z-index" : g_config.zorder.GamePause}).append("<div id='paypal_words' class='view_text paypal_words'><p>We're working on:</p><p><span># Develop iOS/Android versions</br># Design 9 extra X-Match play modes (in which 'Mutant Mode' is ready for iOS now)</p></span><p>Donate us, be the contributor to make it happen!!</div>");
+		$("#paypal_back").css({"z-index" : g_config.zorder.GamePause}).append("<div id='paypal_words' class='view_text paypal_words'><p>GeekMouse is working on:</p><p><span style='color:#397fa4'># The iOS/Android versions</br># 9 extra X-Match play modes (in which 'Mutant Mode' is ready for iOS now)</p></span><p>Donate us, be the contributor to make it happen!!</div>");
 
 		$("#paypal_back").append("<div id='paypal_ps' class='paypal_list'></div>");
 		$("#paypal_ps").load("3rdParty.txt #paypal_form");
@@ -111,10 +125,11 @@ function ViewPaypal(){
 
 		$("#paypal_back").append("<div id='bt_cancel' class='paypal_bt_cancel'>CANCEL</div>");
 		$("#bt_cancel").click(function(event){
-			l_viewPaypal.gameScene.onControl();
+			GameScene.onControl();
 			$("#paypal_back").remove();
 		});
-
+	$("#paypal_back").css({"opacity":0.2});
+	$("#paypal_back").animate({"opacity":1},200);
 
 	}
 	this.initPaypal();
@@ -122,8 +137,6 @@ function ViewPaypal(){
 
 //GameLayer
  function ViewTutorial(){
- 	//游戏场景引用
- 	this.gameScene = null;
  	this.imgIndex = 0;
  	this.isTouchEnabled=false;
 
@@ -150,8 +163,8 @@ function ViewPaypal(){
 					$("#game_tutorial").append("<div id='game_tut_loading' class='tut_load'>LOADING... </div>");
 
 				}else{
-					if(l_gameTutorial.gameScene != null){
-						l_gameTutorial.gameScene.hideGameTutorial();
+					if(GameScene!= null){
+						GameScene.hideGameTutorial();
 					}
 				}
 			};
@@ -181,18 +194,19 @@ function ViewPaypal(){
 }
 
 function ViewTarget(){
-	this.gameScene=null;
 	this.init=function(){
 		var l_viewSt=this;
 		$("#game_scene").append("<div id='view_target' class='view_bk view_target'></div>");
-		$("#view_target").append("<div class='view_text vt_cys' >Can you beat <span style='color:red;'>68.47%</span> global players by score</div>");
+		$("#view_target").append("<div class='view_text vt_cys' >Sounds easy? Can you beat <strong style='color:"+g_config.colorStrongText+";font-weight:bold'>68.47%</strong> global players in X-MATCH (Standard Mode) by SCORE</div>");
 		$("#view_target").append("<div class='vt_100' >100</div>");
-		$("#view_target").append("<div class='view_text vt_cys' >in X-MATCH (Standard Mode)?</div>");
-		$("#view_target").append("<div id='vt_bt' class='view_bt vt_bt'>Let's GO!!</div>");
+		// $("#view_target").append("<div class='view_text vt_cys' >in X-MATCH (Standard Mode)?</div>");
+		$("#view_target").append("<div id='vt_bt' class='view_bt vt_bt'>I'll make it!!</div>");
 		$("#vt_bt").click(function(event){
 			$("#view_target").remove();
-			l_viewSt.gameScene.onControl();
+			GameScene.onControl();
 		});
+		$("#view_target").css({"opacity":0.2});
+		$("#view_target").animate({"opacity":1},200);
 	}
 	this.init();
 }

@@ -20,51 +20,27 @@ var GameScene = {
 	numForbids:0,
 
 	init:function(){
-		this.initData();
 		g_gameMgr.init();
 		this.initObjects();
-		this.initBg();
-		//游戏相关
-		
-		g_gameMgr.gameScene = this;
 
 		//有存档
 		if(g_gameMgr.jsonSaveData[g_config.saveData.key_modeOriginal] != undefined ){
+
+			this.initBg();
 			this.initMapBySaveData();
-			//继续上次游戏, 
-			if(!g_gameMgr.checkGameOver()){
-				cc.log("GameScene showTitleView firstRun_withSD");
-				//this.showTitleView(g_config.titleViewPara.firstRun_withSD);
-			}
-			//存档中游戏已经结束
-			else{
-				//是最高记录,
-				if(g_gameMgr.bNewRecord){
-					cc.log("GameScene showTitleView gameOver_withNewR");
-					//this.showTitleView(g_config.titleViewPara.gameOver_withNewR);
-				}
-				//非最高记录
-				else{
-					cc.log("GameScene showTitleView gameOver_withoutNewR");
-					//this.showTitleView(g_config.titleViewPara.gameOver_withoutNewR);
-				}
-			}
+			this.showGamePause(g_config.statePause.spManual);
 			
 		}
 		//第一次玩
 		else{
+			this.initBg(true);
 			this.initRandomMap(true);
 			cc.log("GameScene showTitleView firstRun_withoutSD");
 			//this.showTitleView(g_config.titleViewPara.firstRun_withoutSD);
 			//this.showGameTutorial();
 		}
+
 		
-	},
-
-
-	//init Data
-	initData:function(){
-
 	},
 
 	//失去控制
@@ -85,7 +61,7 @@ var GameScene = {
 
 	//得到控制
 	onControl:function(){
-		var l_gameScene = this;
+		// var l_gameScene = this;
 		//绑定格子点击事件
 		for (var i = 0; i < g_config.gridCount_y; i++) {
 			for(var j = 0; j < g_config.gridCount_x; j++){
@@ -99,7 +75,7 @@ var GameScene = {
 					l_gridPoint.y = parseInt(l_strID.substr(3,1));
 					l_gridPoint.x = parseInt(l_strID.substr(4,1));
 					cc.log("click"+l_gridPoint.x+","+l_gridPoint.y);
-					l_gameScene.processClickGrid(l_gridPoint);
+					GameScene.processClickGrid(l_gridPoint);
 				});
 			}
 		}
@@ -123,11 +99,14 @@ var GameScene = {
 		}
 	},
 	//初始化HTML元素
-	initBg:function(){
-		var l_gameScene = this;
+	initBg:function(p_bWithTut){
+		if(p_bWithTut == undefined){
+			p_bWithTut = false;
+		}
+		// var l_gameScene = this;
 
 		this.syncSize(true);
-		$(window).resize(function(){l_gameScene.syncSize(false);});
+		$(window).resize(function(){GameScene.syncSize(false);});
 		//背景
 		$("#game_scene").append("<div id='grid_layer'></div>");
 		$("#grid_layer").append("<div id='grid_mask_offset'></div>");
@@ -143,6 +122,7 @@ var GameScene = {
 
 		for (var i = 0; i < g_config.gridCount_y; i++) {
 			for(var j = 0; j < g_config.gridCount_x; j++){
+				//bottombg
 				$("#grid_layer").append("<div class='grid' id=bg_"+i+""+j+"></div>");
 				var l_pnt=g_gameMgr.getPositionByGrid(cc.p(j,i));
 				var l_strColor =((i+j)%2 == 0)?"#BDDEF0":"#99D2F0";
@@ -153,7 +133,7 @@ var GameScene = {
 					,"z-index":g_config.zorder.GameBG
 					//,"clip":"rect(0px 10px 40px 0px)"
 				});
-
+				//click div
 				$("#grid_layer").append("<div class='grid' id='bg_"+i+""+j+"_click'></div>");
 				$("#bg_"+i+""+j+"_click").css({
 					"left":l_pnt.x
@@ -166,7 +146,46 @@ var GameScene = {
 			}
 		}
 		$("#game_scene").append("<div id='brick_layer'></div>");
+		if(p_bWithTut){
+			this.initMask();
+		}
 		this.onControl();
+	},
+
+	initMask:function(){
+		this._toggleMask(false);
+		$("#bg_mask").remove();
+		$("#grid_layer").append("<div class='grid' id='bg_mask'></div>");
+		$("#bg_mask").css({
+			"left":g_config.gridMargin
+			,"top":g_config.gridTop
+			,"width":g_config.gridCount_x*g_config.gridOuterSize
+			,"height":g_config.gridCount_y*g_config.gridOuterSize
+			,"background-color":"#003085"
+			,"opacity":"0.8"
+			,"filter":"alpha(opacity=0.8)"
+			,"z-index":g_config.zorder.GameMask
+		});
+
+		$("#grid_layer_tut").remove();
+		$("#game_scene").append("<div id='grid_layer_tut'></div>");
+		for (var i = 0; i < g_config.gridCount_y; i++) {
+			for(var j = 0; j < g_config.gridCount_x; j++){
+				$("#grid_layer_tut").append("<div class='grid' id=bg_"+i+""+j+"_tut></div>");
+				var l_pnt=g_gameMgr.getPositionByGrid(cc.p(j,i));
+				var l_strColor =((i+j)%2 == 0)?"#BDDEF0":"#99D2F0";
+				$("#bg_"+i+""+j+"_tut").css({
+					"left":l_pnt.x
+					,"top":l_pnt.y
+					,"background-color":l_strColor
+					,"z-index":g_config.zorder.GameTutBg
+					,"display" : "none"
+				});
+			}
+		}
+		$("#brick_layer_tut").remove();
+		$("#game_scene").append("<div id='brick_layer_tut'></div>");
+
 	},
 
 	//initObjects
@@ -175,19 +194,17 @@ var GameScene = {
 		if(this.gameUI == null){
 			cc.log("initGameUI");
 			this.gameUI = new GameHUD();
-			this.gameUI.gameScene = this;
 		}
 	},
 
 	//弹出暂停界面
 	showGamePause:function(iState){
 		//GamePause
-		if(this.gamePause == null){
+		if(this.gamePause == null && this.tutStep<0){
 			this.loseControl();
 
 			cc.log("initGamePause");
 			this.gamePause = new ViewPause(iState);
-			this.gamePause.gameScene = this;
 			this.gamePause.appear();
 		}
 	},
@@ -209,7 +226,6 @@ var GameScene = {
 
 			cc.log("showGameTutorial");
 			this.gameTutorial = new ViewTutorial();
-			this.gameTutorial.gameScene = this;
 			this.gameTutorial.appear();
 		}
 	},
@@ -225,27 +241,28 @@ var GameScene = {
 
 	showStepTut:function(){
 		this.loseControl();
-		var l_gameScene=this;
 		$("#game_scene").append("<div id='st_ask_bg' class='view_bk st_ask_bg'></div>");
 		$("#st_ask_bg").append("<div id='st_ask_words' class='view_text st_ask_words'>Are you sure you want to QUIT for the tutorial? You’ll lose your current progress </div>");
 		$("#st_ask_bg").append("<div id='st_bt_show' class='view_bt st_bt'>YES</div>");
 		$("#st_bt_show").css({"left":g_config.stBtShowLeft}).click(function(event) {
-			l_gameScene.initRandomMap(true);
-			l_gameScene.onControl();
+			GameScene.initMask();
+			GameScene.initRandomMap(true);
+			GameScene.onControl();
 			$("#st_ask_bg").remove();
 		});
 
 		$("#st_ask_bg").append("<div id='st_bt_cancel' class='view_bt st_bt'>NO</div>");
 		$("#st_bt_cancel").css({"left":g_config.stBtCancelLeft}).click(function(event) {
-			l_gameScene.onControl();
+			GameScene.onControl();
 			$("#st_ask_bg").remove();
 		});
+		$("#st_ask_bg").css({"opacity":0.2});
+		$("#st_ask_bg").animate({"opacity":1},200);
 	},	
 
 	showViewTarget:function(){
 		this.loseControl();
 		var l_viewTarget=new ViewTarget();
-		l_viewTarget.gameScene=this;
 	},
 
 	initRandomMap:function(bTut){
@@ -256,24 +273,10 @@ var GameScene = {
 			this.tutStep=0;
 			for (var i = 0; i<g_gameMgr.st_bricks.length; i++) {
 				var l_thisBrick=g_gameMgr.st_bricks[i];
-				this.addBrick(l_thisBrick.c,cc.p(l_thisBrick.x,l_thisBrick.y));
+				this.addBrick(l_thisBrick.c,cc.p(l_thisBrick.x,l_thisBrick.y), true);
 			};
-			for (var i = 0; i < g_config.gridCount_y; i++) {
-				for(var j = 0; j < g_config.gridCount_x; j++){
-					var l_pnt=g_gameMgr.getPositionByGrid(cc.p(j,i));
-					$("#grid_layer").append("<div class='grid' id='bg_"+i+""+j+"_mask'></div>");
-					$("#bg_"+i+""+j+"_mask").css({
-						"left":l_pnt.x
-						,"top":l_pnt.y
-						,"width":91
-						,"height":91
-						,"background-color":"#003085"
-						,"opacity":"0"
-						,"filter":"alpha(opacity=0)"
-						,"z-index":g_config.zorder.GameMask
-					});
-				}
-			}
+			
+
 			this.showStepTutTip(g_gameMgr.st_steps[0]);
 
 		}
@@ -306,19 +309,24 @@ var GameScene = {
 
 	//每回合
 	addBricksEveryRound:function(){
-		var l_step=this.tutStep;
-		if(l_step<0){
+		//默认p_bWithTut:false
+		var s=this.tutStep;
+		if(s<0){
 			this.addBricksByNum(g_config.brickNum_everyRound);
 		}
 		else{
-			var l_gen1=g_gameMgr.st_gen[l_step*2];
-			var l_gen2=g_gameMgr.st_gen[l_step*2+1];
-			this.addBrick(l_gen1.c,cc.p(l_gen1.x,l_gen1.y));
-			this.addBrick(l_gen2.c,cc.p(l_gen2.x,l_gen2.y));
+			var l_gen1=g_gameMgr.st_gen[s*2];
+			var l_gen2=g_gameMgr.st_gen[s*2+1];
+			this.addBrick(l_gen1.c,cc.p(l_gen1.x,l_gen1.y), true);
+			this.addBrick(l_gen2.c,cc.p(l_gen2.x,l_gen2.y), true);
 		}
 	},
 	// 随机增加一定数目的Brick
-	 addBricksByNum:function(p_iCount){
+	 addBricksByNum:function(p_iCount, p_bWithTut){
+		//默认p_bWithTut:false
+		if(p_bWithTut == undefined){
+			p_bWithTut = false;
+		}
 		var l_iBrickNum = 0;
 		var l_arrayNum_basic = [1,2];
 		// var l_arrayNum_basic = [1,2,3,4,5,6,7,8,9];
@@ -340,37 +348,23 @@ var GameScene = {
 	},
 
 	// 增加一个Brick进入场景
-	addBrick:function(p_iNum, p_gridPoint){
+	addBrick:function(p_iNum, p_gridPoint, p_bWithTut){
+		//默认p_bWithTut:false
+		if(p_bWithTut == undefined){
+			p_bWithTut = false;
+		}
+
 		var l_strIDBrick = "brick_"+p_gridPoint.y+""+p_gridPoint.x;
 		var l_iBrickIndex = g_gameMgr.arrayGrid[p_gridPoint.y][p_gridPoint.x].brickIndex + 1;
 		l_strIDBrick = l_strIDBrick + "_" + l_iBrickIndex;
-		var l_gameBrick = new GameBrick(p_iNum, l_strIDBrick);
+		var l_gameBrick = new GameBrick(p_iNum, l_strIDBrick, p_bWithTut);
 		var l_pnt=g_gameMgr.getPositionByGrid(p_gridPoint);
 		l_gameBrick.leftOriginal = l_pnt.x + 5;
 		l_gameBrick.topOriginal = l_pnt.y + 5;
+		l_gameBrick.show();
 		g_gameMgr.addBrick(l_gameBrick, p_gridPoint);
 
-		$("#brick_layer").append("<div class='brick_back' id='"+l_strIDBrick+"'></div>");
-		$("#"+l_strIDBrick).css({
-			"left":l_gameBrick.leftOriginal
-			,"top":l_gameBrick.topOriginal
-			,"z-index":g_config.zorder.GameObject
-		});
-
-
-		var l_strColor = g_gameMgr.brickColors[p_iNum];
-		$("#"+l_strIDBrick).css("background-color", l_strColor);
-
-		if(p_iNum == g_config.numX){
-			//var l_strIDBg = l_strIDBrick+"_bg";
-			$("#"+l_strIDBrick).append("<img class='brick_x' src='res/x.png'></img>");
-			//$("#"+l_strIDBrick).append("<img class='brick_x' id='"+l_strIDBg+"' src="+res.brick_num_x_png+"></img>");
-		}
-		else{
-			//Number
-			$("#"+l_strIDBrick).text(p_iNum);
-		}
-		l_gameBrick.showAppearAction();
+		
 
 		return l_strIDBrick;
 	},
@@ -424,11 +418,11 @@ var GameScene = {
 					this.showStepTutTip(l_newStep);
 				}
 				else{
-					for (var i = 0; i < g_config.gridCount_y; i++) {
-						for(var j = 0; j < g_config.gridCount_x; j++){
-							$("#bg_"+i+""+j+"_mask").remove();
-						}
-					}
+					// for (var i = 0; i < g_config.gridCount_y; i++) {
+					// 	for(var j = 0; j < g_config.gridCount_x; j++){
+					// 		$("#bg_"+i+""+j+"_mask").remove();
+					// 	}
+					// }
 					$("#st_arrow").remove();
 					$("#st_text").remove();
 					this.showViewTarget();
@@ -458,7 +452,16 @@ var GameScene = {
 		//正常消除普通数字
 		else if(l_targetNum >= g_config.numStart && l_targetNum <= g_config.numX){
 			this.removeConnectPoint(p_gridPoint);
-			this.addBrick(l_targetNum, p_gridPoint);
+			var l_step=this.tutStep;
+			//正常
+			if(l_step<0){
+				this.addBrick(l_targetNum, p_gridPoint);
+			}
+			//教学中
+			else{
+				this.addBrick(l_targetNum, p_gridPoint, true);
+			}
+			
 			this.addBricksEveryRound();
 			
 			//增加round
@@ -496,9 +499,9 @@ var GameScene = {
 				"top" : l_position.y,
 				"opacity":0.2,
 			});
-		$("#"+l_thisId).animate({
-			"opacity":1,
-			},
+		$("#"+l_thisId).animate(
+			{"opacity":1,},
+			
 			200, function() {
 				$(this).remove();
 			}
@@ -512,6 +515,7 @@ var GameScene = {
 		var l_position = g_gameMgr.getPositionByGrid(l_pntTip);
 		$("#st_arrow").remove();
 		$("#game_scene").append("<img id='st_arrow' class='click_tip' src='res/mxArrow.png'/>");
+		//$("#game_scene").append('<svg width="90" height="90"><path id="st_arrow" transform="rotate(-180 44.987483978271484,44.53519058227539) " id="svg_2" d="m7.987484,44.454433l36.999996,-33.742252l37.000008,33.742252l-18.500008,0l0,33.903767l-36.999996,0l0,-33.903767l-18.5,0z" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="#000000" fill="#ffff00"/></svg>');
 		$("#st_arrow").css({
 			"left" : l_position.x,
 			"top" : l_position.y-40,
@@ -523,16 +527,28 @@ var GameScene = {
 
 		var l_thisMask=g_gameMgr.st_tut_Mask[this.tutStep];
 		for (var i = l_thisMask.l; i <=l_thisMask.r;++i){
+			//showTutbg
 			this._toggleMaskBrick(cc.p(i,l_pntTip.y),false);
+
+			//showTutBrick
+			if(g_gameMgr.getBrick(cc.p(i,l_pntTip.y)) != null){
+				g_gameMgr.arrayGrid[l_pntTip.y][i].gameBrick.showTut();
+			}
 		}
 
 		for (var i = l_thisMask.t; i <=l_thisMask.b;++i){
+			//showTutBg
 			this._toggleMaskBrick(cc.p(l_pntTip.x,i),false);
+
+			//showTutBrick
+			if(g_gameMgr.getBrick(cc.p(l_pntTip.x,i)) != null){
+				g_gameMgr.arrayGrid[i][l_pntTip.x].gameBrick.showTut();
+			}
 		}
 			
 		var l_text=p_tutStep.t;
 		$("#st_text").remove();
-		$("#game_scene").append("<div id='st_text' class='view_bk view_text st_text'><span style='color:red;'><p>Tutorial</p></span><p>"+l_text+"</p></div>");
+		$("#game_scene").append("<div id='st_text' class='view_bk view_text st_text'><span style='color:#397fa4;'><p>Tutorial</p></span><p>"+l_text+"</p></div>");
 		
 	},
 
@@ -545,19 +561,28 @@ var GameScene = {
 	},
 
 	_toggleMask:function(pOn){
-		for (var i = 0; i < g_config.gridCount_y; i++) {
-			for(var j = 0; j < g_config.gridCount_x; j++){
-				this._toggleMaskBrick(cc.p(j,i),pOn);
-				
+		if(pOn){
+			for (var i = 0; i < g_config.gridCount_y; i++) {
+				for(var j = 0; j < g_config.gridCount_x; j++){
+					this._toggleMaskBrick(cc.p(j,i),pOn);
+					
+					if(g_gameMgr.getBrick(cc.p(j,i)) != null){
+						g_gameMgr.arrayGrid[i][j].gameBrick.hideTut();
+					}
+				}
 			}
+		}else{
+			$("#bg_mask").remove();
+			$("#grid_layer_tut").remove();
+			$("#brick_layer_tut").remove();
 		}
 	},
 
 	_toggleMaskBrick:function(p_Posi,pOn){
-		$("#bg_"+p_Posi.y+""+p_Posi.x+"_mask").css({
-			"opacity":pOn?"0.8":"0.0",
-			"filter:":pOn?"alpha(opacity=80)":"alpha(opacity=0)",
+		$("#bg_"+p_Posi.y+""+p_Posi.x+"_tut").css({
+			"display":pOn?"none":"inline",
 		});
+
 	},
 	
 	//更新UI
@@ -574,7 +599,7 @@ var GameScene = {
 //GameLayer
  function GameHUD(){
 	//游戏场景引用
- 	this.gameScene = null;
+ 	// this.gameScene = null;
  	this.isTouchEnabled=true;
 
 
@@ -598,27 +623,27 @@ var GameScene = {
 		//Options div
 		$("#game_ui").append("<div id='options_bg' class='button_option'></div>");
 		$("#options_bg").click(function(event){
-			if(l_gameUI.gameScene != null && l_gameUI.isTouchEnabled){
-				l_gameUI.gameScene.showGamePause(g_config.statePause.spManual);
+			if(GameScene != null && l_gameUI.isTouchEnabled){
+				GameScene.showGamePause(g_config.statePause.spManual);
 			}
 		});
 		$("#options_bg").append("<img id='options_img' src='res/mxGear.png'></img>");
 		$("#options_bg").click(function(event){
-			if(l_gameUI.gameScene != null && l_gameUI.isTouchEnabled){
-				l_gameUI.gameScene.showGamePause(g_config.statePause.spManual);
+			if(GameScene != null && l_gameUI.isTouchEnabled){
+				GameScene.showGamePause(g_config.statePause.spManual);
 			}
 		});
 
 		$("#game_ui").append("<div id='bt_tut' class='button_tut'>?</div>");
 		$("#bt_tut").click(function(event) {
-			if(l_gameUI.gameScene != null && l_gameUI.isTouchEnabled){
-				l_gameUI.gameScene.showStepTut();
+			if( GameScene!= null && l_gameUI.isTouchEnabled && GameScene.tutStep<0){
+				GameScene.showStepTut();
 			}
 		});
 
 		
 		if(!g_gameMgr.bIsMobile){
-			$("#game_ui").append("<div id= 'contact' class='contact'><hr>X-Match<br>Designed & presented by: <br>2015 GeekMouse Game Studio<br><a target='_blank' href='http://geekmouse.net/press/'>Press Kit</a></div>");
+			$("#game_ui").append("<div id= 'contact' class='contact'><hr>X-Match<br>Designed & presented by: <br>2015 GeekMouse<br><a target='_blank' href='http://geekmouse.net/press/'>Press Kit</a></div>");
 		}
 
 		var l_btY=800;
@@ -641,10 +666,9 @@ var GameScene = {
 		//Paypal按钮
 		$("#game_ui").append("<img id='bt_pp' src='res/mxIconPaypal.png'></img>");
 		$("#bt_pp").addClass("bt_sns").css({left: l_btXInt*2+l_startX,top: l_btY}).click(function(event){
-			if( l_gameUI.isTouchEnabled){
-				l_gameUI.gameScene.loseControl();
+			if( l_gameUI.isTouchEnabled && GameScene.tutStep<0){
+				GameScene.loseControl();
 				var l_viewPaypal=new ViewPaypal();
-				l_viewPaypal.gameScene=l_gameUI.gameScene;
 			}
 		});
 
