@@ -273,8 +273,11 @@ var GameScene = {
 			this.addBricksByNum(g_config.brickNum_everyRound);
 		}
 		else{
-			this.addBrick(g_gameMgr.st_gen[s*2].c,cc.p(l_gen1.x,l_gen1.y), true);
-			this.addBrick(g_gameMgr.st_gen[s*2+1].c,cc.p(l_gen2.x,l_gen2.y), true);
+			var l_gen1=g_gameMgr.st_gen[s*2];
+			var l_gen2=g_gameMgr.st_gen[s*2+1];
+			
+			this.addBrick(l_gen1.c,cc.p(l_gen1.x,l_gen1.y), true);
+			this.addBrick(l_gen2.c,cc.p(l_gen2.x,l_gen2.y), true);
 		}
 	},
 	// 随机增加一定数目的Brick
@@ -531,7 +534,14 @@ var GameScene = {
 		var l_gameUI = this;
 
 		//Options div
-		$("#game_ui").append("<div id='options_bg' class='button_option'></div>").append("<div id='bt_tut' class='button_tut'>?</div>");
+		$("#game_ui")
+		.append("<div id='options_bg' class='button_option'></div>")
+		.append("<div id='bt_tut' class='button_tut'>?</div>")
+		.append("<img id='bt_fb' class='bt_sns' src='res/mxIconFB.png'></img>")
+		.append("<img id='bt_tw' class='bt_sns' src='res/mxIconTwitter.png'></img>")
+		.append("<img id='bt_pp' class='bt_sns' src='res/mxIconPaypal.png'></img>")
+		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
+		
 
 		$("#options_bg").append("<img id='options_img' src='res/mxGear.png'></img>").click(function(event){
 			if(GameScene && l_gameUI.isTouchEnabled){
@@ -553,12 +563,6 @@ var GameScene = {
 		var l_btY=800;
 		var l_btXInt=100;
 		var l_startX=230;
-		
-		$("#game_ui")
-		.append("<img id='bt_fb' class='bt_sns' src='res/mxIconFB.png'></img>")
-		.append("<img id='bt_tw' class='bt_sns' src='res/mxIconTwitter.png'></img>")
-		.append("<img id='bt_pp' class='bt_sns' src='res/mxIconPaypal.png'></img>")
-		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
 		
 		//FB
 		$("#bt_fb").css({left: l_startX,top: l_btY}).click(function(event){
