@@ -2,18 +2,18 @@
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="LZFWW9JTV7WYE">
 <div>
-<input type="hidden" name="on0" value="Donate">
+<input type="hidden" name="on0" value="DONATE">
 <select name="os0" style="width:200px;">
-	<option value="A cup of coffee">A cup of coffee $1.99 USD</option>
-	<option value="A hamburger">A hamburger $3.99 USD</option>
-	<option value="A movie ticket">A movie ticket $9.99 USD</option>
-	<option value="A SPA">A SPA $99.99 USD</option>
+	<option value="subway fare /day">subway fare /day $0.99 USD</option>
+	<option value="server rent /day">server rent /day $1.99 USD</option>
+	<option value="food /day">food /day $4.99 USD</option>
+	<option value="apt. rent /0.5day">apt. rent /0.5day $9.99 USD</option>
 </select>
 </div>
 <input type="hidden" name="currency_code" value="USD">
 </form>
 
-<a id='twitter_follow_button' href="https://twitter.com/geek_mouse" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @geek_mouse</a>
+<a target="_blank" id='twitter_follow_button' href="https://twitter.com/geek_mouse" class="twitter-follow-button" data-show-count="false" data-size="small">Follow @geek_mouse</a>
 
 <a href="https://twitter.com/intent/tweet?button_hashtag=xmatch&text=is%20a%20funny%20game.%20I%20really%20need%20you%20lent%20me%20a%20dollar%20to%20donate%20this%20guy." class="twitter-hashtag-button" data-size="large" data-related="geek_mouse,kickerbm0821" data-url="http://geekmouse.github.io/xmatch/">Tweet #xmatch</a>
 

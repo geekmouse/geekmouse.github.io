@@ -85,14 +85,13 @@ var g_tools = {
 
 var cc = {
 	p:function(x,y){
-	if (x == undefined)return {x: 0, y: 0};
-    if (y == undefined)return {x: x.x, y: x.y};
+	if (x==undefined)return {x: 0, y: 0};
+    if (y==undefined)return {x: x.x, y: x.y};
     return {x:x, y:y};
 	},
 
 	color:function(r,g,b){
-		if(r == undefined || g== undefined || b == undefined){
-			cc.log("cc.color error here");
+		if(r==undefined||g==undefined||b==undefined){
 		}else{
 			var l_strR = r.toString(16);
 			if(l_strR.length < 2){
@@ -108,10 +107,6 @@ var cc = {
 			}
 			return "#"+l_strR+l_strG+l_strB;
 		}
-	},
-
-	log:function(p_strContent){
-		console.log(p_strContent);
 	},
 }
 
@@ -208,7 +203,7 @@ var g_gameMgr = {
 
 		var u=navigator.userAgent;
 		//bIsMobile=navigator.userAgent.toLowerCase().match(/Mobile/i)!==null ? true : false;
-		// cc.log(u);
+		// console.log(u);
 		this.bIsMobile=u.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)!=null;
 		if(!this.bIsMobile){
 			$.getScript('social.js', function() {});
@@ -217,7 +212,7 @@ var g_gameMgr = {
 		
 
 		var l_this=this.st_bricks[0];
-		cc.log("test brick:"+l_this.x);
+		console.log("test brick:"+l_this.x);
 	},
 	
 	readString:function(key){
@@ -540,7 +535,7 @@ var g_gameMgr = {
 			url:"http://www.geekmouse.net/Server_mx_product/web_gameInterface.php",
 			async:true,
 			success:function(p_data){
-				cc.log(p_data);
+				console.log(p_data);
 				var l_strResponse = p_data;
 				var l_jsonObj = JSON.parse(l_strResponse);
 				l_gameMgr.globalVisitorAll = l_jsonObj["global"];
@@ -585,7 +580,7 @@ var g_gameMgr = {
 				console.log("load Data success");
 			}
 		}else{
-			cc.log("not support localStorage");
+			console.log("not support localStorage");
 		}
 	},
 	
@@ -665,7 +660,7 @@ function GameGrid (){
 		if(this.gameBrick != null){
 			this.gameBrick = null;
 		}else{
-			cc.log("error Here GameGrid removeGameBrick");
+			console.log("error Here GameGrid removeGameBrick");
 		}
 	}
 
@@ -675,7 +670,7 @@ function GameGrid (){
 			this.brickIndex++;
 			this.gameBrick = p_gameBrick;
 		}else{
-			cc.log("error Here GameGrid setGameBrick");
+			console.log("error Here GameGrid setGameBrick");
 		}
 	}
 };
