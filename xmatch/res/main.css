@@ -13,7 +13,7 @@
     width: 640px;
     height: 960px;
     position:relative;
-/*    position:absolute;*/
+    /*position:absolute;*/
     margin: 0 auto;
     align:center;
     text-align:center;
@@ -26,10 +26,10 @@
 
 .view_bk{
     margin: 0 auto;
-    background-color:#ecf7fd;
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    background-color:#FFFFFF;
+    border-radius: 12px;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
     box-shadow: 0 11px 20px rgba(0,0,0,0.25);
     -moz-box-shadow: 0 11px 20px rgba(0,0,0,0.25);
     -webkit-box-shadow: 0 11px 20px rgba(0,0,0,0.25);
@@ -40,39 +40,24 @@
     cursor:pointer;
     position:absolute;
     font-family: sans-serif;
-    line-height:53px;
+    line-height:50px;
     width: 130px;
     height: 50px;
-    font-size:20px;
+    font-size:26px;
     border-radius:10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    background-color:#1aa7f2;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    background-color:#54ADDC;
     color:white;
 }
 
-.view_ti2{
-    margin: 0 auto;
-    padding:5px 20px;
-    text-align:center;
-    line-height:20px;
-    font-family: Helvetica, sans-serif;
-    font-size:18px;
-    color:#0292e0;
-}
-
 .view_text{
-    margin: 0 auto;
-    padding:5px 30px 0px 30px;
+    padding:5px 25px;
     text-align:left;
-    line-height:22px;
-    font-family: Helvetica, sans-serif;
-    font-size:14px;
-    color:#1aa7f2;
-}
-
-.view_text1{
-    color: #397fa4;
+    line-height:18px;
+    font-family:  sans-serif;
+    font-size:12px;
+    color:#003085;
 }
 
 .view_title{
@@ -102,8 +87,8 @@
 
 .grid{
     position:absolute;
-    width: 91px;
-    height: 91px;
+    width: 90px;
+    height: 90px;
 }
 
 .brick_x{
@@ -126,7 +111,6 @@
     width: 90;
     height: 90;
     position:absolute;
-    text-align: center;
     z-index: 31;
 }
 
@@ -155,30 +139,16 @@
     font-size:45px;
 }
 
-.contact{
-    position: absolute;
-    font-family: sans-serif;
-    text-align: left;
-    font-size: 11px;
-    color: #90d4f8;
-    line-height: 18px;
-    left: 20px;
-    top: 785px;
-    width: 600px;
-}
-
-
 
 .pause_back{ 
     margin: 0 auto;
-    top: 100px;
-    height:300px; 
-    width:500px; 
+    top: 80px;
+    height:400px; 
+    width:400px; 
 } 
 
 .pause_text{
     text-align:center;
-    color: #09C;
     font-size: 18px;
 }
 
@@ -197,7 +167,7 @@
 .st_ask_bg{
     height: 250px; 
     width:450px; 
-    top: 300px;
+    top: 330px;
     left:95px;
     position:absolute;
     z-index:50;
@@ -208,7 +178,11 @@
 }
 
 .st_bt{
+    line-height:50px;
+    width: 130px;
+    height: 50px;
     top: 160px;
+    font-size:35px;
 }
 
 
@@ -222,40 +196,42 @@
 }
 
 .view_target{
-    height: 400px; 
-    width:320px; 
-    top: 100px;
+    height: 450px; 
+    width:340px; 
+    top: 80px;
     z-index:50;
 }
 
 .vt_cys{
-    text-align: center;
-    font-family: sans-serif;
-/*     margin: 18px; */
-/*     font-size:13px; */
-/*     top:20px; */
-    padding: 25px 40px 0px 40px;
-/*     color: #077DBB; */
+    margin: 0 auto;
+    font-size:23px;
+    top:50px;
+    padding: 12px;
+    color: #077DBB;
     position:relative;
 }
 
 .vt_100{
     margin: 0 auto;
-    font-size:120px;
-/*     top:0px; */
+    font-size:90px;
+    top:30px;
     color: red;
     position:relative;
     font-family:Impact, sans-serif;
 }
 
 .vt_bt{
-    width: 200px;
-    height: 60px;
-    line-height: 60px;
-    top: 280px;
-    left:61px;
+    top: 320px;
+    left:80px;
 }
 
+.vt_ixm{
+    margin: 0 auto;
+    font-size:30px;
+    top:40px;
+    color: #077DBB;
+    position:relative;
+}
 
 .tut_load{
     font-size:30px;
@@ -285,17 +261,19 @@
 
 .paypal_list{
 /*    margin: 0 auto;*/
-    top: 250px;
+    top: 230px;
     left:90px;
     position: absolute;
 /*    z-index:50;*/
 }
 
 .paypal_bt{
-/*     width: 130px;
-    height: 50px; */
+    line-height:50px;
+    width: 130px;
+    height: 50px;
     top: 320px;
     left:120px;
+    font-size:25px;
 }
 
 .paypal_bt_cancel{
@@ -307,25 +285,18 @@
     top: 400px;
     left:120px;
     font-size:25px;
-    background-color:#ecf7fd;
+    background-color:#FFFFFF;
     color:#54ADDC;
 }
 
 .fb_bt{
     position: relative;
-   left:95px;
-    top: 20px;
-    margin:15px 25px;
+/*    align:center;*/
+/*    width: 400px;*/
+/*    left:0%;*/
+/*     margin: 0 auto; */
+    top: 50px;
 }
-
-.fb_bt_mo{
-    position: relative;
-   left:50px;
-    margin:15px 25px;
-}
-
-
-
 body, canvas, div {
     -moz-user-select: none;
     -webkit-user-select: none;

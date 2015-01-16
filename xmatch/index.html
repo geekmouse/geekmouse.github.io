@@ -4,9 +4,13 @@
       <title>X-MATCH</title>
       <link rel="icon" type="image/GIF" href="res/favicon.ico"/>
       <link href="main.css" rel="stylesheet" type="text/css">
+      <link rel="apple-touch-icon" href="touch-icon-iphone.png" />
+      <link rel="apple-touch-icon" sizes="72x72" href="touch-icon-ipad.png" /> 
+      <link rel="apple-touch-icon" sizes="114x114" href="touch-icon-iphone-retina.png" />
 
       <meta charset="utf-8">
       <meta name="apple-mobile-web-app-capable" content="yes"/>
+      <meta name="apple-mobile-web-app-status-bar-style" content="black">
       <meta name="full-screen" content="yes"/>
       <meta name="screen-orientation" content="portrait"/>
       <meta name = "viewport" content = "width = device-height">
@@ -20,9 +24,12 @@
       <meta name="MobileOptimized" content="320">
    <!--    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, user-scalable=0"> -->
   	<meta name="viewport" content="width=device-width, user-scalable=no" >
-
-      <script src="./jQuery_lib/jquery-2.1.3.min.js"></script>
+      <!-- Third Party -->
+      <!--<script src="./jQuery_lib/jquery-2.1.3.min.js"></script>-->
+      <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
       <script src="./jQuery_lib/fastclick.min.js"></script>
+      
+
 
       <script src="./GameMgr.js"></script>
       <script src="./GameViews.js"></script>
@@ -32,26 +39,6 @@
 
     <script src="./GameScene.js"></script>
 
-
-    <!-- Facebook Like按钮的头文件-->
-    <!-- <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "http://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1509282589321072&version=v2.0";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
-    -->
     <div id="game_scene" class="game_scene" ></div> 
-
-
-    <!-- Facebook Like按钮-->
-    <!-- <div class="fb-like" data-href="https://www.facebook.com/geekmouse.xmatch" data-width="100" data-layout="box_count" data-action="like" data-show-faces="true" data-share="true"></div> -->
-    <!-- Twitter Follow按钮-->
-    <!-- <a href="https://twitter.com/geek_mouse" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false" data-dnt="true">Follow @geek_mouse</a> -->
-    <!--
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    -->
   </body>
 </html>
