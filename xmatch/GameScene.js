@@ -37,8 +37,6 @@ var GameScene = {
 			this.initBg(true);
 			this.initRandomMap(true);
 			console.log("GameScene showTitleView firstRun_withoutSD");
-			//this.showTitleView(g_config.titleViewPara.firstRun_withoutSD);
-			//this.showGameTutorial();
 		}
 
 		
@@ -54,15 +52,12 @@ var GameScene = {
 				$("#bg_"+i+""+j+l_strSuffix).unbind();
 			}
 		}	
-
 		this.gameUI.isTouchEnabled=false;
 		console.log('loss control');
-		//this.isTouchEnabled = false;
 	},
 
 	//得到控制
 	onControl:function(){
-		// var l_gameScene = this;
 		//绑定格子点击事件
 		for (var i = 0; i < g_config.gridCount_y; i++) {
 			for(var j = 0; j < g_config.gridCount_x; j++){
@@ -81,8 +76,8 @@ var GameScene = {
 		}
 		this.gameUI.isTouchEnabled=true;
 		console.log('on control');
-		//this.isTouchEnabled = true;
 	},
+
 	syncSize:function(bFirstRun){
 		
 		if(true/*!g_gameMgr.bIsMobile*/){
@@ -275,7 +270,7 @@ var GameScene = {
 		else{
 			var l_gen1=g_gameMgr.st_gen[s*2];
 			var l_gen2=g_gameMgr.st_gen[s*2+1];
-			
+
 			this.addBrick(l_gen1.c,cc.p(l_gen1.x,l_gen1.y), true);
 			this.addBrick(l_gen2.c,cc.p(l_gen2.x,l_gen2.y), true);
 		}
@@ -520,21 +515,16 @@ var GameScene = {
  function GameHUD(){
 	//游戏场景引用
  	this.isTouchEnabled=true;
-	this.initObjects = function(){
-		$("div#game_scene").append("<div id='game_ui' class='game_ui'>");
-		//Title "X-Match"
-		$("#game_ui").append("<div id='title' class='title'>X-MATCH</div>")
+	//初始化底下的按钮
+	this.init = function(){
+		var l_gameUI = this;
+		$("#game_scene").append("<div id='game_ui' class='game_ui'>");
+
+		$("#game_ui")
+		.append("<div id='title' class='title'>X-MATCH</div>")
 		.append("<div id='current_score' class='score'>0</div>")
 		.append("<div id='max_score' class='stat'>BEST</div>")
-		.append("<div id='moves' class='stat'>MOVES</div>");
-	}
-
-	//初始化底下的按钮
-	this.initOptions = function(){
-		var l_gameUI = this;
-
-		//Options div
-		$("#game_ui")
+		.append("<div id='moves' class='stat'>MOVES</div>")
 		.append("<div id='options_bg' class='button_option'></div>")
 		.append("<div id='bt_tut' class='button_tut'>?</div>")
 		.append("<img id='bt_fb' class='bt_sns' src='res/mxIconFB.png'></img>")
@@ -605,8 +595,7 @@ var GameScene = {
 		l_strScore = "BEST: "+g_gameMgr.maxScore.toString();
 		$("#max_score").text(l_strScore);
 	}
-	this.initObjects();
-	this.initOptions();
+	this.init();
 }
 
 

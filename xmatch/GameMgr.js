@@ -1,12 +1,11 @@
 var g_config = {
-	//数字
 	empty:-1
 	,numStart:0
 	,numX:10
-	,numMultiX:100 //消除多个X时返回值 120：2"X" 130:3"X" 140:4"X"
-	//方向
+	,numMultiX:100 //rt value when match: 120：2Xs 130:3Xs 140:4Xs
+
 	,directCount:4
-	//Grid的大小
+	//Grid size
 	,gridCount_x:7
 	,gridCount_y:7
 	
@@ -170,7 +169,7 @@ var g_gameMgr = {
 	st_steps:[//Step tutorial
 		{x:1,y:3,t:"Click any empty tile between same tiles to form their sum.</br>2 other tiles are generated after each move."},//1
 		{x:3,y:3,t:"A 3-tiles move follows the same rule.</br>(eg. 2+2+2=6)"},//2
-		{x:1,y:4,t:"A 4-tiles move with double-double numbers is great.</br>(eg. 2+2+1+1=6)"},//3
+		{x:1,y:4,t:"A 4-tiles move with double-double numbers or 4 same numbers are both very nice.</br>(eg. 2+2+1+1=6)"},//3
 		{x:3,y:4,t:"When the sum>=10, it turns into an 'x'.</br>(eg. 6+6=12, it's >10 and turns to x)"},//4
 		{x:3,y:1,t:"Perform an 'X-Match' to score!</br>An 'X-Match' move won't generate new tiles."},//5
 	],
@@ -676,31 +675,25 @@ function GameGrid (){
 };
 
 function GameBrick (p_iNumber, p_strID, p_bWithTut){
-	if(p_bWithTut == undefined){
-		p_bWithTut = false;
-	}
+	this.withTut=p_bWithTut?p_bWithTut:false;
 
 	this.leftOriginal = 0;
 	this.topOriginal = 0;
-	this.withTut = p_bWithTut;
-
-	
 	
 	this.number = p_iNumber;
 	this.brick_id = p_strID;
 	
 	
 	this.show = function(){
+		var l_strColor = g_gameMgr.brickColors[this.number];
+
 		$("#brick_layer").append("<div class='brick_back' id='"+this.brick_id+"'></div>");
 		$("#"+this.brick_id).css({
 			"left":this.leftOriginal
 			,"top":this.topOriginal
 			,"z-index":g_config.zorder.GameObject
+			,"background-color": l_strColor
 		});
-
-
-		var l_strColor = g_gameMgr.brickColors[this.number];
-		$("#"+this.brick_id).css("background-color", l_strColor);
 
 		if(this.number == g_config.numX){
 			$("#"+this.brick_id).append("<img class='brick_x' src='res/x.png'></img>");
@@ -717,11 +710,8 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 				,"top":this.topOriginal
 				,"display":"none"
 				,"z-index":g_config.zorder.GameTutObject
+				,"background-color": l_strColor
 			});
-
-
-			var l_strColor = g_gameMgr.brickColors[this.number];
-			$("#"+this.brick_id+"_tut").css("background-color", l_strColor);
 
 			if(this.number == g_config.numX){
 				$("#"+this.brick_id+"_tut").append("<img class='brick_x' src='res/x.png'></img>");
@@ -743,33 +733,26 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 			"opacity": 0.0,
 			"width" : 80,
 			"height" : 80,
-		});
-
-		$("#"+this.brick_id).delay(150);
-		$("#"+this.brick_id).animate({
+		})
+		.delay(150)
+		.animate({
 			width: 80,
 			height: 80,
-			//left : l_brick.leftOriginal,
-			//top : l_brick.topOriginal,
 			opacity:1,
 			},
 			200
 			);
-		//$("#"+this.brick_id).fadeIn(200);
 
 		if(this.withTut){
 			$("#"+this.brick_id+"_tut").css({
 				"opacity": 0.0,
 				"width" : 80,
 				"height" : 80,
-			});
-
-			$("#"+this.brick_id+"_tut").delay(150);
-			$("#"+this.brick_id+"_tut").animate({
+			})
+			.delay(150)
+			.animate({
 				width: 80,
 				height: 80,
-				//left : l_brick.leftOriginal,
-				//top : l_brick.topOriginal,
 				opacity:1,
 				},
 				200
@@ -815,7 +798,5 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 				"display":"none"
 			});
 	}
-
-
 	return this;	
 };
