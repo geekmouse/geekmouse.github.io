@@ -189,7 +189,7 @@ var g_gameMgr = {
 
 	// 初始化
 	init:function(){
-		_lang=window.navigator.language.toLowerCase();
+		_lang=(window.navigator.language||window.navigator.systemLanguage).toLowerCase();
 		console.log("GameMgr init begin");
 		this.arrayGrid = new Array();
 		this.arrayNumCount = new Array();

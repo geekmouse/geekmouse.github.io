@@ -2,12 +2,13 @@ $(document).ready(function(){
   	
 	$("p").text("Hello ... jQuery");
 	GameScene.init();
-	//for
-    //FastClick.attach(document.body);
-    //for mini
-    var attachFastClick = Origami.fastclick;    
-    attachFastClick(document.body);
-
+	if(g_gameMgr.bIsMobile){
+		//for
+	    //FastClick.attach(document.body);
+	    //for mini
+	    var attachFastClick = Origami.fastclick;    
+	    attachFastClick(document.body);
+		}
 });
 
 var GameScene = {
