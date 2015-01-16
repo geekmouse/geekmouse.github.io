@@ -526,11 +526,7 @@ var GameScene = {
 		.append("<div id='max_score' class='stat'>BEST</div>")
 		.append("<div id='moves' class='stat'>MOVES</div>")
 		.append("<div id='options_bg' class='button_option'></div>")
-		.append("<div id='bt_tut' class='button_tut'>?</div>")
-		.append("<img id='bt_fb' class='bt_sns' src='res/mxIconFB.png'></img>")
-		.append("<img id='bt_tw' class='bt_sns' src='res/mxIconTwitter.png'></img>")
-		.append("<img id='bt_pp' class='bt_sns' src='res/mxIconPaypal.png'></img>")
-		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
+		.append("<div id='bt_tut' class='button_tut'>?</div>");
 		
 
 		$("#options_bg").append("<img id='options_img' src='res/mxGear.png'></img>").click(function(event){
@@ -553,6 +549,13 @@ var GameScene = {
 		var l_btY=800;
 		var l_btXInt=100;
 		var l_startX=230;
+
+		$("#game_ui")
+		.append("<img id='bt_fb' class='bt_sns' src='res/mxIconFB.png'></img>")
+		.append("<img id='bt_tw' class='bt_sns' src='res/mxIconTwitter.png'></img>")
+		.append("<img id='bt_pp' class='bt_sns' src='res/mxIconPaypal.png'></img>")
+		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
+		
 		
 		//FB
 		$("#bt_fb").css({left: l_startX,top: l_btY}).click(function(event){
