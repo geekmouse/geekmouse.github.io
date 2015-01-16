@@ -201,8 +201,7 @@ var g_gameMgr = {
 		console.log("GameMgr init end");
 
 		var u=navigator.userAgent;
-		//bIsMobile=navigator.userAgent.toLowerCase().match(/Mobile/i)!==null ? true : false;
-		// console.log(u);
+
 		this.bIsMobile=u.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)!=null;
 		if(!this.bIsMobile){
 			$.getScript('social.js', function() {});
@@ -730,7 +729,8 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 	this.showAppearAction = function(){
 		var l_brick = this;
 		$("#"+this.brick_id).css({
-			"opacity": 0.0,
+			opacity: 0.0,
+			filter:"alpha(opacity=0)",
 			"width" : 80,
 			"height" : 80,
 		})
@@ -739,6 +739,7 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 			width: 80,
 			height: 80,
 			opacity:1,
+			filter:"alpha(opacity=100)",
 			},
 			200
 			);
@@ -746,6 +747,7 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 		if(this.withTut){
 			$("#"+this.brick_id+"_tut").css({
 				"opacity": 0.0,
+				filter:"alpha(opacity=0)",
 				"width" : 80,
 				"height" : 80,
 			})
@@ -754,6 +756,7 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 				width: 80,
 				height: 80,
 				opacity:1,
+				filter:"alpha(opacity=100)",
 				},
 				200
 				);
@@ -765,6 +768,7 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 		$("#"+this.brick_id).animate({
 			left: p_targetPosition.x, 
 			top: p_targetPosition.y, 
+			filter:"alpha(opacity=10)",
 			opacity:0.1},
 			200, function(){
 			l_brick.removeMyself();
@@ -774,6 +778,7 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 			$("#"+this.brick_id+"_tut").animate({
 				left: p_targetPosition.x, 
 				top: p_targetPosition.y, 
+				filter:"alpha(opacity=10)",
 				opacity:0.1},
 				200, function(){
 				l_brick.removeMyself();

@@ -116,6 +116,7 @@
     position:absolute;
     font-size:60px;
     top:50%;
+    opacity: 1;
     color: white;
     border-radius: 15px;
     -moz-border-radius: 15px;
