@@ -1,4 +1,5 @@
 var g_config = {
+
 	empty:-1
 	,numStart:0
 	,numX:10
@@ -25,8 +26,8 @@ var g_config = {
 	,pauseBtTop1:300
 
 	//pos for step-tutorials
-	,stBtShowLeft:70
-	,stBtCancelLeft:250
+	,stBtShowLeft:250
+	,stBtCancelLeft:70
 
 	,numStepTuts:6
 
@@ -106,8 +107,8 @@ var cc = {
 			}
 			return "#"+l_strR+l_strG+l_strB;
 		}
-	},
-}
+	}
+};
 
 var g_gameMgr = {
 	// 描画数组
@@ -140,7 +141,13 @@ var g_gameMgr = {
 	//今日来访者次数
 	globalVisitorToday:0,
 
+	//isMobile
 	bIsMobile:false,
+
+	//isIE
+	isIE:false,
+	//IEVersion 6~12
+	ieVersion:7,
 	
 	brickColors:[	
 		"#ff0000",
@@ -153,7 +160,8 @@ var g_gameMgr = {
 		"#2b8b0e",
 		"#9b4f0b",
 		"#4f647d",
-		"#ffffff"],
+		"#ffffff"
+	],
 
 	st_bricks:[
 		{x:0,y:3,c:1},
@@ -164,32 +172,33 @@ var g_gameMgr = {
 		{x:4,y:4,c:1},
 		{x:5,y:3,c:1},
 		{x:1,y:0,c:2},
-		{x:4,y:1,c:10},
+		{x:4,y:1,c:10}
 	],		
 	st_steps:[//Step tutorial
 		{x:1,y:3,t:"Click any empty tile between same tiles to form their sum.</br>2 other tiles are generated after each move."},//1
 		{x:3,y:3,t:"A 3-tiles move follows the same rule.</br>(eg. 2+2+2=6)"},//2
 		{x:1,y:4,t:"A 4-tiles move with double-double numbers or 4 same numbers are both very nice.</br>(eg. 2+2+1+1=6)"},//3
 		{x:3,y:4,t:"When the sum>=10, it turns into an 'x'.</br>(eg. 6+6=12, it's >10 and turns to x)"},//4
-		{x:3,y:1,t:"Perform an 'X-Match' to score!</br>An 'X-Match' move won't generate new tiles."},//5
+		{x:3,y:1,t:"Perform an 'X-Match' to score!</br>An 'X-Match' move won't generate new tiles."}//5
 	],
 	st_tut_Mask:[
 		{l:0,t:3,r:5,b:3},
 		{l:1,t:0,r:3,b:4},
 		{l:0,t:0,r:4,b:6},
 		{l:1,t:3,r:3,b:4},
-		{l:3,t:1,r:4,b:4},
+		{l:3,t:1,r:4,b:4}
 	],
 	st_gen:[
 		{x:1,y:6,c:1},{x:6,y:4,c:1},//1
 		{x:0,y:4,c:2},{x:5,y:0,c:6},//2
 		{x:0,y:6,c:2},{x:5,y:5,c:1},//3
-		{x:0,y:0,c:2},{x:0,y:4,c:1},//4
+		{x:0,y:0,c:2},{x:0,y:4,c:1}//4
 	],
 
 	// 初始化
 	init:function(){
-		_lang=(window.navigator.language||window.navigator.systemLanguage).toLowerCase();
+		this.initBrowser();
+
 		console.log("GameMgr init begin");
 		this.arrayGrid = new Array();
 		this.arrayNumCount = new Array();
@@ -200,17 +209,39 @@ var g_gameMgr = {
 		this.clearGame();
 		console.log("GameMgr init end");
 
-		var u=navigator.userAgent;
-
-		this.bIsMobile=u.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)!=null;
-		if(!this.bIsMobile){
-			$.getScript('social.js', function() {});
-			$('body').append("<div id='fb-root'></div>");
-		}
 		
 
 		var l_this=this.st_bricks[0];
 		console.log("test brick:"+l_this.x);
+	},
+
+	//Init By Browser
+	initBrowser:function(){
+		_lang=(window.navigator.language||window.navigator.systemLanguage).toLowerCase();
+
+		var l_strLowerAgent=navigator.userAgent.toLowerCase();
+		console.log(l_strLowerAgent);
+		//IE
+		this.isIE = l_strLowerAgent.match(/msie/i)!=null;
+		if(this.isIE){
+			var l_iVersionIndex = l_strLowerAgent.indexOf("msie") + 5;
+			var l_strVersion = l_strLowerAgent.substr(l_iVersionIndex,1);
+			this.ieVersion = parseInt(l_strVersion);
+
+			//import json2.js for IE7 (not works))
+			if(this.ieVersion == 7 || this.ieVersion == 6){
+				//document.write("<script src='./jQuery_lib/json2.js'><\/script>");
+				$.getScript('/web/jquery/jQuery_lib/json2.js', function(){});
+				console.log("import json2.js for ie7 ie6");
+			}
+		}
+
+
+		this.bIsMobile=l_strLowerAgent.match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i)!=null;
+		if(!this.bIsMobile){
+			$.getScript('social.js', function() {});
+			$('body').append("<div id='fb-root'></div>");
+		}
 	},
 	
 	readString:function(key){
@@ -638,7 +669,7 @@ var g_gameMgr = {
 		if(len<=3){return b;} 
 		var r=len%3; 
 		return r>0?b.slice(0,r)+","+b.slice(r,len).match(/\d{3}/g).join(","):b.slice(r,len).match(/\d{3}/g).join(","); 
-	},
+	}
 
 };
 
@@ -732,14 +763,14 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 			opacity: 0.0,
 			filter:"alpha(opacity=0)",
 			"width" : 80,
-			"height" : 80,
+			"height" : 80
 		})
 		.delay(150)
 		.animate({
-			width: 80,
-			height: 80,
-			opacity:1,
-			filter:"alpha(opacity=100)",
+				width: 80,
+				height: 80,
+				opacity:1,
+				filter:"alpha(opacity=100)"
 			},
 			200
 			);
@@ -749,14 +780,14 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 				"opacity": 0.0,
 				filter:"alpha(opacity=0)",
 				"width" : 80,
-				"height" : 80,
+				"height" : 80
 			})
 			.delay(150)
 			.animate({
-				width: 80,
-				height: 80,
-				opacity:1,
-				filter:"alpha(opacity=100)",
+					width: 80,
+					height: 80,
+					opacity:1,
+					filter:"alpha(opacity=100)"
 				},
 				200
 				);
