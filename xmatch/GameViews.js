@@ -17,7 +17,7 @@
 
 		var l_visToday=g_gameMgr.convertToReadable(g_gameMgr.globalVisitorToday);
 		var l_visHistory=g_gameMgr.convertToReadable(g_gameMgr.globalVisitorAll);
-		$("#game_pause_state").css({"text-align":"center"}).append("<p>Global attempts: Today <span style='color:"+g_config.colorStrongText+";'>#"+l_visToday+"</span>, History: <span style='color:"+g_config.colorStrongText+";'>#"+l_visHistory+"</span></p><hr>");
+		$("#game_pause_state").css({"text-align":"center"}).append("<p>Global attempts: Today <span style='color:"+g_config.colorStrongText+";'>#"+l_visToday+"</span>; History: <span style='color:"+g_config.colorStrongText+";'>#"+l_visHistory+"</span></p><hr>");
 
 		//Continue button
 		$("#bt_ps_cont").css({"left":g_config.pauseBtLeft0,"top": g_config.pauseBtTop0}).click(function(event) {

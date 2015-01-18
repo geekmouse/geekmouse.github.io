@@ -98,7 +98,7 @@ var GameScene = {
 		      	,"-moz-transform":"scale("+l_zoomThis+")"
 		      	,"-ms-transform": "scale("+l_zoomThis+")"
 		  });
-			console.log("windowSize:("+width+","+height+")"); 
+		//console.log("windowSize:("+width+","+height+")"); 
 		}
 	},
 	//初始化HTML元素
@@ -188,8 +188,8 @@ var GameScene = {
 
 	//弹出暂停界面
 	showGamePause:function(iState){
-		//GamePause
-		if(this.gamePause == null && this.tutStep<0){
+	//GamePause
+	if(this.gamePause == null && this.tutStep<0){
 			this.loseControl();
 
 			console.log("initGamePause");
@@ -248,8 +248,10 @@ var GameScene = {
 			this.addBricksByNum(g_config.brickNum_init);
 		}
 		this.updateUI();
+		g_gameMgr.unSyncCount++;
 		//每次开局请求一次
-		g_gameMgr.requestVisitCount();
+		g_gameMgr.requestVisitCount(g_gameMgr.unSyncCount);
+		g_gameMgr.saveData();
 	},
 
 
@@ -268,7 +270,7 @@ var GameScene = {
 		this.updateUI();
 
 		//加载上次存档请求一次
-		g_gameMgr.requestVisitCount();
+		g_gameMgr.requestVisitCount(g_gameMgr.unSyncCount);
 	},
 
 	//每回合
@@ -385,7 +387,7 @@ var GameScene = {
 	},
 	_processClickGrid:function(p_gridPoint){
 		var l_targetNum = g_gameMgr.clickGrid(p_gridPoint);
-		console.log("--<"+p_gridPoint.x+","+p_gridPoint.y+"> --> "+l_targetNum);
+		//console.log("--<"+p_gridPoint.x+","+p_gridPoint.y+"> --> "+l_targetNum);
 		//消除了Crossing
 		if(l_targetNum >= g_config.numMultiX){
 			this.removeConnectPoint(p_gridPoint);
@@ -395,7 +397,7 @@ var GameScene = {
 			//增加round
 			g_gameMgr.addRound();
 			g_gameMgr.addCurrentScore(l_iScoreThisRound);
-			console.log("score:"+ g_gameMgr.currentScore);
+			//console.log("score:"+ g_gameMgr.currentScore);
 		}
 		//正常消除普通数字
 		else if(l_targetNum >= g_config.numStart && l_targetNum <= g_config.numX){
@@ -569,7 +571,10 @@ var GameScene = {
 		.append("<img id='bt_fb' class='bt_sns' src='res/mxIconFB.png'></img>")
 		.append("<img id='bt_tw' class='bt_sns' src='res/mxIconTwitter.png'></img>")
 		.append("<img id='bt_pp' class='bt_sns' src='res/mxIconPaypal.png'></img>")
-		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
+		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback' style='text-decoration: none'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
+		// $("#btn_email").css({
+		// 	"text-decoration":"none"
+		// });
 		
 		
 		//FB

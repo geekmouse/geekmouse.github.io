@@ -61,6 +61,7 @@ var g_config = {
 		,key_isNewRecord:"newRecord"
 		,key_globalVisit:"globalVisit"
 		,key_todayVisit:"todayVisit"
+		,key_unSyncCount:"un_sync_count"
 		
 	}
 	
@@ -140,6 +141,8 @@ var g_gameMgr = {
 	globalVisitorAll:0,
 	//今日来访者次数
 	globalVisitorToday:0,
+	//未同步的局数
+	unSyncCount:0,
 
 	//isMobile
 	bIsMobile:false,
@@ -211,8 +214,8 @@ var g_gameMgr = {
 
 		
 
-		var l_this=this.st_bricks[0];
-		console.log("test brick:"+l_this.x);
+		//var l_this=this.st_bricks[0];
+		//console.log("test brick:"+l_this.x);
 	},
 
 	//Init By Browser
@@ -451,7 +454,7 @@ var g_gameMgr = {
 				l_strTemp += (l_gridPoint.x+"-"+l_gridPoint.y+":"+l_iNum+"; ");
 			}
 		}
-		console.log("connectPoint before: "+l_strTemp);
+		//console.log("connectPoint before: "+l_strTemp);
 
                 // 排除单一的点位置
 		for(var i=0; i<g_config.directCount; i++){
@@ -485,7 +488,7 @@ var g_gameMgr = {
 				l_strTemp += (l_gridPoint.x+","+l_gridPoint.y+"; ");
 			}
 		}
-		console.log("connectPoint after: "+l_strTemp);
+		//console.log("connectPoint after: "+l_strTemp);
 	},
 	
 	// 判断游戏结束
@@ -553,22 +556,33 @@ var g_gameMgr = {
 	 * 
 	 * 前端需求:
 	 * 1.POST请求
-	 * 2.内容为json格式，(暂时为空请求)
+	 * 2.内容为json格式，(未上传的局数)
 	 * 
 	 * 后端返回:
-	 * 一个整型数字
+	 * json格式
 	 */
-	requestVisitCount:function(){
+	requestVisitCount:function(p_iCount){
+		var l_gameMgr = this;
+		var l_requestJsonData = {};
+		l_requestJsonData["count"] = p_iCount;
+		console.log("requestData:"+p_iCount);
+		var l_strJsonData = JSON.stringify(l_requestJsonData);
+
+
 		var l_gameMgr = this;
 		var l_httpRequest=$.ajax({
 			url:"http://www.geekmouse.net/Server_mx_product/web_gameInterface.php",
+			type:"post",
+			data:l_strJsonData,
 			async:true,
 			success:function(p_data){
-				console.log(p_data);
+				console.log("receiveData:"+p_data);
 				var l_strResponse = p_data;
 				var l_jsonObj = JSON.parse(l_strResponse);
 				l_gameMgr.globalVisitorAll = l_jsonObj["global"];
 				l_gameMgr.globalVisitorToday = l_jsonObj["today"];
+				l_gameMgr.unSyncCount = 0;
+				l_gameMgr.saveData();
 			}
 			});
 		
@@ -587,6 +601,7 @@ var g_gameMgr = {
 		this.bNewRecord = (l_jsonData[g_config.saveData.key_isNewRecord] == 1);
 		this.globalVisitorAll = l_jsonData[g_config.saveData.key_globalVisit];
 		this.globalVisitorToday = l_jsonData[g_config.saveData.key_todayVisit];
+		this.unSyncCount = l_jsonData[g_config.saveData.key_unSyncCount];
 	},
 	
 	//得到存档下当前局面某个格子里的数
@@ -631,10 +646,16 @@ var g_gameMgr = {
 		l_jsonData[g_config.saveData.key_maxScore] = this.maxScore;
 		l_jsonData[g_config.saveData.key_round] = this.round;
 		l_jsonData[g_config.saveData.key_currentScore] = this.currentScore;
+		//visit count
 		if(this.globalVisitorAll > 0 && this.globalVisitorToday > 0){
 			l_jsonData[g_config.saveData.key_globalVisit] = this.globalVisitorAll;
 			l_jsonData[g_config.saveData.key_todayVisit] = this.globalVisitorToday;
 		}
+
+		//un sync count
+		l_jsonData[g_config.saveData.key_unSyncCount] = this.unSyncCount;
+
+		//new record
 		if(this.bNewRecord){
 			l_jsonData[g_config.saveData.key_isNewRecord] = 1;
 		}else{
@@ -657,7 +678,7 @@ var g_gameMgr = {
 
 		// Json.parse
 		var l_strJsonData = JSON.stringify(this.jsonSaveData);
-		console.log("savedata: " + l_strJsonData);
+		//console.log("savedata: " + l_strJsonData);
 		
 		window.localStorage.setItem(g_config.saveData.key_root, l_strJsonData);
 	},
