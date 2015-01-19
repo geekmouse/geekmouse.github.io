@@ -4,22 +4,38 @@
     background-color:#54ADDC;
     overflow: hidden;
     -moz-transform-origin: left top;
-/*    width: 640px;
-    height: 960px;*/
-/*    min-height:100%;
-    min-width: 100%;*/
 }
 .game_scene{
     width: 640px;
     height: 960px;
     position:relative;
+    opacity: 1;
+    
 /*    position:absolute;*/
     margin: 0 auto;
     align:center;
     text-align:center;
     font-family: Impact, sans-serif;
 }
-
+/*preload*/
+@media screen {
+    div#preloader {
+            position: absolute;
+            left: -9999px;
+            top:  -9999px;
+        }
+    div#preloader img {
+            display: block;
+        }
+    }
+@media print {
+    div#preloader, 
+    div#preloader img {
+            visibility: hidden;
+            display: none;
+        }
+    }
+    
 .game_ui{
     color:white;
 }
@@ -116,7 +132,6 @@
     position:absolute;
     font-size:60px;
     top:50%;
-    opacity: 1;
     color: white;
     border-radius: 15px;
     -moz-border-radius: 15px;

@@ -1,9 +1,7 @@
 $(document).ready(function(){
-  	
-	$("p").text("Hello ... jQuery");
 	GameScene.init();
 	if(g_gameMgr.bIsMobile){
-		//for
+		//for normal
 	    //FastClick.attach(document.body);
 	    //for mini
 	    var attachFastClick = Origami.fastclick;    
@@ -23,8 +21,13 @@ var GameScene = {
 
 	init:function(){
 		g_gameMgr.init();
+		// if(g_gameMgr.isIE){
+		// 	this.initBg();
+		// 	return;
+		// }
 		this.gameUI = new GameHUD();
 
+		
 		//有存档
 		if(g_gameMgr.jsonSaveData[g_config.saveData.key_modeOriginal] != undefined ){
 
@@ -32,15 +35,16 @@ var GameScene = {
 			this.initMapBySaveData();
 			this.showGamePause(g_config.statePause.spManual);
 			
+			this.onControl();
 		}
 		//第一次玩
 		else{
 			this.initBg(true);
 			this.initRandomMap(true);
+
+			this.onControl();
 			console.log("GameScene showTitleView firstRun_withoutSD");
 		}
-
-		
 	},
 
 	//失去控制
@@ -80,7 +84,9 @@ var GameScene = {
 	},
 
 	syncSize:function(bFirstRun){
-		
+		// if(g_gameMgr.isIE){
+		// 	return;
+		// }
 		if(true/*!g_gameMgr.bIsMobile*/){
 			var width = $(window).width(); 
 		    var height = $(window).height();
@@ -90,8 +96,9 @@ var GameScene = {
 		      $("body").css({
 		      	"zoom":l_zoomThis
 		      	,"-moz-transform":"scale("+l_zoomThis+")"
+		      	,"-ms-transform": "scale("+l_zoomThis+")"
 		  });
-			console.log("windowSize:("+width+","+height+")"); 
+		//console.log("windowSize:("+width+","+height+")"); 
 		}
 	},
 	//初始化HTML元素
@@ -115,14 +122,18 @@ var GameScene = {
 		for (var i = 0; i < g_config.gridCount_y; i++) {
 			for(var j = 0; j < g_config.gridCount_x; j++){
 				//bottombg
-				$("#grid_layer").append("<div class='grid' id=bg_"+i+""+j+"></div>");
 				var l_pnt=g_gameMgr.getPositionByGrid(cc.p(j,i));
 				var gcss={"left":l_pnt.x,"top":l_pnt.y};
-				var l_strColor =((i+j)%2 == 0)?"#BDDEF0":"#99D2F0";
-				$("#bg_"+i+""+j).css(gcss).css({
-					"background-color":l_strColor
-					,"z-index":g_config.zorder.GameBG
-				});
+				//light grid is needn't
+				if((i+j)%2 !=0){
+					$("#grid_layer").append("<div class='grid' id=bg_"+i+""+j+"></div>");
+					
+					var l_strColor =((i+j)%2 == 0)?"#BDDEF0":"#99D2F0";
+					$("#bg_"+i+""+j).css(gcss).css({
+						"background-color":l_strColor
+						,"z-index":g_config.zorder.GameBG
+					});
+				}
 				//click div
 				$("#grid_layer").append("<div class='grid' id='bg_"+i+""+j+"_click'></div>");
 				$("#bg_"+i+""+j+"_click").css(gcss).css({
@@ -137,7 +148,6 @@ var GameScene = {
 		if(p_bWithTut){
 			this.initMask();
 		}
-		this.onControl();
 	},
 
 	initMask:function(){
@@ -147,11 +157,11 @@ var GameScene = {
 		$("#bg_mask").css({
 			"left":g_config.gridMargin
 			,"top":g_config.gridTop
-			,"width":g_config.gridCount_x*g_config.gridOuterSize
-			,"height":g_config.gridCount_y*g_config.gridOuterSize
+			,"width":g_config.gridCount_x*g_config.gridOuterSize+1
+			,"height":g_config.gridCount_y*g_config.gridOuterSize+1
 			,"background-color":"#003085"
 			,"opacity":"0.8"
-			,"filter":"alpha(opacity=0.8)"
+			,"filter":"alpha(opacity=80)"
 			,"z-index":g_config.zorder.GameMask
 		});
 
@@ -178,8 +188,8 @@ var GameScene = {
 
 	//弹出暂停界面
 	showGamePause:function(iState){
-		//GamePause
-		if(this.gamePause == null && this.tutStep<0){
+	//GamePause
+	if(this.gamePause == null && this.tutStep<0){
 			this.loseControl();
 
 			console.log("initGamePause");
@@ -238,8 +248,10 @@ var GameScene = {
 			this.addBricksByNum(g_config.brickNum_init);
 		}
 		this.updateUI();
+		g_gameMgr.unSyncCount++;
 		//每次开局请求一次
-		g_gameMgr.requestVisitCount();
+		g_gameMgr.requestVisitCount(g_gameMgr.unSyncCount);
+		g_gameMgr.saveData();
 	},
 
 
@@ -258,7 +270,7 @@ var GameScene = {
 		this.updateUI();
 
 		//加载上次存档请求一次
-		g_gameMgr.requestVisitCount();
+		g_gameMgr.requestVisitCount(g_gameMgr.unSyncCount);
 	},
 
 	//每回合
@@ -375,7 +387,7 @@ var GameScene = {
 	},
 	_processClickGrid:function(p_gridPoint){
 		var l_targetNum = g_gameMgr.clickGrid(p_gridPoint);
-		console.log("--<"+p_gridPoint.x+","+p_gridPoint.y+"> --> "+l_targetNum);
+		//console.log("--<"+p_gridPoint.x+","+p_gridPoint.y+"> --> "+l_targetNum);
 		//消除了Crossing
 		if(l_targetNum >= g_config.numMultiX){
 			this.removeConnectPoint(p_gridPoint);
@@ -385,7 +397,7 @@ var GameScene = {
 			//增加round
 			g_gameMgr.addRound();
 			g_gameMgr.addCurrentScore(l_iScoreThisRound);
-			console.log("score:"+ g_gameMgr.currentScore);
+			//console.log("score:"+ g_gameMgr.currentScore);
 		}
 		//正常消除普通数字
 		else if(l_targetNum >= g_config.numStart && l_targetNum <= g_config.numX){
@@ -414,9 +426,13 @@ var GameScene = {
 				"left" : l_position.x,
 				"top" : l_position.y,
 				"opacity":0.2,
+				"filter":"alpha(opacity=20)"
 			})
 		.animate(
-			{"opacity":1,},
+			{
+				"opacity":1,
+				"filter":"alpha(opacity=100)"
+			},
 			200, function() {
 				$(this).remove();
 			}
@@ -497,7 +513,7 @@ var GameScene = {
 
 	_toggleMaskBrick:function(p_Posi,pOn){
 		$("#bg_"+p_Posi.y+""+p_Posi.x+"_tut").css({
-			"display":pOn?"none":"inline",
+			"display":pOn?"none":"inline"
 		});
 
 	},
@@ -508,7 +524,7 @@ var GameScene = {
 			this.gameUI.updateRound();
 			this.gameUI.updateScore();
 		}
-	},
+	}
 }
 
 
@@ -555,7 +571,10 @@ var GameScene = {
 		.append("<img id='bt_fb' class='bt_sns' src='res/mxIconFB.png'></img>")
 		.append("<img id='bt_tw' class='bt_sns' src='res/mxIconTwitter.png'></img>")
 		.append("<img id='bt_pp' class='bt_sns' src='res/mxIconPaypal.png'></img>")
-		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
+		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback' style='text-decoration: none'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
+		// $("#btn_email").css({
+		// 	"text-decoration":"none"
+		// });
 		
 		
 		//FB
@@ -580,7 +599,7 @@ var GameScene = {
 		//Mail
 		$("#bt_mail").css({
 			left: l_btXInt*3+l_startX,
-			top: l_btY,
+			top: l_btY
 		});
 	}
 	
