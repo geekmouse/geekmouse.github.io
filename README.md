@@ -1,6 +1,6 @@
 # X-Match
 A creative and challenging puzzle designed/developed by [geekmouse](http://geekmouse.net/press/).
-It's open source and can play on both desktop/mobile browsers. Hope it can help developers who are interested in.
+It's open source and can play on both desktop/mobile browsers. Hope it can help developers who are interested in developing mobile web games.
 
 [Play Here](http://geekmouse.github.io/xmatch/) 
 
