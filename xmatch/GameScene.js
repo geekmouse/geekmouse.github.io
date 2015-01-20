@@ -1,12 +1,10 @@
 $(document).ready(function(){
 	GameScene.init();
-	if(g_gameMgr.bIsMobile){
-		//for normal
-	    //FastClick.attach(document.body);
-	    //for mini
-	    var attachFastClick = Origami.fastclick;    
-	    attachFastClick(document.body);
-		}
+	//for normal
+    //FastClick.attach(document.body);
+    //for mini
+    var attachFastClick = Origami.fastclick;    
+    attachFastClick(document.body);
 });
 
 var GameScene = {
@@ -560,7 +558,7 @@ var GameScene = {
 
 		
 		if(!g_gameMgr.bIsMobile){
-			$("#game_ui").append("<div id= 'contact' class='contact'><hr>X-Match<br>Designed & presented by: <br>2015 GeekMouse<br><a target='_blank' href='http://geekmouse.net/press/'>Press Kit</a></div>");
+			$("#game_ui").append("<div id= 'contact' class='contact'><hr>X-Match<br>Designed & presented by: <br>2015 GeekMouse<br><a target='_blank' href='http://geekmouse.net/press/sheet.php?p=X-Match'>Press Kit</a></div>");
 		}
 
 		var l_btY=800;
