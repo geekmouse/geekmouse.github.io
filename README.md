@@ -1,9 +1,10 @@
 # X-Match
 A creative and challengeable puzzle designed/developed by [geekmouse](http://geekmouse.net/press/).
+It's open source and can play on both desktop/mobile browsers. Hope it can help developers who are interested in.
 
 [Play Here](http://geekmouse.github.io/xmatch/) 
-###About Game
-####Rules
+
+###Game Rules
 1. In the beginning, a few tiles with numbers are randomly distributed on the board.
 
 2. In each move, click an empty grid between same tiles to merge them into a new tile with the sum, and then another two random tiles are generated.
@@ -14,6 +15,7 @@ A creative and challengeable puzzle designed/developed by [geekmouse](http://gee
 
 Making "X-Match" is the only way to score. The target of this game is to score as much as possible before game over. It requires your observation, patient and strategy.
 It's a mission challenging for new players. Many testers have already made their "score-100" milestone and found it extremely addictive. This [VIDEO](https://www.youtube.com/watch?v=xykJDWJ_yFQ) is an example.
+
 ### Technique
 #### Compatibility
 - Desktop browsers(Already Tested): IE 8.0+, Chrome 39.0+, Firefox 34.0+, Safari 8.0+ and Opera 26.0+
