@@ -22,9 +22,8 @@ It's a mission challengeable for new players. Many testers have already made the
 
 We have no plan to maintain IE7.x or below and have limited devices to test it on older browsers. If you find any issue in compatibility, please feel free to contact us.
 
-#### Tips for ini web game develop for indie game developers (javascript)
-- Make the total size of script as small as possible. Avoid include unnecessary libary or functions. They'll slow down your page.
-- 
-##### Auto-resize feature
+#### Advices for indie web game(javascript) developers
+- Compress the total size of script as small as possible. Avoid including unnecessary libary or functions. They'll slow down your page loading. [Deploy gzip on apache](http://httpd.apache.org/docs/2.2/mod/mod_deflate.html) is a good idea.
+- Consider the auto-resize feature for your content. You never know the your visitors' window size, and maybe they love playing games at working time (I personally don't courage that) and need a smaller but still functional one. Search the function "syncSize" in GameScene.js for the solution.
 
 #### Tips on mobile browser compatibility
