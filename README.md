@@ -28,7 +28,7 @@ We have no plan to maintain IE7.x or below and have limited devices to test it o
 - Compress the total size of script as small as possible. Avoid including any unnecessary libary or functions. They'll slow down your page loading. [Deploy gzip on apache](http://httpd.apache.org/docs/2.2/mod/mod_deflate.html) is a good idea.
 - Consider the auto-resize feature for your content. You never know the your visitors' window size, and maybe they love playing games at working time (I personally don't courage that) and need a size-flexible one. Search the function "syncSize" in GameScene.js for the solution.
 - Load social widgets dynamically. I found they will result serious FPS drop on mobile devices and limited them for desktop browsers only. Search "social.js" in GameMgr.js for my solution.
-- If "tap" is a basic operation in your game, use [fastClick], or there will be a terrible response delay.
+- If "tap" is a basic operation in your game, use [fastClick](https://github.com/ftlabs/fastclick), or there will be a terrible response delay.
 
 
 We'll keep updating the project X-Match and glad for any discussion.
