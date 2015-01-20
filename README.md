@@ -1,5 +1,5 @@
 # X-Match
-A creative and challengeable puzzle designed/developed by [geekmouse](http://geekmouse.net/press/).
+A creative and challenging puzzle designed/developed by [geekmouse](http://geekmouse.net/press/).
 It's open source and can play on both desktop/mobile browsers. Hope it can help developers who are interested in.
 
 [Play Here](http://geekmouse.github.io/xmatch/) 
