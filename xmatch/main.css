@@ -10,8 +10,6 @@
     height: 960px;
     position:relative;
     opacity: 1;
-    
-/*    position:absolute;*/
     margin: 0 auto;
     align:center;
     text-align:center;
@@ -102,11 +100,12 @@
 .title{
     line-height: 50px;
     font-size:50px;
+    
 }
 
 .score{
     font-size:40px;
-    color:#077DBB;
+    color:#FFFFFF;
 }
 
 .stat{
@@ -114,6 +113,7 @@
     font-family: Arial,sans-serif;
     font-weight:200;
     font-size:15px;
+    color:#077DBB;
 }
 
 .grid{
@@ -247,11 +247,7 @@
 .vt_cys{
     text-align: center;
     font-family: sans-serif;
-/*     margin: 18px; */
-/*     font-size:13px; */
-/*     top:20px; */
     padding: 25px 40px 0px 40px;
-/*     color: #077DBB; */
     position:relative;
 }
 
