@@ -557,48 +557,17 @@ var GameScene = {
 		});
 
 		
-		if(!g_gameMgr.bIsMobile){
-			$("#game_ui").append("<div id= 'contact' class='contact'><hr>X-Match<br>Designed & presented by: <br>2015 GeekMouse<br><a target='_blank' href='http://geekmouse.net/press/sheet.php?p=X-Match'>Press Kit</a></div>");
+		if(true/*!g_gameMgr.bIsMobile*/){
+			$("#game_ui")
+			.append("<div id= 'ack' class='ack'><hr><u>ACKNOWLEDGEMENT</u></div>")
+			.append("<div id= 'contact' class='contact'> <a target='_blank' href='http://geekmouse.net/press/sheet.php?p=X-Match'>2015 GeekMouse</a></div>");
+			
+			$("#ack").click(function(event){
+				if(l_gameUI.isTouchEnabled){
+					
+				}
+			});
 		}
-
-		var l_btY=800;
-		var l_btXInt=100;
-		var l_startX=230;
-
-		$("#game_ui")
-		.append("<img id='bt_fb' class='bt_sns' src='res/mxIconFB.png'></img>")
-		.append("<img id='bt_tw' class='bt_sns' src='res/mxIconTwitter.png'></img>")
-		.append("<img id='bt_pp' class='bt_sns' src='res/mxIconPaypal.png'></img>")
-		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback' style='text-decoration: none'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
-		// $("#btn_email").css({
-		// 	"text-decoration":"none"
-		// });
-		
-		
-		//FB
-		$("#bt_fb").css({left: l_startX,top: l_btY}).click(function(event){
-			if (l_gameUI.isTouchEnabled) {
-				window.open("https://www.facebook.com/geekmouse.xmatch");
-			}
-		});
-		//Twitter
-		$("#bt_tw").css({left: l_btXInt+l_startX,top: l_btY}).click(function(event){
-			if (l_gameUI.isTouchEnabled) {
-				window.open("https://twitter.com/geek_mouse");
-			}
-		});
-		//Paypal
-		$("#bt_pp").css({left: l_btXInt*2+l_startX,top: l_btY}).click(function(event){
-			if( l_gameUI.isTouchEnabled && GameScene.tutStep<0){
-				GameScene.loseControl();
-				var l_viewPaypal=new ViewPaypal();
-			}
-		});
-		//Mail
-		$("#bt_mail").css({
-			left: l_btXInt*3+l_startX,
-			top: l_btY
-		});
 	}
 	
 	//更新回合

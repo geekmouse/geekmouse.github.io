@@ -62,13 +62,58 @@
 			}
 			case g_config.statePause.spEndNew:{
 
-				$("#pause_text").text("Congras!! You made new record:" + g_gameMgr.maxScore);
+				$("#pause_text").text("Congrats!! You made new record:" + g_gameMgr.maxScore);
 				$("#pause_back").append("<div id='twitter_button'></div>");
 				$("#twitter_button").load("3rdParty.txt #twitter_button");
 				$("#bt_ps_cont").text("RECHECK");
 				break;
 			}
 		}
+
+		//this.showOurWebSite();
+	}
+
+	this.showOurWebSite = function(){		
+		var l_gamePause = this;
+		var l_btY=310;
+		var l_btXInt=100;
+		var l_startX=60;
+
+		$("#pause_back")
+		.append("<img id='bt_fb' class='bt_sns' src='res/mxIconFB.png'></img>")
+		.append("<img id='bt_tw' class='bt_sns' src='res/mxIconTwitter.png'></img>")
+		.append("<img id='bt_pp' class='bt_sns' src='res/mxIconPaypal.png'></img>")
+		.append("<a href='mailto:geek.mouse.game@gmail.com?subject=X-MATCH Feedback' style='text-decoration: none'><img id='bt_mail' class='bt_sns' src='res/mxIconMail.png'></img></a>");
+		// $("#btn_email").css({
+		// 	"text-decoration":"none"
+		// });
+		
+		
+		//FB
+		$("#bt_fb").css({left: l_startX,top: l_btY}).click(function(event){
+			//if (l_gameUI.isTouchEnabled) {
+				window.open("https://www.facebook.com/geekmouse.xmatch");
+			//}
+		});
+		//Twitter
+		$("#bt_tw").css({left: l_btXInt+l_startX,top: l_btY}).click(function(event){
+			//if (l_gameUI.isTouchEnabled) {
+				window.open("https://twitter.com/geek_mouse");
+			//}
+		});
+		//Paypal
+		$("#bt_pp").css({left: l_btXInt*2+l_startX,top: l_btY}).click(function(event){
+			//if( l_gameUI.isTouchEnabled && GameScene.tutStep<0){
+				GameScene.loseControl();
+				l_gamePause.disappear();
+				var l_viewPaypal=new ViewPaypal();
+			//}
+		});
+		//Mail
+		$("#bt_mail").css({
+			left: l_btXInt*3+l_startX,
+			top: l_btY
+		});
 	}
 
 	this.showOpt=function(opt){
@@ -105,7 +150,7 @@ function ViewTarget(){
 		var l_viewSt=this;
 		$("#game_scene").append("<div id='view_target' class='view_bk view_target'></div>");
 		$("#view_target").css({"opacity":0.2})
-		.append("<div class='view_text vt_cys' >Sounds easy? Can you beat <strong style='color:"+g_config.colorStrongText+";font-weight:bold'>68.47%</strong> global players in X-MATCH (Standard Mode) by SCORE</div>")
+		.append("<div class='view_text vt_cys' >Sounds easy? Can you beat <strong style='color:"+g_config.colorStrongText+";font-weight:bold'>68.47%</strong> global players by SCORE</div>")
 		.append("<div class='vt_100' >100</div>")
 		.append("<div id='vt_bt' class='view_bt vt_bt'>I'll make it!!</div>")
 		.animate({"opacity":1},200);

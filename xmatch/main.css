@@ -179,16 +179,25 @@
     color: #90d4f8;
     line-height: 18px;
     left: 20px;
-    top: 785px;
-    width: 600px;
+    top: 820px;
+/*     width: 600px; */
 }
 
-
+.ack{
+    cursor:pointer;
+    line-height: 14px;
+    width: 600px;
+    position: absolute;
+    font-family: sans-serif;
+    text-align: left;
+    left: 20px;
+    top: 785px;
+}
 
 .pause_back{ 
     margin: 0 auto;
     top: 100px;
-    height:300px; 
+    height:320px; 
     width:500px; 
 } 
 
@@ -336,6 +345,33 @@
     margin:15px 25px;
 }
 
+.like-block-only-button {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin-right: 0px;
+    padding: 2px;
+}
+
+.share_buttons_div{
+    position: absolute;
+    left: 420px;
+    top: 805px;
+}
+
+.like-button {
+    height: 32px;
+    width: 32px;
+    text-align: center;
+    vertical-align: middle;
+/*     padding: 8px 14px 10px; */
+    cursor:pointer; 
+}
+
+.like-button:hover {
+    color:#dfe7ea;
+    box-shadow: inset 0px 1px 0px #3e9cbf, 0px 2px 0px 0px #205c73, 0px 2px 5px #999;
+}
 
 
 body, canvas, div {

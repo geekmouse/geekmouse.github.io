@@ -181,7 +181,7 @@ var g_gameMgr = {
 		{x:1,y:3,t:"Click an empty grid between same tiles to merge them with the sum.</br>2 other tiles are generated after each move."},//1
 		{x:3,y:3,t:"A 3-tiles move follows the same rule.</br>(eg. 2+2+2=6)"},//2
 		{x:1,y:4,t:"A 4-tiles move with double-double numbers or 4 same numbers are both very nice.</br>(eg. 2+2+1+1=6)"},//3
-		{x:3,y:4,t:"If the sum>=10, they're merged into an 'x'.</br>(eg. 6+6=12, it's >10 and turns to x)"},//4
+		{x:3,y:4,t:"If the sum is greater than 10, they're merged into an 'x'.</br>(eg. 6+6=12, it's greater than 10 and turns to x)"},//4
 		{x:3,y:1,t:"Perform an 'X-Match' to score!</br>'X-Match' won't generate the sum-up tile or new random tiles."}//5
 	],
 	st_tut_Mask:[
@@ -234,7 +234,7 @@ var g_gameMgr = {
 			//import json2.js for IE7 (not works))
 			if(this.ieVersion == 7 || this.ieVersion == 6){
 				//document.write("<script src='./jQuery_lib/json2.js'><\/script>");
-				$.getScript('/web/jquery/jQuery_lib/json2.js', function(){});
+				$.getScript('./jQuery_lib/json2.js', function(){});
 				console.log("import json2.js for ie7 ie6");
 			}
 		}
@@ -242,9 +242,62 @@ var g_gameMgr = {
 
 		this.bIsMobile=l_strLowerAgent.match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i)!=null;
 		if(!this.bIsMobile){
-			$.getScript('social.js', function() {});
+			$.getScript('./social.js', function() {
+				console.log("load social.js done");
+			});
 			$('body').append("<div id='fb-root'></div>");
 		}
+
+		//Shared Button with image
+		if(true/*!this.bIsMobile*/){
+			this.showShareButtons();
+		}
+	},
+
+	//show share buttons in desktop brower
+	showShareButtons:function(){
+		//stLight.options({publisher: "261e4fcf-468e-41cc-884d-3c06d5b8ca28", doNotHash: false, doNotCopy: false, hashAddressBar: false});
+
+		$("#game_scene").append("<div id='share_buttons_div' class='share_buttons_div'> </div>");
+		$("#share_buttons_div").css({"z-index":g_config.zorder.GameUI}).
+		append("\
+			<div class='like-block-only-button'>\
+				<img class='like-button share s_facebook' src='./res/share/facebook_32.png' />\
+			</div>\
+			").
+		append("\
+			<div class='like-block-only-button'>\
+                <img class='like-button share s_twitter' src='./res/share/twitter_32.png'/>\
+            </div>\
+            ").
+		append("\
+			<div class='like-block-only-button'>\
+                <img class='like-button share s_reddit' src='./res/share/reddit_32.png' />\
+            </div>\
+            ").
+		append("\
+			<div class='like-block-only-button'>\
+                <img class='like-button share s_plus' src='./res/share/googleplus_32.png'/>\
+            </div>\
+            ").
+		append("\
+			<div class='like-block-only-button'>\
+                <img class='like-button share s_digg' src='res/share/digg_32.png'/>\
+            </div>\
+            ");
+
+
+		$.getScript("jQuery_lib/SocialShare.min.js", function(){
+			console.log("load SocialShare.js done");
+
+			$('.share').ShareLink({
+				title: 'JUST CAN\'T STOP!!',
+				text: 'I got '+g_gameMgr.maxScore+' in #XMatch. Can you beat my record?',
+				// image: 'http://geekmouse.net/games/x-match/res/pStudio.png',
+				url: 'http://geekmouse.github.io/xmatch/'
+			});
+		});
+		
 	},
 	
 	readString:function(key){
