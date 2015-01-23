@@ -307,7 +307,10 @@ var g_gameMgr = {
 				title: 'JUST CAN\'T STOP!!',
 				text: 'I got '+g_gameMgr.maxScore+' in #XMatch. Can you beat my record?',
 				image: 'http://forums.toucharcade.com/picture.php?albumid=1809&pictureid=10282',
-				url: 'http://geekmouse.github.io/xmatch/'
+				url: 'http://geekmouse.github.io/xmatch/',
+				class_prefix:'s_',
+				width:640,
+				height:480
 			});
 		});
 		
