@@ -475,7 +475,7 @@ var GameScene = {
 			}
 		}
 			
-		var l_text=p_tutStep.t;
+		var l_text=g_gameMgr.isZh()?p_tutStep.z:p_tutStep.t;
 		$("#st_text").remove();
 		$("#game_scene").append("<div id='st_text' class='view_bk view_text st_text'><span style='color:#397fa4;'><p>Tutorial</p></span><p>"+l_text+"</p></div>");
 		

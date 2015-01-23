@@ -178,12 +178,23 @@ var g_gameMgr = {
 		{x:4,y:1,c:10}
 	],		
 	st_steps:[//Step tutorial
-		{x:1,y:3,t:"Click an empty grid between same tiles to merge them with the sum.</br>2 other tiles are generated after each move."},//1
-		{x:3,y:3,t:"A 3-tiles move follows the same rule.</br>(eg. 2+2+2=6)"},//2
-		{x:1,y:4,t:"A 4-tiles move with double-double numbers or 4 same numbers are both very nice.</br>(eg. 2+2+1+1=6)"},//3
-		{x:3,y:4,t:"If the sum is greater than 10, they're merged into an 'x'.</br>(eg. 6+6=12, it's greater than 10 and turns to x)"},//4
-		{x:3,y:1,t:"Perform an 'X-Match' to score!</br>'X-Match' won't generate the sum-up tile or new random tiles."}//5
+		{x:1,y:3,
+		t:"Click an empty grid between same tiles to merge them with the sum.</br>2 other tiles are generated after each move.",
+		z:"在相等方块之间的空格处点击以合并他们生成他们的和</br>每步之后都会新增两个随机方块。"},//1
+		{x:3,y:3,
+		t:"A 3-tiles move follows the same rule.</br>(eg. 2+2+2=6)",
+		z:"3个方块遵循同样的规律。比如：2+2+2=6"},//2
+		{x:1,y:4,
+		t:"A 4-tiles move with double-double numbers or 4 same numbers are both very nice.</br>(eg. 2+2+1+1=6)",
+		z:"4个方块，无论是两两相等或者4块都相等都是极好的。比如:2+2+1+1=6"},//3
+		{x:3,y:4,
+		t:"If the sum is equal or greater than 10, they're merged into an 'x'.</br>(eg. 6+6=12, it's greater than 10 and turns to x)",
+		z:"假如和大于等于10，他们将合并成一个'x'。比如6+6的情况"},//4
+		{x:3,y:1,
+		t:"Perform an 'X-Match' to score!</br>'X-Match' won't generate the sum-up tile or new random tiles.",
+		z:"完成一个X-Match来得分！每次X-Match都不会触发新增的方块"}//5
 	],
+
 	st_tut_Mask:[
 		{l:0,t:3,r:5,b:3},
 		{l:1,t:0,r:3,b:4},
@@ -220,8 +231,10 @@ var g_gameMgr = {
 
 	//Init By Browser
 	initBrowser:function(){
-		_lang=(window.navigator.language||window.navigator.systemLanguage).toLowerCase();
-
+		this._lang=(window.navigator.systemLanguage?window.navigator.systemLanguage:window.navigator.language).toLowerCase();
+		if (this._lang==null) {
+			this._lang="en";
+		};
 		var l_strLowerAgent=navigator.userAgent.toLowerCase();
 		console.log(l_strLowerAgent);
 		//IE
@@ -294,10 +307,14 @@ var g_gameMgr = {
 				title: 'JUST CAN\'T STOP!!',
 				text: 'I got '+g_gameMgr.maxScore+' in #XMatch. Can you beat my record?',
 				image: 'http://forums.toucharcade.com/picture.php?albumid=1809&pictureid=10282',
+<<<<<<< Updated upstream
 				url: 'http://geekmouse.github.io/xmatch/',
 				class_prefix:'s_',
 				width:640,
 				height:480
+=======
+				url: 'http://geekmouse.github.io/xmatch/'
+>>>>>>> Stashed changes
 			});
 		});
 		
@@ -307,6 +324,10 @@ var g_gameMgr = {
 		if(_lang.substr(0,2)=="zh"){
 			return g_string;
 		}
+	},
+
+	isZh:function(){
+		return this._lang.substr(0,2)=="zh";
 	},
 
 	// 初始二维数组
