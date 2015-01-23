@@ -4,21 +4,29 @@
 
 	this.initOptions = function(){
 		var l_gamePause = this;
+		var zh=g_gameMgr.isZh();
 		//Create game_pause
 		//中心方块
 		$("#game_scene").append("<div id='pause_back' class='view_bk pause_back'></div>");
 		//统计
+		var tCont=zh?"继续":"CONTINUE";
+		var tRest=zh?"重新开始":"RESTART";
 		$("#pause_back").css({"z-index" : g_config.zorder.GamePause,opacity:0.2})
 		.append("<p id='game_pause_state' class='view_text'></p>")
-		.append("<div id='bt_ps_cont' class='view_bt'>CONTINUE</div>")
-		.append("<div id='bt_ps_rest' class='view_bt'>RESTART</div>")
+		.append("<div id='bt_ps_cont' class='view_bt'>"+tCont+"</div>")
+		.append("<div id='bt_ps_rest' class='view_bt'>"+tRest+"</div>")
 		.append("<div id='pause_text' class='view_ti2'></div>")
 		.animate({"opacity":1},200);
 
 		var l_visToday=g_gameMgr.convertToReadable(g_gameMgr.globalVisitorToday);
 		var l_visHistory=g_gameMgr.convertToReadable(g_gameMgr.globalVisitorAll);
-		$("#game_pause_state").css({"text-align":"center"}).append("<p>Global attempts: Today <span style='color:"+g_config.colorStrongText+";'>#"+l_visToday+"</span>; History: <span style='color:"+g_config.colorStrongText+";'>#"+l_visHistory+"</span></p><hr>");
-
+		if(zh){
+			$("#game_pause_state").css({"text-align":"center"}).append("<p>全球总局数: 今日 <span style='color:"+g_config.colorStrongText+";'>"+l_visToday+"局</span>; 历史: <span style='color:"+g_config.colorStrongText+";'>"+l_visHistory+"局</span></p><hr>");
+		}
+		else{
+			$("#game_pause_state").css({"text-align":"center"}).append("<p>Global attempts: Today <span style='color:"+g_config.colorStrongText+";'>#"+l_visToday+"</span>; History: <span style='color:"+g_config.colorStrongText+";'>#"+l_visHistory+"</span></p><hr>");
+		}
+		
 		//Continue button
 		$("#bt_ps_cont").css({"left":g_config.pauseBtLeft0,"top": g_config.pauseBtTop0}).click(function(event) {
 			GameScene.hideGamePause();
@@ -56,16 +64,16 @@
 				else{
 					this.showOpt(l_rnOptions);
 				}
-				$("#pause_text").text("GAME OVER!!");
-				$("#bt_ps_cont").text("RECHECK");
+				$("#pause_text").text(zh?"游戏结束!!":"GAME OVER!!");
+				$("#bt_ps_cont").text(zh?"再看看":"RECHECK");
 				break;
 			}
 			case g_config.statePause.spEndNew:{
 
-				$("#pause_text").text("Congrats!! You made new record:" + g_gameMgr.maxScore);
+				$("#pause_text").text(zh?"恭喜！！你创造了新的纪录：":"Congrats!! You made new record:" + g_gameMgr.maxScore);
 				$("#pause_back").append("<div id='twitter_button'></div>");
 				$("#twitter_button").load("3rdParty.txt #twitter_button");
-				$("#bt_ps_cont").text("RECHECK");
+				$("#bt_ps_cont").text(zh?"再看看":"RECHECK");
 				break;
 			}
 		}
@@ -117,23 +125,26 @@
 	}
 
 	this.showOpt=function(opt){
+		var zh=g_gameMgr.isZh();
 		switch(opt){
 			case 0:{//Twitter
-				$("#pause_text").text("Follow us on Twitter and don't miss any X-Match updates!!");
+				$("#pause_text").text(zh?"收听我们的微博，不要错过任何X-Match的更新!!":"Follow us on Twitter and don't miss any X-Match updates!!");
 				$("#pause_back").append("<div id='follow_button'></div>");
 				$("#follow_button").load("3rdParty.txt #twitter_follow_button");
 				break;
 			}
 			case 1:{//FacebookShare
-				$("#pause_text").text("Share X-Match with friends on Facebook!!");
+				$("#pause_text").text(zh?"在Facebook上为好友分享X-Match":"Share X-Match with friends on Facebook!!");
 				$("#pause_back").append("<div id='like_button' ></div>");
 				$("#like_button").load("3rdParty.txt #fb_like_button");
 				$("#like_button").addClass(g_gameMgr.bIsMobile?'fb_bt_mo':'fb_bt');						
 				break;
 			}
 			case 2:{
-				$("#pause_text").text("Mission Impossible?");
-				$("#pause_back").append("<div class='view_text'>I recorded a <a target='_blank' href='https://www.youtube.com/watch?v=xykJDWJ_yFQ'>VIDEO</a> with the whole process of making score 120+. Maybe you can find some tips there. Cheer up!</div>");
+				$("#pause_text").text(zh?"感觉太难？":"Mission Impossible?");
+				$("#pause_back").append(zh?
+					"<div class='view_text'>Youtube上有一段 <a target='_blank' href='https://www.youtube.com/watch?v=xykJDWJ_yFQ'>120分秀</a>. 也许你能从那里得到一些启发. 加油!</div>":
+					"<div class='view_text'>There is a <a target='_blank' href='https://www.youtube.com/watch?v=xykJDWJ_yFQ'>VIDEO</a> with the whole process of making score 120+. Maybe you can find some tips there. Cheer up!</div>");
 				break;
 			}
 		}
@@ -148,11 +159,15 @@
 function ViewTarget(){
 	this.init=function(){
 		var l_viewSt=this;
+		var zh=g_gameMgr.isZh();
+		var t1=zh?"听起来很简单？要想打败全球":"Sounds simple? Can you beat";
+		var t2=zh?"的玩家，你需要达到分数":"global players by SCORE";
+		var t3=zh?"我会成功的":"I'll make it!!";
 		$("#game_scene").append("<div id='view_target' class='view_bk view_target'></div>");
 		$("#view_target").css({"opacity":0.2})
-		.append("<div class='view_text vt_cys' >Sounds easy? Can you beat <strong style='color:"+g_config.colorStrongText+";font-weight:bold'>68.47%</strong> global players by SCORE</div>")
+		.append("<div class='view_text vt_cys' >"+t1+" <strong style='color:"+g_config.colorStrongText+";font-weight:bold'>68.47%</strong> "+t2+"</div>")
 		.append("<div class='vt_100' >100</div>")
-		.append("<div id='vt_bt' class='view_bt vt_bt'>I'll make it!!</div>")
+		.append("<div id='vt_bt' class='view_bt vt_bt'>"+t3+"</div>")
 		.animate({"opacity":1},200);
 
 		$("#vt_bt").click(function(event){

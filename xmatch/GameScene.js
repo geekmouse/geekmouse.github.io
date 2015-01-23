@@ -207,7 +207,8 @@ var GameScene = {
 	showStepTut:function(){
 		this.loseControl();
 		$("#game_scene").append("<div id='st_ask_bg' class='view_bk st_ask_bg'></div>");
-		$("#st_ask_bg").append("<div id='st_ask_words' class='view_text st_ask_words'>Are you sure you want to QUIT for the tutorial? You’ll lose your current progress </div>")
+		var l_tip=g_gameMgr.isZh()?"确定要离开并进入教程吗？这会失去当前进度":"Are you sure you want to QUIT for the tutorial? You’ll lose your current progress";
+		$("#st_ask_bg").append("<div id='st_ask_words' class='view_text st_ask_words'>"+l_tip+" </div>")
 		.append("<div id='st_bt_show' class='view_bt st_bt'>YES</div>")
 		.append("<div id='st_bt_cancel' class='view_bt st_bt'>NO</div>")
 		.css({"opacity":0.2})
@@ -475,9 +476,11 @@ var GameScene = {
 			}
 		}
 			
-		var l_text=g_gameMgr.isZh()?p_tutStep.z:p_tutStep.t;
+		var zh=g_gameMgr.isZh();
+		var l_text=zh?p_tutStep.z:p_tutStep.t;
 		$("#st_text").remove();
-		$("#game_scene").append("<div id='st_text' class='view_bk view_text st_text'><span style='color:#397fa4;'><p>Tutorial</p></span><p>"+l_text+"</p></div>");
+		var l_tut=zh?"教程":"TUTORIAL";
+		$("#game_scene").append("<div id='st_text' class='view_bk view_text st_text'><span style='color:#397fa4;'><p>"+l_tut+"</p></span><p>"+l_text+"</p></div>");
 		
 	},
 
@@ -534,12 +537,15 @@ var GameScene = {
 	this.init = function(){
 		var l_gameUI = this;
 		$("#game_scene").append("<div id='game_ui' class='game_ui'>");
-
+		var zh=g_gameMgr.isZh();
+		var t1=zh?"纪录":"BEST";
+		var t2=zh?"回合":"MOVES";
+		var t3=zh?"致谢":"ACKNOWLEDGEMENT";
 		$("#game_ui")
 		.append("<div id='title' class='title'>X-MATCH</div>")
 		.append("<div id='current_score' class='score'>0</div>")
-		.append("<div id='max_score' class='stat'>BEST</div>")
-		.append("<div id='moves' class='stat'>MOVES</div>")
+		.append("<div id='max_score' class='stat'>"+t1+"</div>")
+		.append("<div id='moves' class='stat'>"+t2+"</div>")
 		.append("<div id='options_bg' class='button_option'></div>")
 		.append("<div id='bt_tut' class='button_tut'>?</div>");
 		
@@ -559,7 +565,7 @@ var GameScene = {
 		
 		if(true/*!g_gameMgr.bIsMobile*/){
 			$("#game_ui")
-			.append("<div id= 'ack' class='ack'><hr><u>ACKNOWLEDGEMENT</u></div>")
+			.append("<div id= 'ack' class='ack'><hr><u>"+t3+"</u></div>")
 			.append("<div id= 'contact' class='contact'> <a target='_blank' href='http://geekmouse.net/press/sheet.php?p=X-Match'>2015 GeekMouse</a></div>");
 			
 			$("#ack").click(function(event){
@@ -573,7 +579,8 @@ var GameScene = {
 	//更新回合
 	this.updateRound = function(){
 		console.log("GameUI updateRound"+g_gameMgr.round);
-		var l_strRound = "MOVES: "+g_gameMgr.round.toString();
+		var w=g_gameMgr.isZh()?"回合: ":"MOVES: ";
+		var l_strRound = w+g_gameMgr.round.toString();
 		$("#moves").text(l_strRound);
 	}
 	
@@ -582,7 +589,8 @@ var GameScene = {
 		console.log("GameUI updateScore"+g_gameMgr.currentScore);
 		var l_strScore = g_gameMgr.currentScore.toString();
 		$("#current_score").text(l_strScore);
-		l_strScore = "BEST: "+g_gameMgr.maxScore.toString();
+		var w=g_gameMgr.isZh()?"纪录: ":"BEST: ";
+		l_strScore = w+g_gameMgr.maxScore.toString();
 		$("#max_score").text(l_strScore);
 	}
 	this.init();
