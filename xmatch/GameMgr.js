@@ -306,8 +306,9 @@ var g_gameMgr = {
 			$('.share').ShareLink({
 				title: 'JUST CAN\'T STOP!!',
 				text: 'I got '+g_gameMgr.maxScore+' in #XMatch. Can you beat my record?',
-				image: 'http://forums.toucharcade.com/picture.php?albumid=1809&pictureid=10282',
-				url: 'http://geekmouse.github.io/xmatch/',
+				image: 'http://geekmouse.github.io/xmatch/res/iTunesArtwork1024.jpg',
+				//url: 'http://geekmouse.github.io/xmatch/',
+				url: 'http://geekmouse.net/Server_mx_product/web_spread.php',
 				class_prefix:'s_',
 				width:640,
 				height:480
