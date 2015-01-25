@@ -225,7 +225,12 @@ var GameScene = {
 			GameScene.onControl();
 			$("#st_ask_bg").remove();
 		});
-	},	
+	},
+
+	showViewTargetAfterTut:function(){
+		this.loseControl();
+		var l_viewTargetAfter=new ViewTargetAfterTut();
+	},
 
 	showViewTarget:function(){
 		this.loseControl();
@@ -374,7 +379,7 @@ var GameScene = {
 				else{
 					$("#st_arrow").remove();
 					$("#st_text").remove();
-					this.showViewTarget();
+					this.showViewTargetAfterTut();
 					this._toggleMask(false);
 				}
 			}

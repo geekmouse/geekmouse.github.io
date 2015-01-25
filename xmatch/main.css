@@ -85,6 +85,16 @@
     color:#1aa7f2;
 }
 
+.view_text_common{
+    margin: 0 auto;
+    padding:5px 30px 0px 30px;
+    text-align:left;
+    line-height:0px;
+    font-family: Helvetica, sans-serif;
+    font-size:14px;
+    color:#1aa7f2;
+}
+
 .view_text1{
     color: #397fa4;
 }
@@ -262,7 +272,7 @@
 
 .vt_100{
     margin: 0 auto;
-    font-size:120px;
+    font-size:80px;
 /*     top:0px; */
     color: red;
     position:relative;

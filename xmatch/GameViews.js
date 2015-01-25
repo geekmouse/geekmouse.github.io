@@ -156,7 +156,7 @@
 	this.initOptions();
 }
 
-function ViewTarget(){
+function ViewTargetAfterTut(){
 	this.init=function(){
 		var l_viewSt=this;
 		var zh=g_gameMgr.isZh();
@@ -168,6 +168,60 @@ function ViewTarget(){
 		.append("<div class='view_text vt_cys' >"+t1+" <strong style='color:"+g_config.colorStrongText+";font-weight:bold'>68.47%</strong> "+t2+"</div>")
 		.append("<div class='vt_100' >100</div>")
 		.append("<div id='vt_bt' class='view_bt vt_bt'>"+t3+"</div>")
+		.animate({"opacity":1},200);
+
+		$("#vt_bt").click(function(event){
+			$("#view_target").remove();
+			GameScene.onControl();
+		});
+	}
+	this.init();
+}
+
+function ViewTarget(){
+	var l_iMaxScore = g_gameMgr.maxScore;
+	var l_iTargetScore = 0;
+	var l_fTargetPercent = 0.00;
+	var l_fFinalPercent = 99.99;
+	var l_arrayTargetScore = [
+	10,     20,     40,     60,     100,    150,    200,    300,    400,    500,    600,
+	];
+	var l_arrayTargetPercent = [
+	7.1,    23.21,  48.15,  61.24,  77.31,  81.02,  86.66,  90.37,  93.54,  96.09,  98.13,
+	];
+
+	for (var i = 0; i < l_arrayTargetScore.length; i++) {
+		if(l_arrayTargetScore[i] > l_iMaxScore){
+			l_iTargetScore = l_arrayTargetScore[i];
+			l_fTargetPercent = l_arrayTargetPercent[i];
+			break;
+		}
+	}
+
+	//beyond last target
+	if(l_iTargetScore == 0){
+		l_iTargetScore = (l_iMaxScore/100 + 1)*100;
+		l_fTargetPercent = l_fFinalPercent;
+	}
+
+	this.init=function(){
+		var l_viewSt=this;
+		var zh=g_gameMgr.isZh();
+		var t0=zh?"你的当前最高分:":"Your best score is:";
+		var t1=zh?"下一目标分数:":"Next milestone:";
+		var t2=zh?"达到这个目标以击败 ":"to beat ";
+		var t3=zh?"的玩家.":"other players."
+		var t4=zh?"我会成功的":"I'll make it!!";
+		$("#game_scene").append("<div id='view_target' class='view_bk view_target'></div>");
+		$("#view_target").css({"opacity":0.2})
+		.append("<div class='view_text vt_cys'>" + t0 + l_iMaxScore + "</div>")
+		.append("<div >"+t1+"</div>")
+		.append("<div class='vt_100' >" + l_iTargetScore + "</div>")
+		//.append("<strong style='color:"+g_config.colorStrongText+";font-weight:bold'>" + t2 + l_fTargetPercent + "% "+t3+"</strong>")
+		.append("<div class=''>"+t2+"</div>")
+		.append("<strong style='color:" + g_config.colorStrongText +"; font-weight:bold'>"+l_fTargetPercent+"% </strong>")
+		.append("<div class=''>"+t3+"</div>")
+		.append("<div id='vt_bt' class='view_bt vt_bt'>"+t4+"</div>")
 		.animate({"opacity":1},200);
 
 		$("#vt_bt").click(function(event){
