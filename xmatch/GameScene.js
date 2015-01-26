@@ -37,7 +37,7 @@ var GameScene = {
 				this.showViewTargetAfterTut();
 			}
 			else{
-				this.showGamePause(g_config.statePause.spManual);
+				this.showGamePause(g_config.statePause.spStart);
 			}
 			//
 		}

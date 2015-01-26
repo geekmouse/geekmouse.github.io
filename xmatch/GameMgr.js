@@ -35,6 +35,7 @@ var g_config = {
 		spManual:0
 		,spEnd:1
 		,spEndNew:2
+		,spStart:3
 	}
 	
 	//zorder

@@ -43,7 +43,7 @@
 
 		switch(iState){
 			case g_config.statePause.spManual:{
-				var l_showOpt=1;
+				var l_showOpt=2;
 				// if(g_gameMgr.maxScore<50){
 				// 	var l_rnOptions=g_tools.random(0,10);
 				// 	if(l_rnOptions<=5) l_showOpt=2;
@@ -56,8 +56,18 @@
 				this.showOpt(l_showOpt);
 				break;
 			}
-			case g_config.statePause.spEnd:{
+			case g_config.statePause.spStart:{
 				this.showOpt(1);
+				break;
+			}
+			case g_config.statePause.spEnd:{
+				if(g_gameMgr.maxScore<30){
+					this.showOpt(2);
+				}
+				else{
+					this.showOpt(2);
+				}
+				
 				$("#pause_text").text(zh?"游戏结束!!":"GAME OVER!!");
 				$("#bt_ps_cont").text(zh?"再看看":"RECHECK");
 				break;
@@ -121,6 +131,7 @@
 
 	this.showOpt=function(opt){
 		var zh=g_gameMgr.isZh();
+		//opt = 1;
 		switch(opt){
 			case 0:{//Twitter
 				$("#pause_text").text(zh?"收听我们的微博，不要错过任何X-Match的更新!!":"Follow us on Twitter and don't miss any X-Match updates!!");
@@ -133,17 +144,28 @@
 				$("#pause_back").append("<div id='pause_share' class='pause_share_parent'></div>");
 				if(true){
 					$("#fb-root").remove();
-					$.getScript('./social.js');
-					$('body').append("<div id='fb-root'></div>");
-					$("#pause_share").append("<div id='fb_button' class='pause_share'></div><div id='tw_button' class='pause_share'></div>");
-					$("#fb_button").load("3rdParty.txt #fb_share_button");
-					$("#fb_share_button").css({
-						left:500
+					$.getScript('./social.js', function(){
+						$('body').append("<div id='fb-root'></div>");
+						$("#pause_share").append("<div id='fb_button' class='pause_share'></div><div id='tw_button' class='pause_share'></div>");
+						$("#fb_button").load("3rdParty.txt #fb_share_button", function(){
+							$("#fb_button").css({
+								position:"absolute",
+								height:80,
+								top:120,
+								left:20
+							});	
+						});
+						
+						$("#tw_button").load("3rdParty.txt #twitter_share_button", function(){
+							$("#tw_button").css({
+								position:"absolute",
+								height:40,
+								top:120,
+								left:200
+							});
+						});
 					});
-					$("#tw_button").load("3rdParty.txt #twitter_share_button");
-					$("#twitter_share_button").css({
-						left:500
-					});
+					
 					this.loopId=setInterval(function(){
 						GameScene.syncSize(false);
 					},1000);
