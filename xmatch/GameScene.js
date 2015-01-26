@@ -31,9 +31,8 @@ var GameScene = {
 
 			this.initBg();
 			this.initMapBySaveData();
-			this.showGamePause(g_config.statePause.spManual);
-			
 			this.onControl();
+			this.showGamePause(g_config.statePause.spManual);
 		}
 		//第一次玩
 		else{
@@ -82,21 +81,44 @@ var GameScene = {
 	},
 
 	syncSize:function(bFirstRun){
-		// if(g_gameMgr.isIE){
-		// 	return;
-		// }
+		var width = $(window).width(); 
+	    var height = $(window).height();
+	    var l_zoomH=height/960;
+	    var l_zoomW=width/640;
+	    var l_zoomThis=l_zoomH<l_zoomW?l_zoomH:l_zoomW;
+	    var l_strScale="scale("+l_zoomThis+")";
+	      $("body").css({
+	      	"zoom":l_zoomThis
+	      	,"-moz-transform":l_strScale
+	      	,"-ms-transform": l_strScale
+	      	,"-o-transform":l_strScale
+	      	,"-webkit-transform:":l_strScale
+	  	});
+
+
+		if(!this.bIsMobile){
+			//FB iFrame
+		    var l_wFB=$("#fb_share_button").children().first().width()/l_zoomThis+10;
+		    var l_hFB=$("#fb_share_button").children().first().height()/l_zoomThis+10;
+		    var l_centerFactor=270;
+		    $("#fb_share_button").children().first().children().first().css({
+		    	"width":l_wFB
+		    	,"height":l_hFB
+		    	//,"left":l_centerFactor/l_zoomThis
+		   	});
+		   	// //TW iFrame
+		   	var l_wTW=110/l_zoomThis+10;
+		    var l_hTW=30/l_zoomThis+10;
+		    $("#twitter_share_button").css({
+		    	"width":l_wTW
+		    	,"height":l_hTW
+		    	,"left":l_centerFactor/l_zoomThis
+		   	});
+			//$('body').append("<div id='fb-root'></div>");
+		}
 		if(true/*!g_gameMgr.bIsMobile*/){
-			var width = $(window).width(); 
-		    var height = $(window).height();
-		    var l_zoomH=height/960;
-		    var l_zoomW=width/640;
-		    var l_zoomThis=l_zoomH<l_zoomW?l_zoomH:l_zoomW;
-		      $("body").css({
-		      	"zoom":l_zoomThis
-		      	,"-moz-transform":"scale("+l_zoomThis+")"
-		      	,"-ms-transform": "scale("+l_zoomThis+")"
-		  });
-		//console.log("windowSize:("+width+","+height+")"); 
+			
+		    
 		}
 	},
 	//初始化HTML元素

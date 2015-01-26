@@ -224,6 +224,18 @@
     margin: 0 auto;
 }
 
+.pause_share_parent{
+    margin: 0 auto;
+/*     left: 70px; */
+}
+.pause_share{
+    position: relative;
+    float: left;
+    left: 0px;
+    width: 280px;
+    height: 30px;
+}
+
 .tut_title{
     top:-800px;
     z-index:1000;
@@ -266,13 +278,14 @@
 .vt_cys{
     text-align: center;
     font-family: sans-serif;
-    padding: 25px 40px 0px 40px;
+    font-size: 24px;
+    padding: 25px 40px 20px 40px;
     position:relative;
 }
 
 .vt_100{
     margin: 0 auto;
-    font-size:80px;
+    font-size:60px;
 /*     top:0px; */
     color: red;
     position:relative;
