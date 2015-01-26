@@ -22,7 +22,7 @@
     <meta property="fb:app_id" content="1509282589321072">
     <meta property="og:site_name" content="XMatch"/>
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="JUST CANNOT STOP X-Matching!!!" />
+    <meta property="og:title" content="JUST CANNOT STOP!!!" />
     <meta property="og:url" content="http://geekmouse.github.io/xmatch/start.html" />
     <meta property="og:description" content="Can you score 100 in X-Match?" />
     <meta property="og:image" content="http://geekmouse.github.io/xmatch/res/iTunesArtwork256.jpg" />
@@ -30,41 +30,33 @@
     <!-- for social share twitter-->
     <meta name="twitter:site" content="XMatch" />
     <meta name="twitter:card" content="XMatch" />
-    <meta name="twitter:title" content="JUST CANNOT STOP X-Matching!!!" />
+    <meta name="twitter:title" content="JUST CANNOT STOP!!!" />
     <meta name="twitter:description" content="Can you score 100 in X-Match?" />
     <meta name="twitter:image:src" content="http://geekmouse.github.io/xmatch/res/iTunesArtwork256.jpg" />
     
 
     <link rel="icon" type="image/GIF" href="res/favicon.ico"/>
-    <link href="main.css" rel="stylesheet" type="text/css">
-    <link rel="apple-touch-icon" href="touch-icon-iphone.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="touch-icon-ipad.png" /> 
-    <link rel="apple-touch-icon" sizes="114x114" href="touch-icon-iphone-retina.png" />
-<!--     <meta name="viewport" content="minimal-ui"> -->
+    <script>
+        var l_strLowerAgent=navigator.userAgent.toLowerCase();
+        console.log(l_strLowerAgent);
 
- <!--    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, user-scalable=0"> -->
-	 <meta name="viewport" content="width=device-width, user-scalable=no" >
-    <!-- Third Party -->
-    <!--<script src="./jQuery_lib/jquery-2.1.3.min.js"></script>-->
-    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-    <!--<script src="./jQuery_lib/json2.js"></script>-->
-    <script src="./jQuery_lib/fastclick.min.js"></script>
-
-    <script src="./GameMgr.js"></script>
-    <script src="./GameViews.js"></script>
+        //ios
+        if(l_strLowerAgent.match(/(ipad)|(iphone)|(ipod)/i)!=null){
+            location.replace("https://itunes.apple.com/bt/app/x-match/id944881907?mt=8");
+        }
+        //android
+        else if(l_strLowerAgent.match(/(android)/i) !=null){
+            location.replace("index.html");
+        }
+        //deskop
+        else{
+            location.replace("index.html");   
+        }
+        
+    </script>
   </head>
 
   <body class="body">
-    <!--preload-->
-  <div id="preloader">
-    <img src="./res/mxArrow.png" width="1" height="1" />
-  </div>
-
-  
-    <script src="./GameScene.js"></script>
-
-    <div id="game_scene" class="game_scene" ></div> 
     
-
   </body>
 </html>

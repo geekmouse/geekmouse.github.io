@@ -306,9 +306,9 @@ var g_gameMgr = {
 			$('.share').ShareLink({
 				title: 'JUST CAN\'T STOP!!',
 				text: 'I got '+g_gameMgr.maxScore+' in #XMatch. Can you beat my record?',
-				image: 'http://geekmouse.github.io/xmatch/res/iTunesArtwork1024.jpg',
+				image: 'http://geekmouse.github.io/xmatch/res/iTunesArtwork256.jpg',
 				//url: 'http://geekmouse.github.io/xmatch/',
-				url: 'http://geekmouse.net/Server_mx_product/web_spread.php',
+				url: 'http://geekmouse.github.io/xmatch/start.html',
 				class_prefix:'s_',
 				width:640,
 				height:480
