@@ -225,7 +225,7 @@ function ViewTarget(){
 		var t4=zh?"我会成功的":"I'll make it!!";
 		$("#game_scene").append("<div id='view_target' class='view_bk view_target'></div>");
 		$("#view_target").css({"opacity":0.2})
-		.append("<div class='view_text vt_cys'>" + t0 + l_iMaxScore + "</div>")
+		.append("<div class='view_text vt_cys1'>" + t0 + l_iMaxScore + "</div>")
 		.append("<div class=''>"+t1+"</div>")
 		.append("<div class='vt_100' >" + l_iTargetScore + "</div>")
 		//.append("<strong style='color:"+g_config.colorStrongText+";font-weight:bold'>" + t2 + l_fTargetPercent + "% "+t3+"</strong>")

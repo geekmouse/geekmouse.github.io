@@ -32,7 +32,14 @@ var GameScene = {
 			this.initBg();
 			this.initMapBySaveData();
 			this.onControl();
-			this.showGamePause(g_config.statePause.spManual);
+			var l_rnOptions=g_tools.random(0,10);
+			if(l_rnOptions<=3){
+				this.showViewTargetAfterTut();
+			}
+			else{
+				this.showGamePause(g_config.statePause.spManual);
+			}
+			//
 		}
 		//第一次玩
 		else{
