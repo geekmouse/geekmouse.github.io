@@ -25,6 +25,7 @@
     div#preloader img {
             display: block;
         }
+    
     }
 @media print {
     div#preloader, 
@@ -281,6 +282,7 @@
     font-size: 16px;
     padding: 25px 40px 20px 40px;
     position:relative;
+    
 }
 
 .vt_cys1{
@@ -289,6 +291,14 @@
     font-size: 24px;
     padding: 25px 40px 20px 40px;
     position:relative;
+    color: #54ADDC;
+}
+
+.vt_target{
+    font-family: sans-serif;
+    color: #6092B4;
+    width: 200px;
+    margin: 0 auto;
 }
 
 .vt_100{

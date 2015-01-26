@@ -219,17 +219,17 @@ function ViewTarget(){
 		var l_viewSt=this;
 		var zh=g_gameMgr.isZh();
 		var t0=zh?"你的纪录:":"Your Best:";
-		var t1=zh?"下一目标分数:":"Next milestone: Score";
-		var t2=zh?"达到这个目标以击败 ":"to beat ";
-		var t3=zh?"全球玩家.":"global players."
+		var t1=zh?"下一目标分数:":"Next milestone:";
+		var t2=zh?"达到这个目标以击败 ":"Score to beat ";
+		var t3=zh?"全球玩家.":" global players."
 		var t4=zh?"我会成功的":"I'll make it!!";
 		$("#game_scene").append("<div id='view_target' class='view_bk view_target'></div>");
 		$("#view_target").css({"opacity":0.2})
 		.append("<div class='view_text vt_cys1'>" + t0 + l_iMaxScore + "</div>")
-		.append("<div class=''>"+t1+"</div>")
+		.append("<div class='vt_target'>"+t1+"</div>")
 		.append("<div class='vt_100' >" + l_iTargetScore + "</div>")
 		//.append("<strong style='color:"+g_config.colorStrongText+";font-weight:bold'>" + t2 + l_fTargetPercent + "% "+t3+"</strong>")
-		.append("<div >"+t2+"<span style='color:"+g_config.colorStrongText+"; font-weight:bold'>"+l_fTargetPercent+"%</span>"+t3+"</div>")
+		.append("<div class='vt_target'>"+t2+"<span style='color:"+g_config.colorStrongText+"; font-weight:bold'>"+l_fTargetPercent+"%</span>"+t3+"</div>")
 		//.append("<strong style='color:" + g_config.colorStrongText +"; font-weight:bold'>"+l_fTargetPercent+"% </strong>")
 		//.append("<div class=''>"+t3+"</div>")
 		.append("<div id='vt_bt' class='view_bt vt_bt'>"+t4+"</div>")
