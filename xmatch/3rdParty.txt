@@ -20,7 +20,7 @@
   data-url="http://geekmouse.github.io/xmatch/"
   data-hashtags="x-match"
   data-via="geek_mouse"
-  data-text="Just Can't Stop X-Matching!!!"
+  data-text="Just Can't Stop #X-Match !!!"
   data-related="geek_mouse"></a>
 
 <a href="https://twitter.com/intent/tweet?button_hashtag=xmatch&text=is%20a%20funny%20game.%20I%20really%20need%20you%20lent%20me%20a%20dollar%20to%20donate%20this%20guy." class="twitter-hashtag-button" data-size="large" data-related="geek_mouse,kickerbm0821" data-url="http://geekmouse.github.io/xmatch/"></a>
