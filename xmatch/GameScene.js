@@ -540,7 +540,7 @@ var GameScene = {
 		var l_text=zh?p_tutStep.z:p_tutStep.t;
 		$("#st_text").remove();
 		var l_tut=zh?"教程":"TUTORIAL";
-		$("#game_scene").append("<div id='st_text' class='view_bk view_text st_text'><span style='color:#397fa4;'><p>"+l_tut+"</p></span><p>"+l_text+"</p></div>");
+		$("#game_scene").append("<div id='st_text' class='view_bk view_text st_text'><span style='color:#397fa4;'><p>"+l_tut+"</p></span><p class='tut_text'>"+l_text+"</p></div>");
 		
 	},
 

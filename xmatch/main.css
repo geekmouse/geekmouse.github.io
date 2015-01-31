@@ -278,6 +278,7 @@
     width:400px;
     top:480px;
     left:100px;
+    font-size:18px;
     z-index:50;
 }
 
@@ -286,6 +287,7 @@
     width:320px; 
     top: 100px;
     z-index:50;
+    font-family:'sans-serif';
 }
 
 .vt_cys{
@@ -319,6 +321,10 @@
     line-height: 60px;
     top: 280px;
     left:61px;
+}
+.share_count{
+    margin: 0 auto;
+    font-family:sans-serif;   
 }
 
 
@@ -449,9 +455,15 @@
     box-shadow: inset 0px 1px 0px #aaaaaa, 0px 2px 0px 0px #aaaaaa, 0px 2px 5px #aaaaaa;
 }
 
+.tut_text{
+    font-size: 16px;
+    font-family: Helvetica, sans-serif;
+}
+
 body, canvas, div {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     -khtml-user-select: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}

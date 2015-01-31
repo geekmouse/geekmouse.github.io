@@ -159,16 +159,23 @@
 					$("#pause_share").append("\
 				            <img id='ps_facebook' class='share s_facebook like-button_count' src='./res/share/facebook_share.png' />\
 				            <img id='pc_facebook_bg' class='' src='./res/share/share_count.png' />\
-			                <font id='pc_facebook' class='counter c_facebook' face='serif'>" + g_gameMgr.shareCount_fb + "</font>\
+			                <div id='pc_facebook' class='counter c_facebook share_count' >" + g_gameMgr.shareCount_fb + "</div>\
 			                <img id='ps_twitter' class='share s_twitter like-button_count' src='./res/share/twitter_share.png' />\
 			                <img id='pc_twitter_bg' class='' src='./res/share/share_count.png' />\
-			                <font id='pc_twitter' class='counter c_twitter' face='serif'>" + g_gameMgr.shareCount_tw + "</font>\
+			                <div id='pc_twitter' class='counter c_twitter share_count' >" + g_gameMgr.shareCount_tw + "</div>\
 						");
+					var l_bHideCount = true;
 					var l_top = 100;
 					var l_left = 194;
 					var l_intervalY = 40;
 					var l_fontOffsetY = 6;
 					var l_fontOffsetXPerL = 4;
+					if(g_gameMgr.shareCount_fb>0 && g_gameMgr.shareCount_tw>0){
+						l_bHideCount = false;
+					}else{
+						l_left += 20;
+					}
+
 					//facebook
 					$("#ps_facebook").css({
 						position: 'absolute',
@@ -178,13 +185,15 @@
 					$("#pc_facebook_bg").css({
 						position: 'absolute',
 						left: l_left + 80,
-						top: l_top
+						top: l_top,
+						"display":l_bHideCount?"none":"inline"
 					});
 					$("#pc_facebook").css({
 						position: 'absolute',
 						left: l_left + 98 - (""+g_gameMgr.shareCount_fb).length*l_fontOffsetXPerL,
 						top: l_top + l_fontOffsetY,
-						"z-index" : 1
+						"z-index" : 1,
+						"display":l_bHideCount?"none":"inline"
 					});
 					//twitter
 					$("#ps_twitter").css({
@@ -195,13 +204,15 @@
 					$("#pc_twitter_bg").css({
 						position: 'absolute',
 						left: l_left + 80,
-						top: l_top + 1*l_intervalY
+						top: l_top + 1*l_intervalY,
+						"display":l_bHideCount?"none":"inline"
 					});
 					$("#pc_twitter").css({
 						position: 'absolute',
 						left: l_left + 98 - (""+g_gameMgr.shareCount_tw).length*l_fontOffsetXPerL,
 						top: l_top+ 1*l_intervalY + l_fontOffsetY,
-						"z-index" : 1
+						"z-index" : 1,
+						"display":l_bHideCount?"none":"inline"
 					});
 					
 					$.getScript("jQuery_lib/SocialShare.min.js", function(){
@@ -237,8 +248,10 @@
 		if(l_iShareCount_tw != NaN){
 			g_gameMgr.shareCount_tw = l_iShareCount_tw;
 		}
+		g_gameMgr.saveData();
 		$("#pause_back").remove();
 	}
+
 	this.initOptions();
 }
 
@@ -254,7 +267,7 @@ function ViewTargetAfterTut(){
 		.append("<div class='view_text vt_cys' >"+t1+" <strong style='color:"+g_config.colorStrongText+";font-weight:bold'>68.47%</strong> "+t2+"</div>")
 		//.append("<div class='vt_100' >100</div>")
 		.append("<div class=''>\
-					<img src='res/x.png' width=36 height=36 />\
+					<img src='res/x.png' width=48 height=48 />\
 					<font class='vt_100'>" + 100 + "</font>\
 				</div>"
 			)
@@ -306,15 +319,15 @@ function ViewTarget(){
 		$("#game_scene").append("<div id='view_target' class='view_bk view_target'></div>");
 		$("#view_target").css({"opacity":0.2})
 		.append("<div class='view_text vt_cys1'>" + t0 + l_iMaxScore + "</div>")
-		.append("<div class=''>"+t1+"</div>")
+		.append("<div class='view_text vt_cys'>"+t1+"</div>")
 		//.append("<div class='vt_100' >" + l_iTargetScore + "</div>")
 		.append("<div class=''>\
-					<img src='res/x.png' width=36 height=36 />\
+					<img src='res/x.png' width=48 height=48 />\
 					<font class='vt_100'>" + l_iTargetScore + "</font>\
 				</div>"
 			)
 		//.append("<strong style='color:"+g_config.colorStrongText+";font-weight:bold'>" + t2 + l_fTargetPercent + "% "+t3+"</strong>")
-		.append("<div >"+t2+"<span style='color:"+g_config.colorStrongText+"; font-weight:bold'>"+l_fTargetPercent+"%</span>"+t3+"</div>")
+		.append("<div class='view_text vt_cys'>"+t2+"<span style='color:"+g_config.colorStrongText+"; font-weight:bold'>"+l_fTargetPercent+"%</span>"+t3+"</div>")
 		//.append("<strong style='color:" + g_config.colorStrongText +"; font-weight:bold'>"+l_fTargetPercent+"% </strong>")
 		//.append("<div class=''>"+t3+"</div>")
 		.append("<div id='vt_bt' class='view_bt vt_bt'>"+t4+"</div>")
