@@ -259,8 +259,14 @@
                 url : 'https://cdn.api.twitter.com/1/urls/count.json',
                 data : {'url': url}
             })
-            .done(function(data){callback(data.count);})
-            .fail(function(data){callback(0);})
+            .done(function(data){
+                callback(data.count);
+                //it does not work >=-Rct-=<
+                //g_gameMgr.shareCount_tw = data.count;
+            })
+            .fail(function(data){
+                callback(0);
+            })
         }
 
         function facebook(url, callback){
@@ -270,8 +276,14 @@
                 url: 'https://api.facebook.com/restserver.php',
                 data: {'method': 'links.getStats', 'urls': [url], 'format': 'json'}
             })
-            .done(function (data){callback(data[0].share_count)})
-            .fail(function(){callback(0);})
+            .done(function (data){
+                callback(data[0].share_count);
+                //it does not work >=-Rct-=
+                //g_gameMgr.shareCount_fb = data[0].share_count;
+            })
+            .fail(function(){
+                callback(0);
+            })
         }
 
         function vk(url, callback){

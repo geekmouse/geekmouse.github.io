@@ -25,7 +25,6 @@
     div#preloader img {
             display: block;
         }
-    
     }
 @media print {
     div#preloader, 
@@ -41,7 +40,7 @@
 
 .view_bk{
     margin: 0 auto;
-    background-color:#ecf7fd;
+    background-color:#ededed;
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -96,6 +95,18 @@
     color:#1aa7f2;
 }
 
+.get_score{
+    margin: 0 auto;
+    padding:5px 30px 0px 30px;
+    text-align:left;
+    line-height:22px;
+    font-family: Helvetica, sans-serif;
+    font-size:32px;
+    color:#FFFFFF;
+    text-shadow:1px 1px rgba(0,0,0,.3);
+
+}
+
 .view_text1{
     color: #397fa4;
 }
@@ -135,7 +146,8 @@
 
 .brick_x{
     position:relative;
-    top:7.5px;
+    left:-4.5px;
+    top:-4.5px;
 }
 
 
@@ -282,7 +294,6 @@
     font-size: 16px;
     padding: 25px 40px 20px 40px;
     position:relative;
-    
 }
 
 .vt_cys1{
@@ -291,14 +302,6 @@
     font-size: 24px;
     padding: 25px 40px 20px 40px;
     position:relative;
-    color: #54ADDC;
-}
-
-.vt_target{
-    font-family: sans-serif;
-    color: #6092B4;
-    width: 200px;
-    margin: 0 auto;
 }
 
 .vt_100{
@@ -382,10 +385,33 @@
 
 .fb_bt_mo{
     position: relative;
-   left:50px;
+    left:50px;
     margin:15px 25px;
 }
+.like-block {
+    width: 100px;
+    height: 90px;
+    display: inline-block;
+    margin-right: 5px;
+    padding: 9px;
+    border:1px solid #3e9cbf;
+    border-radius: 5px;
+}
 
+.like-counter {
+    height: 30px;
+    /*border:2px solid #205c73;*/
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size:1em;
+    font-family:Oswald, sans-serif;
+    letter-spacing:.1em;
+    text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    background: #3e9cbf;
+    /*padding-top: 10px;*/
+}
 .like-block-only-button {
     width: 32px;
     height: 32px;
@@ -414,6 +440,14 @@
     box-shadow: inset 0px 1px 0px #3e9cbf, 0px 2px 0px 0px #205c73, 0px 2px 5px #999;
 }
 
+.like-button_count {
+    cursor:pointer; 
+}
+
+.like-button_count:hover {
+    color:#dfe7ea;
+    box-shadow: inset 0px 1px 0px #aaaaaa, 0px 2px 0px 0px #aaaaaa, 0px 2px 5px #aaaaaa;
+}
 
 body, canvas, div {
     -moz-user-select: none;

@@ -37,7 +37,7 @@ var GameScene = {
 				this.showViewTargetAfterTut();
 			}
 			else{
-				this.showGamePause(g_config.statePause.spStart);
+				this.showGamePause(g_config.statePause.spManual);
 			}
 			//
 		}
@@ -216,25 +216,25 @@ var GameScene = {
 	//弹出暂停界面
 	showGamePause:function(iState){
 	//GamePause
-	if(this.gamePause == null && this.tutStep<0){
-			this.loseControl();
+	if(GameScene.gamePause == null && this.tutStep<0){
+			GameScene.loseControl();
 
 			console.log("initGamePause");
-			this.gamePause = new ViewPause(iState);
+			GameScene.gamePause = new ViewPause(iState);
 		}
 	},
 
 	//隐藏GamePause
 	hideGamePause:function(){
-		if(this.gamePause != null){
-			this.gamePause.disappear();
-			this.gamePause = null;
-			this.onControl();
+		if(GameScene.gamePause != null){
+			GameScene.gamePause.disappear();
+			GameScene.gamePause = null;
+			GameScene.onControl();
 		}
 	},
 
 	showStepTut:function(){
-		this.loseControl();
+		GameScene.loseControl();
 		$("#game_scene").append("<div id='st_ask_bg' class='view_bk st_ask_bg'></div>");
 		var l_tip=g_gameMgr.isZh()?"确定要离开并进入教程吗？这会失去当前进度":"Are you sure you want to QUIT for the tutorial? You’ll lose your current progress";
 		$("#st_ask_bg").append("<div id='st_ask_words' class='view_text st_ask_words'>"+l_tip+" </div>")
@@ -325,7 +325,7 @@ var GameScene = {
 	 addBricksByNum:function(p_iCount, p_bWithTut){
 		p_bWithTut=p_bWithTut?p_bWithTut:false;
 		var l_iBrickNum = 0;
-		var l_arrayNum_basic = [1,2];
+		
 		while(l_iBrickNum < p_iCount){
 			var l_iGridX = 0;
 			var l_iGridY = 0;
@@ -335,12 +335,34 @@ var GameScene = {
 				l_iGridY= g_tools.random(0,g_config.gridCount_y);
 			}while(g_gameMgr.arrayGrid[l_iGridY][l_iGridX].gameBrick);
 
-			var l_iIndex = g_tools.random(0, l_arrayNum_basic.length);
-			var l_iNum = l_arrayNum_basic[l_iIndex];
+			var l_iNum = this.getRandomNumber();			
 			var l_gameBrick = this.addBrick(l_iNum, cc.p(l_iGridX, l_iGridY));
 			
 			l_iBrickNum ++;
 		}
+	},
+
+	//根据当前分数,得到2的概率
+	getRandomNumber:function(){
+		var l_arrayNum_basic = [1,2];
+		var l_iIndex = 0;
+		var l_iRandomNum = g_tools.random(0,100);
+		//1出现的概率
+		var l_iScore = g_gameMgr.currentScore;
+		var l_fPercentage = 0.0;
+		if(l_iScore<30){
+			l_fPercentage = 10.0;
+		}else if(l_iScore < 86){
+			l_fPercentage = 10.0+(l_iScore - 30)/(80.0-10.0);
+		}else {
+			l_fPercentage = 50.0;
+		}
+
+		if(l_iRandomNum>=l_fPercentage){
+			l_iIndex = 1;
+		}
+		var l_iNum = l_arrayNum_basic[l_iIndex];
+		return l_iNum;
 	},
 
 	// 增加一个Brick进入场景
@@ -408,7 +430,6 @@ var GameScene = {
 				else{
 					$("#st_arrow").remove();
 					$("#st_text").remove();
-					this.showViewTargetAfterTut();
 					this._toggleMask(false);
 				}
 			}
@@ -420,16 +441,18 @@ var GameScene = {
 	},
 	_processClickGrid:function(p_gridPoint){
 		var l_targetNum = g_gameMgr.clickGrid(p_gridPoint);
+		var l_iScoreThisRound = 0;
 		//console.log("--<"+p_gridPoint.x+","+p_gridPoint.y+"> --> "+l_targetNum);
 		//消除了Crossing
 		if(l_targetNum >= g_config.numMultiX){
 			this.removeConnectPoint(p_gridPoint);
 			
-			var l_iScoreThisRound = (l_targetNum - g_config.numMultiX)/10;
+			l_iScoreThisRound = (l_targetNum - g_config.numMultiX)/10;
 			
 			//增加round
 			g_gameMgr.addRound();
 			g_gameMgr.addCurrentScore(l_iScoreThisRound);
+
 			//console.log("score:"+ g_gameMgr.currentScore);
 		}
 		//正常消除普通数字
@@ -443,8 +466,11 @@ var GameScene = {
 			this.showForbid(p_gridPoint);
 		}
 		
-		this.updateUI();
+		this.updateUI(l_iScoreThisRound, p_gridPoint);
 		
+		//得分动画
+
+
 		//判断结束
 		if(g_gameMgr.checkGameOver()){
 			this.showGamePause(g_gameMgr.bNewRecord?g_config.statePause.spEndNew:g_config.statePause.spEnd);
@@ -540,9 +566,22 @@ var GameScene = {
 				}
 			}
 		}else{
-			$("#bg_mask").remove();
 			$("#grid_layer_tut").remove();
 			$("#brick_layer_tut").remove();
+
+			var l_gameScene = this;
+			l_gameScene.loseControl();
+			$("#bg_mask").animate({
+					"opacity": 0,
+					"filter":"alpha(opacity=20)"
+				},
+				2000, 
+				//then we do
+				function() {
+				l_gameScene.onControl();
+				$("#bg_mask").remove();
+				l_gameScene.showViewTargetAfterTut();
+			});
 		}
 	},
 
@@ -554,10 +593,20 @@ var GameScene = {
 	},
 	
 	//更新UI
-	updateUI:function(){
+	updateUI:function(p_iScoreThisRound, p_gridPoint){
+		if(p_iScoreThisRound == undefined){
+			p_iScoreThisRound = 0;
+		}
+		if(p_gridPoint == undefined){
+			p_gridPoint = cc.p(0,0);
+		}
 		if(this.gameUI){
 			this.gameUI.updateRound();
 			this.gameUI.updateScore();
+
+			if(p_iScoreThisRound > 0){
+				this.gameUI.showScoreAnimate(p_iScoreThisRound, p_gridPoint);
+			}
 		}
 	}
 }
@@ -567,6 +616,7 @@ var GameScene = {
  function GameHUD(){
 	//游戏场景引用
  	this.isTouchEnabled=true;
+ 	this.numForGetScore = 0;
 	//初始化底下的按钮
 	this.init = function(){
 		var l_gameUI = this;
@@ -577,7 +627,14 @@ var GameScene = {
 		var t3=zh?"致谢":"ACKNOWLEDGEMENT";
 		$("#game_ui")
 		.append("<div id='title' class='title'>X-MATCH</div>")
-		.append("<div id='current_score' class='score'>0</div>")
+		.append("\
+			<div>\
+				<img src='res/x.png', width = 36, height = 36 />\
+				<font id='current_score' class='score'>\
+				0\
+				</font>\
+			</div>\
+			")
 		.append("<div id='max_score' class='stat'>"+t1+"</div>")
 		.append("<div id='moves' class='stat'>"+t2+"</div>")
 		.append("<div id='options_bg' class='button_option'></div>")
@@ -628,6 +685,38 @@ var GameScene = {
 		$("#max_score").text(l_strScore);
 	}
 	this.init();
+
+	//showScoreAnimate
+	this.showScoreAnimate = function(p_iScoreThisRound, p_gridPoint){
+		var l_iMidOffset = 0;
+		var l_iHeightOffset = 120;
+		var l_fDuration = 1200;//ms
+		var l_position = g_gameMgr.getPositionByGrid(p_gridPoint);
+		$("#game_scene").append("<div id='get_score"+this.numForGetScore+"' class='get_score'>+"+p_iScoreThisRound+"</div>");
+		$("#get_score"+this.numForGetScore).css({
+			position: 'absolute',
+			top: l_position.y,
+			left:l_position.x + l_iMidOffset,
+			"z-index":g_config.zorder.GameTip
+		});
+
+		$("#get_score"+this.numForGetScore).animate({
+				position: 'absolute',
+				top: l_position.y - l_iHeightOffset,
+				left: l_position.x + l_iMidOffset,
+				"opacity":0,
+				"filter":"alpha(opacity=0)"
+			}, l_fDuration
+			,function(){
+				this.remove();
+			}
+		);
+		this.numForGetScore++;
+
+
+
+	}
+
 }
 
 

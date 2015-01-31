@@ -43,7 +43,7 @@
 
 		switch(iState){
 			case g_config.statePause.spManual:{
-				var l_showOpt=2;
+				var l_showOpt=1;
 				// if(g_gameMgr.maxScore<50){
 				// 	var l_rnOptions=g_tools.random(0,10);
 				// 	if(l_rnOptions<=5) l_showOpt=2;
@@ -56,18 +56,8 @@
 				this.showOpt(l_showOpt);
 				break;
 			}
-			case g_config.statePause.spStart:{
-				this.showOpt(1);
-				break;
-			}
 			case g_config.statePause.spEnd:{
-				if(g_gameMgr.maxScore<30){
-					this.showOpt(2);
-				}
-				else{
-					this.showOpt(2);
-				}
-				
+				this.showOpt(1);
 				$("#pause_text").text(zh?"游戏结束!!":"GAME OVER!!");
 				$("#bt_ps_cont").text(zh?"再看看":"RECHECK");
 				break;
@@ -140,32 +130,87 @@
 				break;
 			}
 			case 1:{//FacebookShare
-				$("#pause_text").text(zh?"分享X-Match":"Share X-Match!!");
+				//$("#pause_text").text(zh?"分享X-Match":"Share X-Match!!");
 				$("#pause_back").append("<div id='pause_share' class='pause_share_parent'></div>");
 				if(true){
-					$("#fb-root").remove();
-					$.getScript('./social.js', function(){
-						$('body').append("<div id='fb-root'></div>");
-						$("#pause_share").append("<div id='fb_button' class='pause_share'></div><div id='tw_button' class='pause_share'></div>");
-						$("#fb_button").load("3rdParty.txt #fb_share_button", function(){
-							$("#fb_button").css({
-								position:"absolute",
-								height:80,
-								top:120,
-								left:20
-							});	
-						});
+					// $("#fb-root").remove();
+					// $.getScript('./social.js', function(){
+					// 	$('body').append("<div id='fb-root'></div>");
+					// 	$("#pause_share").append("<div id='fb_button' class='pause_share'></div><div id='tw_button' class='pause_share'></div>");
+					// 	$("#fb_button").load("3rdParty.txt #fb_share_button", function(){
+					// 		$("#fb_button").css({
+					// 			position:"absolute",
+					// 			height:80,
+					// 			top:120,
+					// 			left:20
+					// 		});	
+					// 	});
 						
-						$("#tw_button").load("3rdParty.txt #twitter_share_button", function(){
-							$("#tw_button").css({
-								position:"absolute",
-								height:40,
-								top:120,
-								left:200
-							});
-						});
+					// 	$("#tw_button").load("3rdParty.txt #twitter_share_button", function(){
+					// 		$("#tw_button").css({
+					// 			position:"absolute",
+					// 			height:40,
+					// 			top:120,
+					// 			left:200
+					// 		});
+					// 	});
+					// });
+					
+					$("#pause_share").append("\
+				            <img id='ps_facebook' class='share s_facebook like-button_count' src='./res/share/facebook_share.png' />\
+				            <img id='pc_facebook_bg' class='' src='./res/share/share_count.png' />\
+			                <font id='pc_facebook' class='counter c_facebook' face='serif'>" + g_gameMgr.shareCount_fb + "</font>\
+			                <img id='ps_twitter' class='share s_twitter like-button_count' src='./res/share/twitter_share.png' />\
+			                <img id='pc_twitter_bg' class='' src='./res/share/share_count.png' />\
+			                <font id='pc_twitter' class='counter c_twitter' face='serif'>" + g_gameMgr.shareCount_tw + "</font>\
+						");
+					var l_top = 100;
+					var l_left = 194;
+					var l_intervalY = 40;
+					var l_fontOffsetY = 6;
+					var l_fontOffsetXPerL = 4;
+					//facebook
+					$("#ps_facebook").css({
+						position: 'absolute',
+						left: l_left,
+						top: l_top
+					});
+					$("#pc_facebook_bg").css({
+						position: 'absolute',
+						left: l_left + 80,
+						top: l_top
+					});
+					$("#pc_facebook").css({
+						position: 'absolute',
+						left: l_left + 98 - (""+g_gameMgr.shareCount_fb).length*l_fontOffsetXPerL,
+						top: l_top + l_fontOffsetY,
+						"z-index" : 1
+					});
+					//twitter
+					$("#ps_twitter").css({
+						position: 'absolute',
+						left: l_left,
+						top: l_top + 1*l_intervalY
+					});
+					$("#pc_twitter_bg").css({
+						position: 'absolute',
+						left: l_left + 80,
+						top: l_top + 1*l_intervalY
+					});
+					$("#pc_twitter").css({
+						position: 'absolute',
+						left: l_left + 98 - (""+g_gameMgr.shareCount_tw).length*l_fontOffsetXPerL,
+						top: l_top+ 1*l_intervalY + l_fontOffsetY,
+						"z-index" : 1
 					});
 					
+					$.getScript("jQuery_lib/SocialShare.min.js", function(){
+						g_gameMgr.shareSocialLink("#ps_facebook");
+						g_gameMgr.shareSocialCount("#pc_facebook");
+						g_gameMgr.shareSocialLink("#ps_twitter");
+						g_gameMgr.shareSocialCount("#pc_twitter");
+					});
+
 					this.loopId=setInterval(function(){
 						GameScene.syncSize(false);
 					},1000);
@@ -184,6 +229,14 @@
 	}
 	//消失动画
 	this.disappear = function(){
+		var l_iShareCount_fb = parseInt($("#pc_facebook").text());
+		var l_iShareCount_tw = parseInt($("#pc_twitter").text());
+		if(l_iShareCount_fb != NaN){
+			g_gameMgr.shareCount_fb = l_iShareCount_fb;	
+		}
+		if(l_iShareCount_tw != NaN){
+			g_gameMgr.shareCount_tw = l_iShareCount_tw;
+		}
 		$("#pause_back").remove();
 	}
 	this.initOptions();
@@ -199,7 +252,12 @@ function ViewTargetAfterTut(){
 		$("#game_scene").append("<div id='view_target' class='view_bk view_target'></div>");
 		$("#view_target").css({"opacity":0.2})
 		.append("<div class='view_text vt_cys' >"+t1+" <strong style='color:"+g_config.colorStrongText+";font-weight:bold'>68.47%</strong> "+t2+"</div>")
-		.append("<div class='vt_100' >100</div>")
+		//.append("<div class='vt_100' >100</div>")
+		.append("<div class=''>\
+					<img src='res/x.png' width=36 height=36 />\
+					<font class='vt_100'>" + 100 + "</font>\
+				</div>"
+			)
 		.append("<div id='vt_bt' class='view_bt vt_bt'>"+t3+"</div>")
 		.animate({"opacity":1},200);
 
@@ -241,17 +299,22 @@ function ViewTarget(){
 		var l_viewSt=this;
 		var zh=g_gameMgr.isZh();
 		var t0=zh?"你的纪录:":"Your Best:";
-		var t1=zh?"下一目标分数:":"Next milestone:";
-		var t2=zh?"达到这个目标以击败 ":"Score to beat ";
-		var t3=zh?"全球玩家.":" global players."
+		var t1=zh?"下一目标分数:":"Next milestone: Score";
+		var t2=zh?"达到这个目标以击败 ":"to beat ";
+		var t3=zh?"全球玩家.":"global players."
 		var t4=zh?"我会成功的":"I'll make it!!";
 		$("#game_scene").append("<div id='view_target' class='view_bk view_target'></div>");
 		$("#view_target").css({"opacity":0.2})
 		.append("<div class='view_text vt_cys1'>" + t0 + l_iMaxScore + "</div>")
-		.append("<div class='vt_target'>"+t1+"</div>")
-		.append("<div class='vt_100' >" + l_iTargetScore + "</div>")
+		.append("<div class=''>"+t1+"</div>")
+		//.append("<div class='vt_100' >" + l_iTargetScore + "</div>")
+		.append("<div class=''>\
+					<img src='res/x.png' width=36 height=36 />\
+					<font class='vt_100'>" + l_iTargetScore + "</font>\
+				</div>"
+			)
 		//.append("<strong style='color:"+g_config.colorStrongText+";font-weight:bold'>" + t2 + l_fTargetPercent + "% "+t3+"</strong>")
-		.append("<div class='vt_target'>"+t2+"<span style='color:"+g_config.colorStrongText+"; font-weight:bold'>"+l_fTargetPercent+"%</span>"+t3+"</div>")
+		.append("<div >"+t2+"<span style='color:"+g_config.colorStrongText+"; font-weight:bold'>"+l_fTargetPercent+"%</span>"+t3+"</div>")
 		//.append("<strong style='color:" + g_config.colorStrongText +"; font-weight:bold'>"+l_fTargetPercent+"% </strong>")
 		//.append("<div class=''>"+t3+"</div>")
 		.append("<div id='vt_bt' class='view_bt vt_bt'>"+t4+"</div>")

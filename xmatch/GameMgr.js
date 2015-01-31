@@ -35,7 +35,6 @@ var g_config = {
 		spManual:0
 		,spEnd:1
 		,spEndNew:2
-		,spStart:3
 	}
 	
 	//zorder
@@ -63,6 +62,8 @@ var g_config = {
 		,key_globalVisit:"globalVisit"
 		,key_todayVisit:"todayVisit"
 		,key_unSyncCount:"un_sync_count"
+		,key_shareCountFB:"shareCount_fb"
+		,key_shareCountTW:"shareCount_tw"
 		
 	}
 	
@@ -144,6 +145,10 @@ var g_gameMgr = {
 	globalVisitorToday:0,
 	//未同步的局数
 	unSyncCount:0,
+
+	//分享次数
+	shareCount_fb:0,
+	shareCount_tw:0,
 
 	//isMobile
 	bIsMobile:false,
@@ -276,46 +281,59 @@ var g_gameMgr = {
 		$("#share_buttons_div").css({"z-index":g_config.zorder.GameUI}).
 		append("\
 			<div class='like-block-only-button'>\
-				<img class='like-button share s_facebook' src='./res/share/facebook_32.png' />\
+				<img id='s_facebook' class='like-button share s_facebook' src='./res/share/facebook_32.png' />\
 			</div>\
 			").
 		append("\
 			<div class='like-block-only-button'>\
-                <img class='like-button share s_twitter' src='./res/share/twitter_32.png'/>\
+                <img id='s_twitter' class='like-button share s_twitter' src='./res/share/twitter_32.png'/>\
             </div>\
             ").
 		append("\
 			<div class='like-block-only-button'>\
-                <img class='like-button share s_reddit' src='./res/share/reddit_32.png' />\
+                <img id='s_reddit' class='like-button share s_reddit' src='./res/share/reddit_32.png' />\
             </div>\
             ").
 		append("\
 			<div class='like-block-only-button'>\
-                <img class='like-button share s_plus' src='./res/share/googleplus_32.png'/>\
+                <img id='s_plus' class='like-button share s_plus' src='./res/share/googleplus_32.png'/>\
             </div>\
             ").
 		append("\
 			<div class='like-block-only-button'>\
-                <img class='like-button share s_digg' src='res/share/digg_32.png'/>\
+                <img id='s_digg' class='like-button share s_digg' src='res/share/digg_32.png'/>\
             </div>\
             ");
 
 
 		$.getScript("jQuery_lib/SocialShare.min.js", function(){
 			console.log("load SocialShare.js done");
-
-			$('.share').ShareLink({
-				title: 'JUST CAN\'T STOP!!',
-				text: 'I got '+g_gameMgr.maxScore+' in #X-Match. Can you beat my record?',
-				image: 'http://geekmouse.github.io/xmatch/res/iTunesArtwork256.jpg',
-				//url: 'http://geekmouse.github.io/xmatch/',
-				url: 'http://geekmouse.github.io/xmatch/start.html',
-				class_prefix:'s_',
-				width:640,
-				height:480
-			});
+			g_gameMgr.shareSocialLink("#s_facebook");
+			g_gameMgr.shareSocialLink("#s_twitter");
+			g_gameMgr.shareSocialLink("#s_reddit");
+			g_gameMgr.shareSocialLink("#s_plus");
+			g_gameMgr.shareSocialLink("#s_digg");
 		});
 		
+	},
+
+	shareSocialLink:function(p_strElemID){
+		$(p_strElemID).ShareLink({
+			title: 'JUST CAN\'T STOP!!',
+			text: 'I got '+g_gameMgr.maxScore+' in #XMatch. Can you beat my record?',
+			image: 'http://geekmouse.github.io/xmatch/res/iTunesArtwork256.jpg',
+			//url: 'http://geekmouse.github.io/xmatch/',
+			url: 'http://geekmouse.github.io/xmatch/start.html',
+			class_prefix:'s_',
+			width:640,
+			height:480
+		});
+	},
+
+	shareSocialCount:function(p_strElemID){
+		$(p_strElemID).ShareCounter({
+            url: 'http://geekmouse.github.io/xmatch/start.html'
+        });
 	},
 	
 	readString:function(key){
@@ -670,13 +688,33 @@ var g_gameMgr = {
 		if(l_jsonData == undefined){
 			console.log("GameMgr loadSaveDataOfThisGame error ");
 		}
-		this.round = l_jsonData[g_config.saveData.key_round];
-		this.currentScore = l_jsonData[g_config.saveData.key_currentScore];
-		this.maxScore = l_jsonData[g_config.saveData.key_maxScore];
+		if(l_jsonData[g_config.saveData.key_round] != undefined){
+			this.round = l_jsonData[g_config.saveData.key_round];
+		}
+		if(l_jsonData[g_config.saveData.key_currentScore] != undefined){
+			this.currentScore = l_jsonData[g_config.saveData.key_currentScore];	
+		}
+		if(l_jsonData[g_config.saveData.key_maxScore] != undefined){
+			this.maxScore = l_jsonData[g_config.saveData.key_maxScore];	
+		}
+		
 		this.bNewRecord = (l_jsonData[g_config.saveData.key_isNewRecord] == 1);
-		this.globalVisitorAll = l_jsonData[g_config.saveData.key_globalVisit];
-		this.globalVisitorToday = l_jsonData[g_config.saveData.key_todayVisit];
-		this.unSyncCount = l_jsonData[g_config.saveData.key_unSyncCount];
+
+		if(l_jsonData[g_config.saveData.key_globalVisit] != undefined){
+			this.globalVisitorAll = l_jsonData[g_config.saveData.key_globalVisit];
+		}
+		if(l_jsonData[g_config.saveData.key_todayVisit] != undefined){
+			this.globalVisitorToday = l_jsonData[g_config.saveData.key_todayVisit];
+		}
+		if(l_jsonData[g_config.saveData.key_unSyncCount] != undefined){
+			this.unSyncCount = l_jsonData[g_config.saveData.key_unSyncCount];
+		}
+		if(l_jsonData[g_config.saveData.key_shareCountFB] != undefined){
+			this.shareCount_fb = l_jsonData[g_config.saveData.key_shareCountFB];
+		}
+		if(l_jsonData[g_config.saveData.key_shareCountTW] != undefined){
+			this.shareCount_tw = l_jsonData[g_config.saveData.key_shareCountTW];
+		}
 	},
 	
 	//得到存档下当前局面某个格子里的数
@@ -729,6 +767,10 @@ var g_gameMgr = {
 
 		//un sync count
 		l_jsonData[g_config.saveData.key_unSyncCount] = this.unSyncCount;
+
+		//shareCount
+		l_jsonData[g_config.saveData.key_shareCountFB] = this.shareCount_fb;
+		l_jsonData[g_config.saveData.key_shareCountTW] = this.shareCount_tw;
 
 		//new record
 		if(this.bNewRecord){
