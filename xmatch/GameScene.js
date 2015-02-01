@@ -308,10 +308,22 @@ var GameScene = {
 
 	//每回合
 	addBricksEveryRound:function(){
+		var l_gameScene = this;
 		//默认p_bWithTut:false
 		var s=this.tutStep;
+		var l_delay_0 = 300;
+		var l_delay_1 = 500;
 		if(s<0){
-			this.addBricksByNum(g_config.brickNum_everyRound);
+			l_gameScene.loseControl();
+			setTimeout(function(){
+				l_gameScene.addBricksByNum(1);
+			}, l_delay_0);
+			setTimeout(function(){
+				l_gameScene.addBricksByNum(1);
+				l_gameScene.onControl();
+			}, l_delay_1);
+			//
+			//l_gameScene.addBricksByNum(g_config.brickNum_everyRound);
 		}
 		else{
 			var l_gen1=g_gameMgr.st_gen[s*2];
@@ -335,34 +347,11 @@ var GameScene = {
 				l_iGridY= g_tools.random(0,g_config.gridCount_y);
 			}while(g_gameMgr.arrayGrid[l_iGridY][l_iGridX].gameBrick);
 
-			var l_iNum = this.getRandomNumber();			
+			var l_iNum = g_gameMgr.getRandomNumber();			
 			var l_gameBrick = this.addBrick(l_iNum, cc.p(l_iGridX, l_iGridY));
 			
 			l_iBrickNum ++;
 		}
-	},
-
-	//根据当前分数,得到2的概率
-	getRandomNumber:function(){
-		var l_arrayNum_basic = [1,2];
-		var l_iIndex = 0;
-		var l_iRandomNum = g_tools.random(0,100);
-		//1出现的概率
-		var l_iScore = g_gameMgr.currentScore;
-		var l_fPercentage = 0.0;
-		if(l_iScore<30){
-			l_fPercentage = 10.0;
-		}else if(l_iScore < 86){
-			l_fPercentage = 10.0+(l_iScore - 30)/(80.0-10.0);
-		}else {
-			l_fPercentage = 50.0;
-		}
-
-		if(l_iRandomNum>=l_fPercentage){
-			l_iIndex = 1;
-		}
-		var l_iNum = l_arrayNum_basic[l_iIndex];
-		return l_iNum;
 	},
 
 	// 增加一个Brick进入场景

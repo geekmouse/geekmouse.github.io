@@ -82,6 +82,9 @@ var g_tools = {
 	},
 	isHitRandom:function(p_iPercent){
 		return this.random(0, 100)<p_iPercent;
+	},
+	randomFloat:function(p_fStart, p_fEnd){
+		return p_fStart +  Math.random()*(p_fEnd - p_fStart);
 	}
 
 };
@@ -626,6 +629,54 @@ var g_gameMgr = {
 		// this.maxScore = 0;
 		this.round = 0;
 		this.bNewRecord=false;
+	},
+
+	//根据当前分数,得到2的概率
+	//{20,[0,10,90]};{30,[0,20,80]};{50,[0,50,50]}
+	getRandomNumber:function(){
+		var l_gameControl_basic = [
+		[20, [0,10.0,90.0]]
+		,[30,[0,20.0,80.0]]
+		,[50,[0,50.0,50.0]]
+		];
+
+		//区间
+		var l_iScore = g_gameMgr.currentScore;
+		var l_iAreaIndex = 0;
+
+		for(; l_iAreaIndex<l_gameControl_basic.length; l_iAreaIndex++){
+			if(l_iScore < l_gameControl_basic[l_iAreaIndex][0]){
+				break;
+			}
+		}
+
+		//比例数组
+		var l_arrayPercent = [];
+
+		if(l_iAreaIndex == 0){
+			l_arrayPercent = l_gameControl_basic[l_iAreaIndex][1];
+		}else if(l_iAreaIndex == l_gameControl_basic.length){
+			l_arrayPercent = l_gameControl_basic[l_iAreaIndex - 1][1];
+		}//线性
+		else{
+			var l_iBottom = l_iAreaIndex - 1;
+			var l_iTop = l_iAreaIndex;
+			for(var i=g_config.numStart; i<=g_config.numX; i++){
+				var l_fFactor = (l_iScore - l_gameControl_basic[l_iBottom][0])/(l_gameControl_basic[l_iTop][0] - l_gameControl_basic[l_iBottom][0]);
+				var l_fPercent = l_gameControl_basic[l_iBottom][1][i] + l_fFactor*(l_gameControl_basic[l_iTop][1][i] - l_gameControl_basic[l_iBottom][1][i]);
+				l_arrayPercent.push(l_fPercent);
+			}
+		}
+
+		var l_fRandom = g_tools.randomFloat(0.0,100.0);
+		for (var i = 0; i < l_arrayPercent.length; i++) {
+			if(l_fRandom < l_arrayPercent[i]){
+				return i;
+			}
+			l_fRandom -= l_arrayPercent[i];
+		};
+		console.log("error here getRandomNumber");
+		return 1;
 	},
 	
 	// 增加回合数
