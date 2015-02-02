@@ -273,7 +273,7 @@ var GameScene = {
 			this.tutStep=0;
 			for (var i = 0; i<g_gameMgr.st_bricks.length; i++) {
 				var l_thisBrick=g_gameMgr.st_bricks[i];
-				this.addBrick(l_thisBrick.c,cc.p(l_thisBrick.x,l_thisBrick.y), true);
+				this.addBrick(l_thisBrick.c,cc.p(l_thisBrick.x,l_thisBrick.y),0, true);
 			};
 			this.showStepTutTip(g_gameMgr.st_steps[0]);
 		}
@@ -325,8 +325,8 @@ var GameScene = {
 			var l_gen1=g_gameMgr.st_gen[s*2];
 			var l_gen2=g_gameMgr.st_gen[s*2+1];
 
-			this.addBrick(l_gen1.c,cc.p(l_gen1.x,l_gen1.y), true);
-			this.addBrick(l_gen2.c,cc.p(l_gen2.x,l_gen2.y), true);
+			this.addBrick(l_gen1.c,cc.p(l_gen1.x,l_gen1.y), 0,true);
+			this.addBrick(l_gen2.c,cc.p(l_gen2.x,l_gen2.y),0, true);
 		}
 	},
 	// 随机增加一定数目的Brick
@@ -445,7 +445,7 @@ var GameScene = {
 		//正常消除普通数字
 		else if(l_targetNum >= g_config.numStart && l_targetNum <= g_config.numX){
 			this.removeConnectPoint(p_gridPoint);
-			this.addBrick(l_targetNum, p_gridPoint, this.tutStep>=0);
+			this.addBrick(l_targetNum, p_gridPoint, 0,this.tutStep>=0);
 			this.addBricksEveryRound();
 			g_gameMgr.addRound();
 		}

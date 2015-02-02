@@ -909,7 +909,7 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 	
 	this.show = function(p_delayFactor){
 		var l_strColor = g_gameMgr.brickColors[this.number];
-		if (p_delayFactor!=0) {
+		if (p_delayFactor!=0 && !this.withTut) {
 			$("#brick_layer").append("<div class='brick_shadow' id='shadow_"+this.brick_id+"'></div>");
 			$("#shadow_"+this.brick_id).css({
 				"left":this.leftOriginal+20
@@ -947,6 +947,8 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 				,"display":"none"
 				,"z-index":g_config.zorder.GameTutObject
 				,"background-color": l_strColor
+				,opacity: 0.0
+				,filter:"alpha(opacity=0)"
 			});
 
 			if(this.number == g_config.numX){
@@ -985,12 +987,7 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 			);
 
 		if(this.withTut){
-			$("#"+this.brick_id+"_tut").css({
-				"opacity": 0.0,
-				filter:"alpha(opacity=0)"
-				// "width" : 80,
-				// "height" : 80
-			})
+			$("#"+this.brick_id+"_tut")
 			.delay(150)
 			.animate({
 					// width: 80,
