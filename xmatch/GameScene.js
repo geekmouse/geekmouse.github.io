@@ -37,7 +37,7 @@ var GameScene = {
 				this.showViewTargetAfterTut();
 			}
 			else{
-				this.showGamePause(g_config.statePause.spManual);
+				this.showGamePause(g_config.statePause.spStart);
 			}
 			//
 		}
@@ -308,20 +308,16 @@ var GameScene = {
 
 	//每回合
 	addBricksEveryRound:function(){
-		var l_gameScene = this;
 		//默认p_bWithTut:false
 		var s=this.tutStep;
-		var l_delay_0 = 300;
-		var l_delay_1 = 500;
 		if(s<0){
-			l_gameScene.loseControl();
+			GameScene.loseControl();
+			GameScene.addBricksByNum(1,1);
+			GameScene.addBricksByNum(1,1);
+
 			setTimeout(function(){
-				l_gameScene.addBricksByNum(1);
-			}, l_delay_0);
-			setTimeout(function(){
-				l_gameScene.addBricksByNum(1);
-				l_gameScene.onControl();
-			}, l_delay_1);
+				GameScene.onControl();
+			}, g_config.delayControl);
 			//
 			//l_gameScene.addBricksByNum(g_config.brickNum_everyRound);
 		}
@@ -334,7 +330,8 @@ var GameScene = {
 		}
 	},
 	// 随机增加一定数目的Brick
-	 addBricksByNum:function(p_iCount, p_bWithTut){
+	 addBricksByNum:function(p_iCount,p_delayFactor, p_bWithTut){
+	 	p_delayFactor=p_delayFactor?p_delayFactor:0;
 		p_bWithTut=p_bWithTut?p_bWithTut:false;
 		var l_iBrickNum = 0;
 		
@@ -348,14 +345,15 @@ var GameScene = {
 			}while(g_gameMgr.arrayGrid[l_iGridY][l_iGridX].gameBrick);
 
 			var l_iNum = g_gameMgr.getRandomNumber();			
-			var l_gameBrick = this.addBrick(l_iNum, cc.p(l_iGridX, l_iGridY));
+			var l_gameBrick = this.addBrick(l_iNum, cc.p(l_iGridX, l_iGridY),p_delayFactor);
 			
 			l_iBrickNum ++;
 		}
 	},
 
 	// 增加一个Brick进入场景
-	addBrick:function(p_iNum, p_gridPoint, p_bWithTut){
+	addBrick:function(p_iNum, p_gridPoint, p_delayFactor,p_bWithTut){
+		p_delayFactor=p_delayFactor?p_delayFactor:0;
 		p_bWithTut=p_bWithTut?p_bWithTut:false;
 
 		var l_strIDBrick = "brick_"+p_gridPoint.y+""+p_gridPoint.x;
@@ -365,7 +363,7 @@ var GameScene = {
 		var l_pnt=g_gameMgr.getPositionByGrid(p_gridPoint);
 		l_gameBrick.leftOriginal = l_pnt.x + 5;
 		l_gameBrick.topOriginal = l_pnt.y + 5;
-		l_gameBrick.show();
+		l_gameBrick.show(p_delayFactor);
 		g_gameMgr.addBrick(l_gameBrick, p_gridPoint);
 		return l_strIDBrick;
 	},
