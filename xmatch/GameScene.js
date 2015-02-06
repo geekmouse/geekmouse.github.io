@@ -641,7 +641,7 @@ var GameScene = {
 		});
 
 		
-		if(true/*!g_gameMgr.bIsMobile*/){
+		if(false/*!g_gameMgr.bIsMobile*/){
 			$("#game_ui")
 			.append("<div id= 'ack' class='ack'><hr><u>"+t3+"</u></div>")
 			.append("<div id= 'contact' class='contact'> <a target='_blank' href='http://geekmouse.net/press/sheet.php?p=X-Match'>2015 GeekMouse</a></div>");
@@ -651,6 +651,55 @@ var GameScene = {
 					
 				}
 			});
+		}
+
+		var l_download_left = 2;
+		var l_download_top = 15;
+		var l_download_interval = 140;
+		//mobile app download
+
+		$("#game_ui").
+			append("\
+				<div id='download_ios_div'>\
+					<a target='_blank' href=' https://itunes.apple.com/bt/app/x-match/id944881907?mt=8'>\
+						<img id='download_ios' class='download_btn' alt=‘Download on App Store’ src='./res/download_ios.png' />\
+					</a>\
+				</div>\
+				").
+			append("\
+				<div id='download_android_div'>\
+	                <a target='_blank' href='https://play.google.com/store/apps/details?id=com.geekmouse.matchxorigin'>\
+	                	<img id='download_android' class='download_btn' alt=‘Android app on Google Play’ src='./res/download_android.png'/>\
+	                </a>\
+	            </div>\
+	            ");
+		$("#download_ios_div").css({
+				'position':'absolute',
+				top:l_download_top,
+				left:(l_download_left+0*l_download_interval)
+			});
+		$("#download_android_div").css({
+				'position':'absolute',
+				top:l_download_top,
+				left:(l_download_left+1*l_download_interval)
+			});
+
+		if(g_gameMgr.bIsMobile){
+			if(g_gameMgr.bIsAndroid){
+				$("#download_ios_div").css({
+					'display':'none'
+					});
+				$("#download_android_div").css({
+					left:(l_download_left+0*l_download_interval)
+					});
+			}else{
+				$("#download_android_div").css({
+					'display':'none'
+					});
+			}
+		}
+		//desktop app download
+		else{
 		}
 	}
 	

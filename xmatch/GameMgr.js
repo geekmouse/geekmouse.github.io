@@ -159,6 +159,8 @@ var g_gameMgr = {
 
 	//isMobile
 	bIsMobile:false,
+	bIsIos:false,
+	bIsAndroid:false,
 
 	//isIE
 	isIE:false,
@@ -266,12 +268,18 @@ var g_gameMgr = {
 		}
 
 
-		this.bIsMobile=l_strLowerAgent.match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i)!=null;
+		this.bIsMobile=l_strLowerAgent.match(/(ipad)|(iphone)|(ipod)|(android)/i)!=null;
 		if(!this.bIsMobile){
 			$.getScript('./social.js', function() {
 				console.log("load social.js done");
 			});
 			$('body').append("<div id='fb-root'></div>");
+		}else{
+			if(l_strLowerAgent.match(/(android)/i)!=null){
+				this.bIsAndroid = true;
+			}else{
+				this.bIsIos = true;
+			}
 		}
 
 		//Shared Button with image
@@ -327,7 +335,7 @@ var g_gameMgr = {
 	shareSocialLink:function(p_strElemID){
 		$(p_strElemID).ShareLink({
 			title: 'JUST CAN\'T STOP!!',
-			text: 'I got '+g_gameMgr.maxScore+' in #X-Match. Can you beat my record?',
+			text: 'I got '+g_gameMgr.maxScore+' in #X_Match. Can you beat my record?',
 			image: 'http://geekmouse.github.io/xmatch/res/iTunesArtwork256.jpg',
 			//url: 'http://geekmouse.github.io/xmatch/',
 			url: 'http://geekmouse.github.io/xmatch/start.html',

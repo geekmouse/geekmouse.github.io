@@ -18,7 +18,7 @@
 <a class="twitter-share-button" id='twitter_share_button'
    href="https://twitter.com/share"
   data-url="http://geekmouse.github.io/xmatch/"
-  data-hashtags="x-match"
+  data-hashtags="x_match"
   data-via="geek_mouse"
   data-text="Just Can't Stop #X-Match !!!"
   data-related="geek_mouse"></a>
