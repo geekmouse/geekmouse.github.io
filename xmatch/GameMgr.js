@@ -162,6 +162,9 @@ var g_gameMgr = {
 	bIsIos:false,
 	bIsAndroid:false,
 
+	//mainLand or oversea
+	bIsMainland:false,
+
 	//isIE
 	isIE:false,
 	//IEVersion 6~12
@@ -284,16 +287,26 @@ var g_gameMgr = {
 
 		//Shared Button with image
 		if(true/*!this.bIsMobile*/){
-			this.showShareButtons();
+			//this.showShareButtons();
 		}
 	},
 
 	//show share buttons in desktop brower
+	//reference and thanks "https://github.com/AyumuKasuga/SocialShare"
 	showShareButtons:function(){
 		//stLight.options({publisher: "261e4fcf-468e-41cc-884d-3c06d5b8ca28", doNotHash: false, doNotCopy: false, hashAddressBar: false});
 
 		$("#game_scene").append("<div id='share_buttons_div' class='share_buttons_div'> </div>");
-		$("#share_buttons_div").css({"z-index":g_config.zorder.GameUI}).
+		$("#share_buttons_div").css({"z-index":g_config.zorder.GameUI});
+		if(g_gameMgr.bIsMainland){
+			$("#share_buttons_div").
+			append("\
+				<div class='like-block-only-button'>\
+					<img id='s_sinaweibo' class='like-button share s_sinaweibo' src='./res/share/sina_32.png' />\
+				</div>\
+				");
+		}
+		$("#share_buttons_div").
 		append("\
 			<div class='like-block-only-button'>\
 				<img id='s_facebook' class='like-button share s_facebook' src='./res/share/facebook_32.png' />\
@@ -313,22 +326,41 @@ var g_gameMgr = {
 			<div class='like-block-only-button'>\
                 <img id='s_plus' class='like-button share s_plus' src='./res/share/googleplus_32.png'/>\
             </div>\
-            ").
-		append("\
-			<div class='like-block-only-button'>\
-                <img id='s_digg' class='like-button share s_digg' src='res/share/digg_32.png'/>\
-            </div>\
             ");
+		if(!g_gameMgr.bIsMainland){
+			$("#share_buttons_div").
+			append("\
+				<div class='like-block-only-button'>\
+	                <img id='s_digg' class='like-button share s_digg' src='res/share/digg_32.png'/>\
+	            </div>\
+	            ");
+		}
 
-
-		$.getScript("jQuery_lib/SocialShare.min.js", function(){
-			console.log("load SocialShare.js done");
-			g_gameMgr.shareSocialLink("#s_facebook");
-			g_gameMgr.shareSocialLink("#s_twitter");
-			g_gameMgr.shareSocialLink("#s_reddit");
-			g_gameMgr.shareSocialLink("#s_plus");
+		if(g_gameMgr.bIsMainland){
+			g_gameMgr.shareSocialLink("#s_sinaweibo");
+		}
+		g_gameMgr.shareSocialLink("#s_facebook");
+		g_gameMgr.shareSocialLink("#s_twitter");
+		g_gameMgr.shareSocialLink("#s_reddit");
+		g_gameMgr.shareSocialLink("#s_plus");
+		if(!g_gameMgr.bIsMainland){
 			g_gameMgr.shareSocialLink("#s_digg");
-		});
+		}
+			
+
+		// $.getScript("jQuery_lib/SocialShare.min.js", function(){
+		// 	console.log("load SocialShare.js done");
+		// 	if(g_gameMgr.bIsMainland){
+		// 		g_gameMgr.shareSocialLink("#s_sinaweibo");
+		// 	}
+		// 	g_gameMgr.shareSocialLink("#s_facebook");
+		// 	g_gameMgr.shareSocialLink("#s_twitter");
+		// 	g_gameMgr.shareSocialLink("#s_reddit");
+		// 	g_gameMgr.shareSocialLink("#s_plus");
+		// 	if(!g_gameMgr.bIsMainland){
+		// 		g_gameMgr.shareSocialLink("#s_digg");
+		// 	}
+		// });
 		
 	},
 
@@ -724,8 +756,6 @@ var g_gameMgr = {
 		console.log("requestData:"+p_iCount);
 		var l_strJsonData = JSON.stringify(l_requestJsonData);
 
-
-		var l_gameMgr = this;
 		var l_httpRequest=$.ajax({
 			url:"http://www.geekmouse.net/Server_mx_product/web_gameInterface.php",
 			type:"post",
@@ -743,6 +773,38 @@ var g_gameMgr = {
 			});
 		
 	},
+
+	/*
+	 * 向第三方服务器，请求ip所属地区
+	 * 
+	 * 前端请求: http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=...
+	 * 后端返回: remote_ip_info json格式
+	 */
+	 requestIpRegion:function(){
+	 	var l_gameMgr = this;
+
+	 	var ip = "111.24.34.34";
+	 	//http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=125.125.125.33
+		$.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', function(_result){     
+			if (remote_ip_info.ret == '1'){     
+				//alert('IP 详细信息:IP：'+ip+'<BR>国家：'+remote_ip_info.country+'<BR>省份：'+remote_ip_info.province+'<BR>城市：'+remote_ip_info.city+'<BR>区：'+remote_ip_info.district+'<BR>ISP：'+remote_ip_info.isp+'<BR>类型：'+remote_ip_info.type+'<BR>其他：'+remote_ip_info.desc);     
+				if(remote_ip_info.country == "中国"){
+					l_gameMgr.bIsMainland = true;
+				}
+				else{
+					l_gameMgr.bIsMainland = false;	
+				}
+			} else {     
+				//alert('错误', '没有找到匹配的 IP 地址信息！');     
+				l_gameMgr.bIsMainland = false;
+			}
+			GameScene.gameUI.showDownloadButton();
+			l_gameMgr.showShareButtons();
+		}
+		);
+		
+	},
+
 
 	//当前局读取档
 	loadSaveDataOfThisGame:function(){

@@ -150,7 +150,7 @@
             sekoman: 'http://sekoman.lv/home?status={title}&url={url}',
             shaveh: 'http://shaveh.co.il/submit.php?url={url}&title={title}',
             shetoldme: 'http://shetoldme.com/publish?url={url}&title={title}&body={text}',
-            sinaweibo: 'http://v.t.sina.com.cn/share/share.php?url={url}&title={title}',
+            sinaweibo: 'http://v.t.sina.com.cn/share/share.php?url={url}&pic={image}&title={title}&content={text}',
             sodahead: 'http://www.sodahead.com/news/submit/?url={url}&title={title}',
             sonico: 'http://www.sonico.com/share.php?url={url}&title={title}',
             springpad: 'http://springpadit.com/s?type=lifemanagr.Bookmark&url={url}&name={title}',

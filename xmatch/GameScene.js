@@ -24,7 +24,7 @@ var GameScene = {
 		// 	return;
 		// }
 		this.gameUI = new GameHUD();
-
+		g_gameMgr.requestIpRegion();
 		
 		//有存档
 		if(g_gameMgr.jsonSaveData[g_config.saveData.key_modeOriginal] != undefined ){
@@ -653,23 +653,38 @@ var GameScene = {
 			});
 		}
 
+
+	}
+
+	this.showDownloadButton = function(){
 		var l_download_left = 2;
 		var l_download_top = 15;
 		var l_download_interval = 140;
 		//mobile app download
 
+		var l_strAndroidLink;
+		var l_strAndroidImage;
+		if(g_gameMgr.bIsMainland){
+			l_strAndroidImage = "./res/download_android_cn.png";
+			l_strAndroidLink = "http://geekmouse.github.io/xmatch/product/Matchxorigin.apk";
+		}else{
+			l_strAndroidImage = "./res/download_android.png";
+			l_strAndroidLink = "https://play.google.com/store/apps/details?id=com.geekmouse.matchxorigin";
+		}
+
+		//http://geekmouse.github.io/xmatch/start.html
 		$("#game_ui").
 			append("\
 				<div id='download_ios_div'>\
-					<a target='_blank' href=' https://itunes.apple.com/bt/app/x-match/id944881907?mt=8'>\
+					<a target='_blank' href='https://itunes.apple.com/bt/app/x-match/id944881907?mt=8'>\
 						<img id='download_ios' class='download_btn' alt=‘Download on App Store’ src='./res/download_ios.png' />\
 					</a>\
 				</div>\
 				").
 			append("\
 				<div id='download_android_div'>\
-	                <a target='_blank' href='https://play.google.com/store/apps/details?id=com.geekmouse.matchxorigin'>\
-	                	<img id='download_android' class='download_btn' alt=‘Android app on Google Play’ src='./res/download_android.png'/>\
+	                <a target='_blank' href='" + l_strAndroidLink + "'>\
+	                	<img id='download_android' class='download_btn' alt=‘Android app on Google Play’ src='" + l_strAndroidImage + "'/>\
 	                </a>\
 	            </div>\
 	            ");
@@ -700,6 +715,7 @@ var GameScene = {
 		}
 		//desktop app download
 		else{
+			//nothing
 		}
 	}
 	

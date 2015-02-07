@@ -43,16 +43,22 @@
 
 		switch(iState){
 			case g_config.statePause.spManual:{
-				var l_showOpt=2;
-				// if(g_gameMgr.maxScore<50){
-				// 	var l_rnOptions=g_tools.random(0,10);
-				// 	if(l_rnOptions<=5) l_showOpt=2;
-				// 	else if(l_rnOptions<=7) l_showOpt=1;
-				// 	else l_showOpt=0;
-				// }
-				// else{
-				// 	l_showOpt=g_tools.random(0,2);
-				// }
+				if(g_gameMgr.maxScore<50){
+					var l_rnOptions=g_tools.random(0,10);
+					if(l_rnOptions<=5){
+						l_showOpt=2;
+					}
+					else if(l_rnOptions<=7){
+						l_showOpt=1;
+					}
+					else{
+						l_showOpt=0;
+					}
+				}
+				else{
+					l_showOpt=g_tools.random(0,2);
+				}
+				l_showOpt = 1;
 				this.showOpt(l_showOpt);
 				break;
 			}
@@ -184,6 +190,9 @@
 						l_bHideCount = false;
 					}else{
 						l_left += 20;
+					}
+					if(g_gameMgr.bIsMobile){
+						l_bHideCount = true;
 					}
 
 					//facebook
