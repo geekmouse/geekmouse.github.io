@@ -35,6 +35,7 @@ var g_config = {
 		spManual:0
 		,spEnd:1
 		,spEndNew:2
+		,spStart:3
 	}
 	
 	//zorder
@@ -42,6 +43,7 @@ var g_config = {
 		GameBG:10
 		,GameBottom:20
 		,GameObject:25
+		,GameBrickShadow:27
 		,GameMask:28
 		,GameTutBg:30
 		,GameTutObject:32
@@ -73,6 +75,8 @@ var g_config = {
 		,restartGame:1		//开始游戏
 	}
 	,colorStrongText:"#0192e0"
+	,delayControl:0
+	,delayFactor:[0,0,500]
 };
 
 var g_tools = {
@@ -155,6 +159,8 @@ var g_gameMgr = {
 
 	//isMobile
 	bIsMobile:false,
+	bIsIos:false,
+	bIsAndroid:false,
 
 	//isIE
 	isIE:false,
@@ -262,12 +268,18 @@ var g_gameMgr = {
 		}
 
 
-		this.bIsMobile=l_strLowerAgent.match(/(ipad)|(iphone)|(ipod)|(android)|(webos)/i)!=null;
+		this.bIsMobile=l_strLowerAgent.match(/(ipad)|(iphone)|(ipod)|(android)/i)!=null;
 		if(!this.bIsMobile){
 			$.getScript('./social.js', function() {
 				console.log("load social.js done");
 			});
 			$('body').append("<div id='fb-root'></div>");
+		}else{
+			if(l_strLowerAgent.match(/(android)/i)!=null){
+				this.bIsAndroid = true;
+			}else{
+				this.bIsIos = true;
+			}
 		}
 
 		//Shared Button with image
@@ -323,7 +335,7 @@ var g_gameMgr = {
 	shareSocialLink:function(p_strElemID){
 		$(p_strElemID).ShareLink({
 			title: 'JUST CAN\'T STOP!!',
-			text: 'I got '+g_gameMgr.maxScore+' in #XMatch. Can you beat my record?',
+			text: 'I got '+g_gameMgr.maxScore+' in #X_Match. Can you beat my record?',
 			image: 'http://geekmouse.github.io/xmatch/res/iTunesArtwork256.jpg',
 			//url: 'http://geekmouse.github.io/xmatch/',
 			url: 'http://geekmouse.github.io/xmatch/start.html',
@@ -903,8 +915,19 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 	this.brick_id = p_strID;
 	
 	
-	this.show = function(){
+	this.show = function(p_delayFactor){
 		var l_strColor = g_gameMgr.brickColors[this.number];
+		if (p_delayFactor!=0 && !this.withTut) {
+			$("#brick_layer").append("<div class='brick_shadow' id='shadow_"+this.brick_id+"'></div>");
+			$("#shadow_"+this.brick_id).css({
+				"left":this.leftOriginal+20
+				,"top":this.topOriginal+20
+				,"z-index":g_config.zorder.GameBrickShadow
+				,opacity:0.5
+				,filter:"alpha(opacity=50)"
+			});
+		}
+		
 
 		$("#brick_layer").append("<div class='brick_back' id='"+this.brick_id+"'></div>");
 		$("#"+this.brick_id).css({
@@ -912,6 +935,8 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 			,"top":this.topOriginal
 			,"z-index":g_config.zorder.GameObject
 			,"background-color": l_strColor
+			,opacity: 0.0
+			,filter:"alpha(opacity=0)"
 		});
 
 		if(this.number == g_config.numX){
@@ -930,6 +955,8 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 				,"display":"none"
 				,"z-index":g_config.zorder.GameTutObject
 				,"background-color": l_strColor
+				,opacity: 0.0
+				,filter:"alpha(opacity=0)"
 			});
 
 			if(this.number == g_config.numX){
@@ -940,41 +967,39 @@ function GameBrick (p_iNumber, p_strID, p_bWithTut){
 				$("#"+this.brick_id+"_tut").text(this.number);
 			}
 		}
+		var l_brick=this;
+		setTimeout(function(){
+			l_brick.showAppearAction();
+		}, g_config.delayFactor[p_delayFactor]);
 
-		this.showAppearAction();
+
 	}
 
 	
 	//出现动画
 	this.showAppearAction = function(){
 		var l_brick = this;
-		$("#"+this.brick_id).css({
-			opacity: 0.0,
-			filter:"alpha(opacity=0)",
-			"width" : 80,
-			"height" : 80
-		})
+		
+
+		$("#"+this.brick_id)
 		.delay(150)
 		.animate({
-				width: 80,
-				height: 80,
+				// width: 80,
+				// height: 80,
 				opacity:1,
 				filter:"alpha(opacity=100)"
 			},
-			200
+			200,function(){
+				$("#shadow_"+l_brick.brick_id).remove();
+			}
 			);
 
 		if(this.withTut){
-			$("#"+this.brick_id+"_tut").css({
-				"opacity": 0.0,
-				filter:"alpha(opacity=0)",
-				"width" : 80,
-				"height" : 80
-			})
+			$("#"+this.brick_id+"_tut")
 			.delay(150)
 			.animate({
-					width: 80,
-					height: 80,
+					// width: 80,
+					// height: 80,
 					opacity:1,
 					filter:"alpha(opacity=100)"
 				},

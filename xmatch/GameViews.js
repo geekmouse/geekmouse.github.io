@@ -43,7 +43,7 @@
 
 		switch(iState){
 			case g_config.statePause.spManual:{
-				var l_showOpt=1;
+				var l_showOpt=2;
 				// if(g_gameMgr.maxScore<50){
 				// 	var l_rnOptions=g_tools.random(0,10);
 				// 	if(l_rnOptions<=5) l_showOpt=2;
@@ -56,8 +56,18 @@
 				this.showOpt(l_showOpt);
 				break;
 			}
-			case g_config.statePause.spEnd:{
+			case g_config.statePause.spStart:{
 				this.showOpt(1);
+				break;
+			}
+			case g_config.statePause.spEnd:{
+				if(g_gameMgr.maxScore<30){
+					this.showOpt(2);
+				}
+				else{
+					this.showOpt(2);
+				}
+				
 				$("#pause_text").text(zh?"游戏结束!!":"GAME OVER!!");
 				$("#bt_ps_cont").text(zh?"再看看":"RECHECK");
 				break;

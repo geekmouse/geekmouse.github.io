@@ -37,7 +37,7 @@ var GameScene = {
 				this.showViewTargetAfterTut();
 			}
 			else{
-				this.showGamePause(g_config.statePause.spManual);
+				this.showGamePause(g_config.statePause.spStart);
 			}
 			//
 		}
@@ -273,7 +273,7 @@ var GameScene = {
 			this.tutStep=0;
 			for (var i = 0; i<g_gameMgr.st_bricks.length; i++) {
 				var l_thisBrick=g_gameMgr.st_bricks[i];
-				this.addBrick(l_thisBrick.c,cc.p(l_thisBrick.x,l_thisBrick.y), true);
+				this.addBrick(l_thisBrick.c,cc.p(l_thisBrick.x,l_thisBrick.y),0, true);
 			};
 			this.showStepTutTip(g_gameMgr.st_steps[0]);
 		}
@@ -308,20 +308,16 @@ var GameScene = {
 
 	//每回合
 	addBricksEveryRound:function(){
-		var l_gameScene = this;
 		//默认p_bWithTut:false
 		var s=this.tutStep;
-		var l_delay_0 = 300;
-		var l_delay_1 = 500;
 		if(s<0){
-			l_gameScene.loseControl();
+			GameScene.loseControl();
+			GameScene.addBricksByNum(1,1);
+			GameScene.addBricksByNum(1,1);
+
 			setTimeout(function(){
-				l_gameScene.addBricksByNum(1);
-			}, l_delay_0);
-			setTimeout(function(){
-				l_gameScene.addBricksByNum(1);
-				l_gameScene.onControl();
-			}, l_delay_1);
+				GameScene.onControl();
+			}, g_config.delayControl);
 			//
 			//l_gameScene.addBricksByNum(g_config.brickNum_everyRound);
 		}
@@ -329,12 +325,13 @@ var GameScene = {
 			var l_gen1=g_gameMgr.st_gen[s*2];
 			var l_gen2=g_gameMgr.st_gen[s*2+1];
 
-			this.addBrick(l_gen1.c,cc.p(l_gen1.x,l_gen1.y), true);
-			this.addBrick(l_gen2.c,cc.p(l_gen2.x,l_gen2.y), true);
+			this.addBrick(l_gen1.c,cc.p(l_gen1.x,l_gen1.y), 0,true);
+			this.addBrick(l_gen2.c,cc.p(l_gen2.x,l_gen2.y),0, true);
 		}
 	},
 	// 随机增加一定数目的Brick
-	 addBricksByNum:function(p_iCount, p_bWithTut){
+	 addBricksByNum:function(p_iCount,p_delayFactor, p_bWithTut){
+	 	p_delayFactor=p_delayFactor?p_delayFactor:0;
 		p_bWithTut=p_bWithTut?p_bWithTut:false;
 		var l_iBrickNum = 0;
 		
@@ -348,14 +345,15 @@ var GameScene = {
 			}while(g_gameMgr.arrayGrid[l_iGridY][l_iGridX].gameBrick);
 
 			var l_iNum = g_gameMgr.getRandomNumber();			
-			var l_gameBrick = this.addBrick(l_iNum, cc.p(l_iGridX, l_iGridY));
+			var l_gameBrick = this.addBrick(l_iNum, cc.p(l_iGridX, l_iGridY),p_delayFactor);
 			
 			l_iBrickNum ++;
 		}
 	},
 
 	// 增加一个Brick进入场景
-	addBrick:function(p_iNum, p_gridPoint, p_bWithTut){
+	addBrick:function(p_iNum, p_gridPoint, p_delayFactor,p_bWithTut){
+		p_delayFactor=p_delayFactor?p_delayFactor:0;
 		p_bWithTut=p_bWithTut?p_bWithTut:false;
 
 		var l_strIDBrick = "brick_"+p_gridPoint.y+""+p_gridPoint.x;
@@ -365,7 +363,7 @@ var GameScene = {
 		var l_pnt=g_gameMgr.getPositionByGrid(p_gridPoint);
 		l_gameBrick.leftOriginal = l_pnt.x + 5;
 		l_gameBrick.topOriginal = l_pnt.y + 5;
-		l_gameBrick.show();
+		l_gameBrick.show(p_delayFactor);
 		g_gameMgr.addBrick(l_gameBrick, p_gridPoint);
 		return l_strIDBrick;
 	},
@@ -447,7 +445,7 @@ var GameScene = {
 		//正常消除普通数字
 		else if(l_targetNum >= g_config.numStart && l_targetNum <= g_config.numX){
 			this.removeConnectPoint(p_gridPoint);
-			this.addBrick(l_targetNum, p_gridPoint, this.tutStep>=0);
+			this.addBrick(l_targetNum, p_gridPoint, 0,this.tutStep>=0);
 			this.addBricksEveryRound();
 			g_gameMgr.addRound();
 		}
@@ -643,7 +641,7 @@ var GameScene = {
 		});
 
 		
-		if(true/*!g_gameMgr.bIsMobile*/){
+		if(false/*!g_gameMgr.bIsMobile*/){
 			$("#game_ui")
 			.append("<div id= 'ack' class='ack'><hr><u>"+t3+"</u></div>")
 			.append("<div id= 'contact' class='contact'> <a target='_blank' href='http://geekmouse.net/press/sheet.php?p=X-Match'>2015 GeekMouse</a></div>");
@@ -653,6 +651,55 @@ var GameScene = {
 					
 				}
 			});
+		}
+
+		var l_download_left = 2;
+		var l_download_top = 15;
+		var l_download_interval = 140;
+		//mobile app download
+
+		$("#game_ui").
+			append("\
+				<div id='download_ios_div'>\
+					<a target='_blank' href=' https://itunes.apple.com/bt/app/x-match/id944881907?mt=8'>\
+						<img id='download_ios' class='download_btn' alt=‘Download on App Store’ src='./res/download_ios.png' />\
+					</a>\
+				</div>\
+				").
+			append("\
+				<div id='download_android_div'>\
+	                <a target='_blank' href='https://play.google.com/store/apps/details?id=com.geekmouse.matchxorigin'>\
+	                	<img id='download_android' class='download_btn' alt=‘Android app on Google Play’ src='./res/download_android.png'/>\
+	                </a>\
+	            </div>\
+	            ");
+		$("#download_ios_div").css({
+				'position':'absolute',
+				top:l_download_top,
+				left:(l_download_left+0*l_download_interval)
+			});
+		$("#download_android_div").css({
+				'position':'absolute',
+				top:l_download_top,
+				left:(l_download_left+1*l_download_interval)
+			});
+
+		if(g_gameMgr.bIsMobile){
+			if(g_gameMgr.bIsAndroid){
+				$("#download_ios_div").css({
+					'display':'none'
+					});
+				$("#download_android_div").css({
+					left:(l_download_left+0*l_download_interval)
+					});
+			}else{
+				$("#download_android_div").css({
+					'display':'none'
+					});
+			}
+		}
+		//desktop app download
+		else{
 		}
 	}
 	

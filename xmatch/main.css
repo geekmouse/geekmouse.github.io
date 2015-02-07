@@ -25,6 +25,7 @@
     div#preloader img {
             display: block;
         }
+    
     }
 @media print {
     div#preloader, 
@@ -120,7 +121,7 @@
 
 
 .title{
-    line-height: 50px;
+    /*line-height: 50px;*/
     font-size:50px;
     
 }
@@ -144,6 +145,11 @@
     height: 91px;
 }
 
+.grid:hover {
+    opacity: 0.7;
+    /*box-shadow: inset 0px 1px 0px #aaaaaa, 0px 2px 0px 0px #aaaaaa, 0px 2px 5px #aaaaaa;*/
+}
+
 .brick_x{
     position:relative;
     left:-4.5px;
@@ -155,10 +161,24 @@
     position:absolute;
     font-size:60px;
     top:50%;
+    width: 80px;
+    height: 80px;
     color: white;
     border-radius: 15px;
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
+}
+
+.brick_shadow{
+    position:absolute;
+    /*color: white;*/
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    background-color: white;
+
 }
 
 .click_tip{
@@ -216,6 +236,20 @@
     left: 20px;
     top: 785px;
 }
+
+.download_btn{
+    cursor:pointer;
+    width: 135px;
+    height: 40px;
+    position: absolute;
+    left: 20px;
+    top: 785px;
+}
+.download_btn:hover {
+    color:#dfe7ea;
+    box-shadow: inset 0px 1px 0px #3e9cbf, 0px 2px 0px 0px #205c73, 0px 2px 5px #999;
+}
+
 
 .pause_back{ 
     margin: 0 auto;
@@ -296,6 +330,7 @@
     font-size: 16px;
     padding: 25px 40px 20px 40px;
     position:relative;
+    
 }
 
 .vt_cys1{
@@ -304,6 +339,14 @@
     font-size: 24px;
     padding: 25px 40px 20px 40px;
     position:relative;
+    color: #54ADDC;
+}
+
+.vt_target{
+    font-family: sans-serif;
+    color: #6092B4;
+    width: 200px;
+    margin: 0 auto;
 }
 
 .vt_100{
