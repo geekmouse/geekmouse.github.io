@@ -802,7 +802,6 @@ var g_gameMgr = {
 			l_gameMgr.showShareButtons();
 		}
 		);
-		
 	},
 
 

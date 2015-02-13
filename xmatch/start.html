@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#" >
-    <title>X-MATCH</title>
+    <title>Jump To X-MATCH App</title>
     <!--<meta http-equiv="X-UA-Compatible" content="IE=8" />-->
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -33,30 +33,98 @@
     <meta name="twitter:title" content="JUST CANNOT STOP!!!" />
     <meta name="twitter:description" content="Can you score 100 in X-Match?" />
     <meta name="twitter:image:src" content="http://geekmouse.github.io/xmatch/res/iTunesArtwork256.jpg" />
-    
-
     <link rel="icon" type="image/GIF" href="res/favicon.ico"/>
-    <script>
-        var l_strLowerAgent=navigator.userAgent.toLowerCase();
-        console.log(l_strLowerAgent);
+    <style type="text/css">
+    *{margin:0; padding:0;}
+    a{text-decoration: none;}
+    img{max-width: 100%; height: auto;}
+    .weixin-tip{display: none; position: fixed; left:0; top:0; bottom:0; background: rgba(0,0,0,0.8); filter:alpha(opacity=80);  height: 100%; width: 100%; z-index: 100;}
+    .weixin-tip p{text-align: center; margin-top: 10%; padding:0 5%;}
+    </style>
 
-        //ios
-        if(l_strLowerAgent.match(/(ipad)|(iphone)|(ipod)/i)!=null){
-            location.replace("https://itunes.apple.com/bt/app/x-match/id944881907?mt=8");
-        }
-        //android
-        else if(l_strLowerAgent.match(/(android)/i) !=null){
-            location.replace("index.html");
-        }
-        //deskop
-        else{
-            location.replace("index.html");   
-        }
-        
-    </script>
+    
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    
   </head>
 
   <body class="body">
-    
+    <script>
+
+        var l_bIsMainLand = false;
+
+        function requestIpRegion(){
+            var l_gameMgr = this;
+
+            //var ip = "111.24.34.34";
+            //http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=125.125.125.33
+            $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', function(_result){     
+                if (remote_ip_info.ret == '1'){     
+                    //alert('IP 详细信息:IP：'+ip+'<BR>国家：'+remote_ip_info.country+'<BR>省份：'+remote_ip_info.province+'<BR>城市：'+remote_ip_info.city+'<BR>区：'+remote_ip_info.district+'<BR>ISP：'+remote_ip_info.isp+'<BR>类型：'+remote_ip_info.type+'<BR>其他：'+remote_ip_info.desc);     
+                    if(remote_ip_info.country == "中国"){
+                        l_bIsMainLand = true;
+                    }
+                    else{
+                        l_bIsMainLand = false;
+                    }
+                } else {     
+                    //alert('错误', '没有找到匹配的 IP 地址信息！');
+                    l_bIsMainLand = false;
+                }
+                jumpToUrl();
+            }
+            );
+        }
+
+        function jumpToUrl(){
+            var l_strLowerAgent=navigator.userAgent.toLowerCase();
+            console.log(l_strLowerAgent);
+
+            //ios
+            if(l_strLowerAgent.match(/(ipad)|(iphone)|(ipod)/i)!=null){
+                location.replace("https://itunes.apple.com/bt/app/x-match/id944881907?mt=8");
+            }
+            //android
+            else if(l_strLowerAgent.match(/(android)/i) !=null){
+                //location.replace("index.html");
+                if(l_bIsMainLand){
+                    location.replace("http://geekmouse.github.io/xmatch/product/Matchxorigin.apk");
+                }else{
+                    location.replace("https://play.google.com/store/apps/details?id=com.geekmouse.matchxorigin");
+                }
+            }
+            //deskop
+            else{
+                location.replace("index.html");   
+            }
+        }
+
+        $(window).on("load",function(){
+            var winHeight = $(window).height();
+            function is_weixin() {
+                var ua = navigator.userAgent.toLowerCase();
+                if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            var isWeixin = is_weixin();
+            if(isWeixin){
+                $(".weixin-tip").css("height",winHeight);
+                $(".weixin-tip").show();
+            }else{
+                requestIpRegion();
+            }
+        });
+
+
+        
+        
+    </script>   
+    <div class="weixin-tip">
+        <p>
+            <img src="./res/live_weixin.png" alt="微信打开"/>
+        </p>
+    </div>
   </body>
 </html>
